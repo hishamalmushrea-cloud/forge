@@ -82,3 +82,8 @@
 - Sim 5/5: determinism 2000/2000, rendezvous 2000/2000, jam 47.9% vs 0%, avalanche 86.3%, energy 2.52%.
 - Firmware: golden 2000/2000 bit-exact, FIPS + RFC4237 PASS, zero warnings. Browser BigInt engine verified same hops.
 - Simulator: 9th tab (atomic, checks pass).
+
+## 2026-09-15 — whisper (COMPLETE: E2E capsule + 3 transports, 13/13, sim tab)
+- Zero-infra messenger: ECDH+AES-GCM capsule over animated frames + ultrasonic FSK + file.
+- core.js shared browser/Node; selfTest 13/13 first run (capsule 171B=1 frame, FSK 14.4s, +20dB ok).
+- Simulator: 11th tab, live encrypt/play/capture/tamper/selftest. Static+JS checks pass.

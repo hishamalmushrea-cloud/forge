@@ -47,6 +47,7 @@ img.blue{width:100%;border:1px solid #334155;border-radius:8px;background:#fff}
 <button data-tab="chaos">🦋 مختبر الفوضى</button>
 <button data-tab="mesh">🛡️ شبكة الفوضى</button>
 <button data-tab="poc">📡 إثبات المفهوم</button>
+<button data-tab="whis">🤫 همس</button>
 <button data-tab="asm">🔧 رسومات التجميع</button>
 </nav>
 <main>
@@ -253,6 +254,42 @@ img.blue{width:100%;border:1px solid #334155;border-radius:8px;background:#fff}
 </div>
 <table class='cmp'><tr><th>الاختبار</th><th>ثابت</th><th>LFSR</th><th>Hash</th><th>فوضوي</th></tr><tr><td>PDR نظيف</td><td>100.0%</td><td>100.0%</td><td>100.0%</td><td><b>100.0%</b></td></tr><tr><td>PDR وابل 1/8</td><td>0.0%</td><td>88.9%</td><td>85.7%</td><td><b>91.0%</b></td></tr><tr><td>PDR وابل 2/8</td><td>0.0%</td><td>76.2%</td><td>73.7%</td><td><b>82.7%</b></td></tr><tr><td>PDR وابل 4/8</td><td>0.0%</td><td>49.8%</td><td>48.8%</td><td><b>47.9%</b></td></tr><tr><td>PDR وابل 6/8</td><td>0.0%</td><td>23.8%</td><td>25.4%</td><td><b>28.1%</b></td></tr><tr><td>PDR متتبع K=1</td><td>0.8%</td><td>0.9%</td><td>86.4%</td><td><b>88.4%</b></td></tr><tr><td>دقة المتتبع</td><td>100.0%</td><td>100.0%</td><td>13.6%</td><td><b>11.4%</b></td></tr><tr><td>زمن@50% ms</td><td>∞</td><td>200.9</td><td>204.9</td><td><b>209.0</b></td></tr><tr><td>mJ/حزمة@50%</td><td>∞</td><td>4.972</td><td>5.071</td><td><b>5.173</b></td></tr><tr><td>إعادة قفل</td><td>N/A</td><td>4</td><td>4</td><td><b>4</b></td></tr></table>
 <p class="note">المتتبع يكسر LFSR بـBerlekamp-Massey (دقة 100%) ويعجز عن الفوضوي (11.4% ≈ صدفة). ضد الوابل الأعمى: لا تفوق — أي مولد منتظم متساوٍ. الأعمدة المقاسة تُملأ بعد العتاد (poc/results_table.md).</p>
+</div>
+</section>
+<!-- ============ WHISPER ============ -->
+<section id="tab-whis" class="tab">
+<div class="card"><h2>🤫 همس — مراسلة مشفرة بصفر بنية تحتية</h2>
+<div class="grid">
+<div>
+<button class="act" id="wGenA">🎲 هوية آليس</button>
+<button class="act" id="wGenB">🎲 هوية بوب</button>
+<div class="readout">
+<div class="ro"><b id="wFpA">…</b><span>بصمة آليس (12 كلمة)</span></div>
+<div class="ro"><b id="wFpB">…</b><span>بصمة بوب (12 كلمة)</span></div>
+</div>
+<textarea id="wMsg" rows="2" style="width:100%">صباح الخير يا تعز! هذه رسالة همس مشفرة تسبق التقنية.</textarea>
+<button class="act warn" id="wSeal">🔒 شفّر لآليس ← بوب</button>
+<p class="note" id="wCapInfo">الكبسولة: —</p>
+<button class="act" id="wVPlay">📡 اعرض الإطارات الضوئية</button>
+<button class="act" id="wVCap">📷 التقط وفك التشفير</button>
+<p class="note" id="wVOut">المرئي: —</p>
+<button class="act" id="wSPlay">🔊 شغّل الهمس فوق الصوتي</button>
+<button class="act" id="wSCap">🎤 التقط من الصوت وفك</button>
+<p class="note">ضجيج القناة: <input type="range" id="wNoise" min="5" max="30" value="20"> <b id="wNoiseV">20dB</b></p>
+<p class="note" id="wSOut">الصوتي: —</p>
+<button class="act" id="wExport">📄 صدّر كنص</button>
+<button class="act" id="wImport">📥 استورد وفك</button>
+<textarea id="wFileBox" rows="2" style="width:100%" placeholder="base64 الكبسولة…"></textarea>
+<p class="note" id="wFOut">الملف: —</p>
+<button class="act warn" id="wTamper">⚡ اعبث ببايت واحد</button>
+<p class="note" id="wTamperOut">العبث: —</p>
+<button class="act" id="wSelf">🧪 الاختبار الذاتي (13)</button>
+<div id="wSelfOut"></div>
+</div>
+<div><canvas id="wVCanvas" width="450" height="450"></canvas>
+<canvas id="wSCanvas" width="440" height="160"></canvas></div>
+</div>
+<p class="note">تشفير حقيقي (ECDH+AEG-GCM) + مودمات حقيقية تعمل هنا: البكسلات تُقرأ من اللوحة، والموجات تُحلَّل رياضيًا. v1: TOFU بلا سرية أمامية — موثق.</p>
 </div>
 </section>
 <!-- ============ ASSEMBLY ============ -->
@@ -606,6 +643,125 @@ if(fp)fp.textContent=mFT?(100*mFO/mFT).toFixed(1)+'%':'—';
 if(hp)hp.textContent=mHT?(100*mHO/mHT).toFixed(1)+'%':'—';
 setTimeout(meshLoop,120);})();
 drawElyChart();
+</script>
+<script type="module">
+import { genIdentity, fingerprint, seal, open as capOpen, encodeFrames, decodeFrames, fskMod, fskDemod, addNoise, selfTest, GRID } from './whisper_core.js';
+const TE=new TextEncoder(),TD=new TextDecoder();
+let A=null,B=null,CAP=null,SOUND=null;
+const b64e=(u8)=>btoa(String.fromCharCode(...u8));
+const b64d=(s)=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+async function init(){
+A=await genIdentity();B=await genIdentity();
+$('wFpA').textContent=(await fingerprint(A.comp)).join('،');
+$('wFpB').textContent=(await fingerprint(B.comp)).join('،');
+}
+$('wGenA').onclick=async()=>{A=await genIdentity();$('wFpA').textContent=(await fingerprint(A.comp)).join('،');CAP=null;};
+$('wGenB').onclick=async()=>{B=await genIdentity();$('wFpB').textContent=(await fingerprint(B.comp)).join('،');CAP=null;};
+$('wSeal').onclick=async()=>{
+CAP=await seal(A.priv,A.comp,B.raw,TE.encode($('wMsg').value));
+let snd='كبيرة للصوت — استخدم المرئي/الملف';
+try{snd=fskMod(CAP).seconds+'s';}catch(e){}
+$('wCapInfo').textContent=`الكبسولة ${CAP.length}B = ${encodeFrames(CAP).length} إطار | صوت: ${snd}`;
+SOUND=null;
+};
+function drawGrid(grid){
+const c=$('wVCanvas'),x=c.getContext('2d'),S=c.width/GRID;
+x.fillStyle='#0b1220';x.fillRect(0,0,c.width,c.height);
+x.fillStyle='#fff';
+for(let gy=0;gy<GRID;gy++)for(let gx=0;gx<GRID;gx++)
+if(grid[gy*GRID+gx])x.fillRect(gx*S,gy*S,S,S);
+const F=(fx,fy)=>{x.fillStyle='#fff';x.fillRect(fx*S,fy*S,7*S,7*S);
+x.fillStyle='#0b1220';x.fillRect((fx+1)*S,(fy+1)*S,5*S,5*S);
+x.fillStyle='#fff';x.fillRect((fx+2)*S,(fy+2)*S,3*S,3*S);};
+F(0,0);F(GRID-7,0);F(0,GRID-7);
+}
+function sampleGrid(){
+const c=$('wVCanvas'),x=c.getContext('2d'),S=c.width/GRID;
+const d=x.getImageData(0,0,c.width,c.height).data;
+const g=new Uint8Array(GRID*GRID);
+for(let gy=0;gy<GRID;gy++)for(let gx=0;gx<GRID;gx++){
+const px=Math.floor(gx*S+S/2),py=Math.floor(gy*S+S/2);
+g[gy*GRID+gx]=d[(py*c.width+px)*4]>128?1:0;}
+return g;
+}
+let vTimer=null;
+$('wVPlay').onclick=()=>{
+if(!CAP){$('wVOut').textContent='اشفّر رسالة أولًا';return;}
+const fr=encodeFrames(CAP),seq=[...fr,...fr,...fr];
+let i=0;clearInterval(vTimer);
+vTimer=setInterval(()=>{drawGrid(seq[i%seq.length]);i++;if(i>=seq.length*2)clearInterval(vTimer);},350);
+$('wVOut').textContent=`يعرض ${seq.length} إطارًا…`;
+};
+$('wVCap').onclick=async()=>{
+try{
+if(!CAP){$('wVOut').textContent='اشفّر أولًا';return;}
+const fr=encodeFrames(CAP),got=[];
+for(const f of fr){drawGrid(f);got.push(sampleGrid());}
+const back=decodeFrames(got);
+if(back.join()!==CAP.join())throw new Error('bits differ');
+const pt=await capOpen(B.priv,back,A.comp);
+$('wVOut').textContent='✓ وصلت عبر الضوء: '+TD.decode(pt);
+}catch(e){$('wVOut').textContent='✗ '+e.message;}
+};
+function drawSpectrum(samp){
+const c=$('wSCanvas'),x=c.getContext('2d');
+x.fillStyle='#0b1220';x.fillRect(0,0,c.width,c.height);
+const N=8192,sr=48000,mags=[];
+for(let f=17000;f<=20000;f+=100){
+let re=0,im=0;
+for(let i=0;i<N;i++){const p=2*Math.PI*f*i/sr;re+=samp[i]*Math.cos(p);im+=samp[i]*Math.sin(p);}
+mags.push(Math.hypot(re,im));}
+const mx=Math.max(...mags);
+x.fillStyle='#4ade80';
+mags.forEach((m,i)=>{const hgt=m/mx*(c.height-20);x.fillRect(i*(c.width/mags.length),c.height-hgt,c.width/mags.length-1,hgt);});
+x.fillStyle='#fff';x.font='11px Tahoma';x.fillText('17kHz ← الطيف → 20kHz (قمتان = 0/1)',8,14);
+}
+$('wSPlay').onclick=async()=>{
+if(!CAP){$('wSOut').textContent='اشفّر أولًا';return;}
+try{
+const r=fskMod(CAP);
+SOUND=r.samples;drawSpectrum(r.samples);
+const AC=window.AudioContext||window.webkitAudioContext;
+const ac=new AC({sampleRate:48000});
+const buf=ac.createBuffer(1,r.samples.length,48000);
+buf.getChannelData(0).set(r.samples);
+const src=ac.createBufferSource();src.buffer=buf;src.connect(ac.destination);src.start();
+$('wSOut').textContent=`يُهمس الآن (${r.seconds}s فوق صوتي — قد لا تسمع شيئًا!)`;
+}catch(e){$('wSOut').textContent='✗ '+e.message;}
+};
+$('wNoise').oninput=()=>{$('wNoiseV').textContent=$('wNoise').value+'dB';};
+$('wSCap').onclick=async()=>{
+try{
+if(!SOUND){$('wSOut').textContent='شغّل الهمس أولًا';return;}
+const nz=addNoise(SOUND,+$('wNoise').value);
+const pt=await capOpen(B.priv,fskDemod(nz),A.comp);
+$('wSOut').textContent=`✓ وصلت عبر الصوت (+${$('wNoise').value}dB): `+TD.decode(pt);
+}catch(e){$('wSOut').textContent='✗ '+e.message+' — جرّب ضجيجًا أقل أو المرئي';}
+};
+$('wExport').onclick=()=>{
+if(!CAP){$('wFOut').textContent='اشفّر أولًا';return;}
+$('wFileBox').value=b64e(CAP);
+$('wFOut').textContent=`صُدّرت ${CAP.length}B كنص — انسخها لأي وسيلة`;
+};
+$('wImport').onclick=async()=>{
+try{
+const pt=await capOpen(B.priv,b64d($('wFileBox').value.trim()),A.comp);
+$('wFOut').textContent='✓ وصلت عبر الملف: '+TD.decode(pt);
+}catch(e){$('wFOut').textContent='✗ '+e.message;}
+};
+$('wTamper').onclick=async()=>{
+if(!CAP){$('wTamperOut').textContent='اشفّر أولًا';return;}
+try{
+const bad=CAP.slice();bad[bad.length-1]^=1;
+await capOpen(B.priv,bad,A.comp);
+$('wTamperOut').textContent='✗ كارثة: قُبِلت المزورة!';
+}catch(e){$('wTamperOut').textContent='✓ العبث مرفوض: '+e.message;}
+};
+$('wSelf').onclick=async()=>{
+const T=await selfTest();
+$('wSelfOut').innerHTML=T.map(t=>`<div>${t.pass?'✅':'❌'} ${t.name} — ${t.detail}</div>`).join('');
+};
+init();
 </script>
 </body>
 </html>

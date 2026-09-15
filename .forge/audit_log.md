@@ -60,3 +60,9 @@
 - Cascade: 2 passes @90% -> 350ppm drinking at 2.13 kWh/m3 (beats RO 3.5). Electrodes/L-cycle: Ag 61.3g + PB 152.1g, 1.9A/8h.
 - Model 4/4 tests PASS (anchor, cascade, Faraday hand-check, RO comparison). T1-T6 PENDING (needs build).
 - Simulator: 6th tab (atomic edit, static checks pass). No-file-race this time.
+
+## 2026-09-15 — BUILD desal_battery (3 assembly drawings + cycle firmware + T3/T4 acceptance)
+- Drawings: cell exploded (order 1-7), plumbing + 4-step cycle, wiring + interlock. All XML-valid.
+- firmware/cycle: gcc zero warnings, 7/7 host tests (7.6Ah charge, 82% recovery sim, 3 fault paths).
+- acceptance_t3t4.py: nominal T3 (25.0%/0.290) PASS + T4 (350ppm/2.13) PASS; both fault types detected.
+- Binary cleanup done pre-commit (lesson applied). No same-file parallel edits (lesson applied).

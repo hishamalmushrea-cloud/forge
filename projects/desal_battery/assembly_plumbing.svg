@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="700" height="520" font-family="sans-serif">
+<rect width="700" height="520" fill="#1e4f9c"/>
+<text x="350" y="26" text-anchor="middle" font-size="15" font-weight="bold" fill="white">Desal system — plumbing + 4-step cycle (STATUS: DRAWN)</text>
+<rect x="30" y="50" width="120" height="70" fill="none" stroke="white" stroke-width="2"/>
+<text x="90" y="75" text-anchor="middle" font-size="11" fill="white">SEA 5L</text>
+<text x="90" y="92" text-anchor="middle" font-size="10" fill="#7dd3fc">35000ppm</text>
+<rect x="200" y="50" width="120" height="70" fill="none" stroke="white" stroke-width="2"/>
+<text x="260" y="75" text-anchor="middle" font-size="11" fill="white">PASS-1 2L</text>
+<text x="260" y="92" text-anchor="middle" font-size="10" fill="#7dd3fc">~3500ppm</text>
+<rect x="370" y="50" width="120" height="70" fill="none" stroke="#22c55e" stroke-width="3"/>
+<text x="430" y="75" text-anchor="middle" font-size="11" fill="#86efac">FRESH 2L</text>
+<text x="430" y="92" text-anchor="middle" font-size="10" fill="#86efac">~350ppm drink</text>
+<rect x="540" y="50" width="120" height="70" fill="none" stroke="#f59e0b" stroke-width="2"/>
+<text x="600" y="75" text-anchor="middle" font-size="11" fill="#fbbf24">BRINE 5L</text>
+<text x="600" y="92" text-anchor="middle" font-size="10" fill="#fbbf24">to drain</text>
+<rect x="255" y="180" width="180" height="110" fill="none" stroke="#7dd3fc" stroke-width="3"/>
+<text x="345" y="210" text-anchor="middle" font-size="13" fill="white">CELL 1.0L</text>
+<text x="345" y="230" text-anchor="middle" font-size="10" fill="#7dd3fc">PB (−) | 15mm | Ag (+)</text>
+<text x="345" y="248" text-anchor="middle" font-size="10" fill="#7dd3fc">IN bottom / OUT top</text>
+<text x="345" y="266" text-anchor="middle" font-size="10" fill="#7dd3fc">TDS probe in OUT line</text>
+<line x1="90" y1="120" x2="90" y2="150" stroke="white" stroke-width="3"/>
+<line x1="260" y1="120" x2="260" y2="150" stroke="white" stroke-width="3"/>
+<line x1="60" y1="150" x2="400" y2="150" stroke="white" stroke-width="3"/>
+<line x1="400" y1="150" x2="400" y2="235" stroke="white" stroke-width="3"/>
+<line x1="400" y1="235" x2="435" y2="235" stroke="white" stroke-width="3"/>
+<rect x="70" y="140" width="40" height="20" fill="#fbbf24"/>
+<text x="90" y="154" text-anchor="middle" font-size="10">VF-S</text>
+<rect x="240" y="140" width="40" height="20" fill="#fbbf24"/>
+<text x="260" y="154" text-anchor="middle" font-size="10">VF-P</text>
+<text x="415" y="200" font-size="10" fill="white">feed select</text>
+<line x1="345" y1="180" x2="345" y2="150" stroke="white" stroke-width="3"/>
+<rect x="430" y="120" width="40" height="20" fill="#fbbf24"/>
+<text x="450" y="134" text-anchor="middle" font-size="10">V-F</text>
+<rect x="500" y="120" width="40" height="20" fill="#fbbf24"/>
+<text x="520" y="134" text-anchor="middle" font-size="10">V-B</text>
+<rect x="325" y="120" width="40" height="20" fill="#fbbf24"/>
+<text x="345" y="134" text-anchor="middle" font-size="10">V-P</text>
+<text x="560" y="200" font-size="10" fill="white">outlet select</text>
+<text x="30" y="330" font-size="13" font-weight="bold" fill="#fbbf24">4-step cycle (manual valves v0.1):</text>
+<text x="30" y="355" font-size="11" fill="white">S1 CHARGE#1: feed VF-S(SEA) → cell → V-P → PASS-1 … until 3500ppm (~4h)</text>
+<text x="30" y="380" font-size="11" fill="white">S2 CHARGE#2: feed VF-P(PASS-1) → cell → V-F → FRESH … until 350ppm (~4h)</text>
+<text x="30" y="405" font-size="11" fill="white">S3 DISCHARGE: feed VF-S(SEA) → cell → V-B → BRINE … until V&lt;0.1V (energy→supercap)</text>
+<text x="30" y="430" font-size="11" fill="white">S4 RINSE: flush with SEA, log Ah/Wh/TDS … repeat (Arduino beeps at each end-point)</text>
+<text x="30" y="460" font-size="11" fill="#7dd3fc">v0.2: replace 5 manual valves with solenoids driven by relay outputs D4–D8</text>
+<text x="30" y="485" font-size="11" fill="#86efac">Yield: 1L drinking water per ~8h + recovered energy into next charge</text>
+</svg>

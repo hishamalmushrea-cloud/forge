@@ -1,0 +1,15 @@
+{
+ "seed": "0xc0ffee1234567890abcdef9876543210",
+ "raw_n": 60000,
+ "debiased_n": 13859,
+ "monobit_p": 0.5008,
+ "monobit_pass": true,
+ "runs": 7070,
+ "runs_pass": true,
+ "byte_entropy": 7.891,
+ "entropy_pass": true,
+ "deterministic": true,
+ "avalanche_diff": 0.493,
+ "roundtrip_ok": true,
+ "ciphertext_hex": "f6789a12c4f55edcbe8d48"
+}

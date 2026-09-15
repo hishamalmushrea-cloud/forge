@@ -1,0 +1,68 @@
+{
+ "params": {
+  "nch": 8,
+  "nslot": 2000,
+  "slot_ms": 100,
+  "label": "PREDICTED pre-hardware"
+ },
+ "pdr_none": {
+  "fixed": 1.0,
+  "lfsr": 1.0,
+  "hash": 1.0,
+  "chaos": 1.0
+ },
+ "pdr_bar1": {
+  "fixed": 0.0,
+  "lfsr": 0.889,
+  "hash": 0.857,
+  "chaos": 0.9095
+ },
+ "pdr_bar2": {
+  "fixed": 0.0,
+  "lfsr": 0.762,
+  "hash": 0.737,
+  "chaos": 0.827
+ },
+ "pdr_bar4": {
+  "fixed": 0.0,
+  "lfsr": 0.4975,
+  "hash": 0.488,
+  "chaos": 0.4785
+ },
+ "pdr_bar6": {
+  "fixed": 0.0,
+  "lfsr": 0.2385,
+  "hash": 0.2545,
+  "chaos": 0.281
+ },
+ "pdr_foll": {
+  "fixed": 0.008,
+  "lfsr": 0.0085,
+  "hash": 0.864,
+  "chaos": 0.8845
+ },
+ "foll_acc": {
+  "fixed": 1.0,
+  "lfsr": 1.0,
+  "hash": 0.136,
+  "chaos": 0.1143
+ },
+ "lat50": {
+  "fixed": null,
+  "lfsr": 2.009,
+  "hash": 2.049,
+  "chaos": 2.09
+ },
+ "mJ_per_delivered": {
+  "fixed": null,
+  "lfsr": 4.972,
+  "hash": 5.071,
+  "chaos": 5.173
+ },
+ "resync_slots": {
+  "fixed": "N/A",
+  "lfsr": 4,
+  "hash": 4,
+  "chaos": 4
+ }
+}

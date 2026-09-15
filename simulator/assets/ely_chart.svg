@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="660" height="380" font-family="sans-serif">
+<rect width="660" height="380" fill="white"/>
+<text x="330" y="18" text-anchor="middle" font-size="13" font-weight="bold">Electrolyzer: H2 rate &amp; power vs current @2.0V (CALCULATED)</text>
+<line x1="60" y1="334.0" x2="600" y2="334.0" stroke="#e5e7eb"/>
+<text x="54" y="338.0" text-anchor="end" font-size="10">0 L/h</text>
+<line x1="60" y1="273.2" x2="600" y2="273.2" stroke="#e5e7eb"/>
+<text x="54" y="277.2" text-anchor="end" font-size="10">1 L/h</text>
+<line x1="60" y1="212.39999999999998" x2="600" y2="212.39999999999998" stroke="#e5e7eb"/>
+<text x="54" y="216.39999999999998" text-anchor="end" font-size="10">2 L/h</text>
+<line x1="60" y1="151.6" x2="600" y2="151.6" stroke="#e5e7eb"/>
+<text x="54" y="155.6" text-anchor="end" font-size="10">3 L/h</text>
+<line x1="60" y1="90.79999999999998" x2="600" y2="90.79999999999998" stroke="#e5e7eb"/>
+<text x="54" y="94.79999999999998" text-anchor="end" font-size="10">4 L/h</text>
+<line x1="60" y1="30.0" x2="600" y2="30.0" stroke="#e5e7eb"/>
+<text x="54" y="34.0" text-anchor="end" font-size="10">5 L/h</text>
+<text x="604" y="338.0" font-size="10" fill="#b45309">0W</text>
+<text x="604" y="268.9090909090909" font-size="10" fill="#b45309">5W</text>
+<text x="604" y="199.8181818181818" font-size="10" fill="#b45309">10W</text>
+<text x="604" y="130.72727272727275" font-size="10" fill="#b45309">15W</text>
+<text x="604" y="61.636363636363626" font-size="10" fill="#b45309">20W</text>
+<text x="60.0" y="350" text-anchor="middle" font-size="10">1A</text>
+<text x="120.0" y="350" text-anchor="middle" font-size="10">2A</text>
+<text x="240.0" y="350" text-anchor="middle" font-size="10">4A</text>
+<text x="360.0" y="350" text-anchor="middle" font-size="10">6A</text>
+<text x="480.0" y="350" text-anchor="middle" font-size="10">8A</text>
+<text x="600.0" y="350" text-anchor="middle" font-size="10">10A</text>
+<line x1="60" y1="242.8" x2="600" y2="242.8" stroke="#dc2626" stroke-dasharray="5,4"/>
+<text x="596" y="237.8" text-anchor="end" font-size="10" fill="#dc2626">R1 = 1.5 L/h</text>
+<polyline points="60.0,306.0 120.0,278.7 180.0,250.7 240.0,223.3 300.0,195.4 360.0,167.4 480.0,112.1 600.0,56.8" fill="none" stroke="#2563eb" stroke-width="2"/>
+<polyline points="60.0,306.4 120.0,278.7 180.0,251.1 240.0,223.5 300.0,195.8 360.0,168.2 480.0,112.9 600.0,57.6" fill="none" stroke="#b45309" stroke-width="2" stroke-dasharray="3,3"/>
+<rect x="90" y="360" width="26" height="10" fill="#2563eb"/><text x="120" y="369" font-size="11">H2 L/h</text>
+<rect x="220" y="360" width="26" height="10" fill="#b45309"/><text x="250" y="369" font-size="11">power W (right)</text>
+</svg>

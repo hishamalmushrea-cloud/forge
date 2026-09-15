@@ -1,0 +1,31 @@
+{
+ "tests": {
+  "T1_engine": {
+   "identical": 2000,
+   "peak_state": 2958920,
+   "pass": true
+  },
+  "T2_rendezvous": {
+   "found": 2000,
+   "pass": true
+  },
+  "T3_jam": {
+   "hopper": 0.4785,
+   "fixed": 0.0,
+   "pass": true
+  },
+  "T4_security": {
+   "avalanche": 0.863,
+   "valid_accept": true,
+   "forged_reject": true,
+   "wrongkey_reject": true,
+   "pass": true
+  },
+  "T5_energy": {
+   "J_per_day": 5.45,
+   "pct_budget": 2.52,
+   "pass": true
+  }
+ },
+ "verdict": "MESH PROOF [VERIFIED]"
+}

@@ -1,0 +1,34 @@
+{
+ "base_days": 3.08,
+ "etern_days": 7.48,
+ "station_sustainable_30d": true,
+ "sun_wh_day": 15.0,
+ "nuclear_mW": {
+  "phone_peak_mW": 2000,
+  "phone_avg_mW": 250,
+  "solar_station_mW": 5000,
+  "alair_mW": 860,
+  "rtg_per_g_mW": 32,
+  "ni63_module_mW": 0.1,
+  "tritium_cell_mW": 0.001
+ },
+ "cartridge": {
+  "W": 0.86,
+  "Wh": 8.6,
+  "pct": 46.7,
+  "curve_W": [
+   0.864,
+   0.838,
+   0.812,
+   0.786,
+   0.76,
+   0.734,
+   0.708,
+   0.683,
+   0.657,
+   0.631,
+   0.605
+  ]
+ },
+ "verdict": "ETERNITY [VERIFIED]"
+}

@@ -1,0 +1,15 @@
+<!-- Merge into AndroidManifest.xml -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_CALL_LOG" />
+    <application>
+        <receiver android:name=".WhisperSmsReceiver" android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.DATA_SMS_RECEIVED" />
+                <data android:scheme="sms" android:host="localhost" android:port="8091" />
+            </intent-filter>
+        </receiver>
+    </application>
+</manifest>

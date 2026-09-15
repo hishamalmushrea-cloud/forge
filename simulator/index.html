@@ -41,6 +41,7 @@ img.blue{width:100%;border:1px solid #334155;border-radius:8px;background:#fff}
 <button class="active" data-tab="ely">💧 المحلل الكهربائي (H2+O2)</button>
 <button data-tab="teg">🔥 المولد الحراري (TEG)</button>
 <button data-tab="nuc">☢️ البطارية النووية (دراسة)</button>
+<button data-tab="node">📡 عقدة الحساس (عقود دون شحن)</button>
 <button data-tab="asm">🔧 رسومات التجميع</button>
 </nav>
 <main>
@@ -125,6 +126,26 @@ img.blue{width:100%;border:1px solid #334155;border-radius:8px;background:#fff}
 </div>
 </div>
 </section>
+<!-- ============ NODE ============ -->
+<section id="tab-node" class="tab">
+<div class="card"><h2>📡 عقدة الحساس — العمر مقابل معدل الإرسال (نموذج v0.2)</h2>
+<div class="grid">
+<div>
+<label>الفاصل بين الإرسالات: <b id="ndTXVal">30 دقيقة</b></label>
+<input type="range" id="ndTX" min="15" max="120" step="5" value="30">
+<label>تسريب المكثف الفائق</label>
+<select id="ndLeak"><option value="0.000001">1µA ممتاز</option><option value="0.000002" selected>2µA اسمي</option><option value="0.000005">5µA رديء</option></select>
+<div class="readout">
+<div class="ro"><b id="ndLoad">—</b><span>متوسط الحمل (µW)</span></div>
+<div class="ro"><b id="ndEOL">—</b><span>العمر (سنة)</span></div>
+</div>
+<div id="ndVerdict" class="badge pass">—</div>
+<p class="note">مصدر 100µW ‏(v0.2) × حصاد 50% + نوم 2µW + رشقة 50mJ — جرّب إرسال/20دقيقة أو تسريب 5µA وشاهد الفشل!</p>
+</div>
+<div><canvas id="ndChart" width="420" height="340"></canvas></div>
+</div>
+</div>
+</section>
 <!-- ============ ASSEMBLY ============ -->
 <section id="tab-asm" class="tab">
 <div class="card"><h2>🔧 رسم تجميع المحلل الكهربائي (من المشروع الحقيقي)</h2>
@@ -139,6 +160,8 @@ img.blue{width:100%;border:1px solid #334155;border-radius:8px;background:#fff}
 <img class="blue" src="assets/nuc_chart.svg" alt="nuclear chart">
 <p class="note">البطارية النووية v0.2 (مثالي مقابل واقعي — امتصاص ذاتي + تدهور):</p>
 <img class="blue" src="assets/nuc_chart_v2.svg" alt="nuclear v0.2 chart">
+<p class="note">عقدة الحساس (العمر مقابل معدل الإرسال):</p>
+<img class="blue" src="assets/node_eol.svg" alt="node lifetime chart">
 </div>
 </section>
 </main>
@@ -242,8 +265,11 @@ const ISO={'Ni-63':{hl:100,sp:0.0058,eta:0.05},'H-3':{hl:12.3,sp:0.33,eta:0.05},
 function nucUpdate(){
 const iso=ISO[$('nucIso').value],P0=parseFloat($('nucP').value)*1e-6;
 $('nucPVal').textContent=$('nucP').value+' µW';
-const mass=(P0/iso.eta)/iso.sp,p20=P0*Math.pow(2,-20/iso.hl)*1e6,
-life=P0/(Math.log(2)/(iso.hl*365.25*24*3600))/3600;
+const degOn=$('nucDeg').checked;
+const dF=t=>Math.pow(2,-t/iso.hl)*(degOn?Math.pow(0.995,t):1);
+const mass=(P0/iso.eta)/iso.sp,p20=P0*dF(20)*1e6;
+let lifeJ=0;for(let t=0;t<400;t++)lifeJ+=P0*dF(t+0.5)*365.25*24*3600;
+const life=lifeJ/3600;
 $('nMass').textContent=mass.toFixed(mass<0.01?5:3);$('nP20').textContent=p20.toFixed(1);$('nLife').textContent=life.toFixed(1);
 const c=$('nucChart'),x=c.getContext('2d'),W=c.width,H=c.height,L=56,B=34,T=24,R=14;
 x.fillStyle='#0b1220';x.fillRect(0,0,W,H);
@@ -253,11 +279,35 @@ for(let g=0;g<=4;g++){const v=P0u*g/4;x.beginPath();x.moveTo(L,Y(v));x.lineTo(W-
 for(let t=0;t<=50;t+=10)x.fillText(t+'y',X(t)-8,H-16);
 x.fillStyle='#38bdf8';x.font='bold 12px Tahoma';x.fillText('اضمحلال القدرة 50 سنة',L+8,T-6);
 x.strokeStyle='#f59e0b';x.lineWidth=2.5;x.beginPath();
-for(let t=0;t<=50;t++){const p=P0u*Math.pow(2,-t/iso.hl);t?x.lineTo(X(t),Y(p)):x.moveTo(X(t),Y(p));}x.stroke();
+for(let t=0;t<=50;t++){const p=P0u*dF(t);t?x.lineTo(X(t),Y(p)):x.moveTo(X(t),Y(p));}x.stroke();
 x.fillStyle='#22c55e';x.beginPath();x.arc(X(20),Y(p20),5,0,7);x.fill();
 x.fillStyle='#fff';x.font='11px Tahoma';x.fillText('20y: '+p20.toFixed(1)+'µW',X(20)-20,Y(p20)-10);
 }
-$('nucIso').onchange=nucUpdate;$('nucP').oninput=nucUpdate;nucUpdate();
+$('nucIso').onchange=nucUpdate;$('nucP').oninput=nucUpdate;$('nucDeg').onchange=nucUpdate;nucUpdate();
+// ---------- NODE ----------
+function eolOf(tx,lk){const harv=t=>100e-6*Math.pow(2,-t/100)*Math.pow(0.995,t)*0.5;
+const need=50e-3/(tx*60)+2e-6+3.0*lk;
+for(let t=0;t<=150;t+=0.5)if(harv(t)<need)return t;return 999;}
+function nodeUpdate(){
+const tx=parseFloat($('ndTX').value),lk=parseFloat($('ndLeak').value);
+$('ndTXVal').textContent=tx+' دقيقة';
+const need=50e-3/(tx*60)+2e-6+3.0*lk,eol=eolOf(tx,lk);
+$('ndLoad').textContent=(need*1e6).toFixed(1);$('ndEOL').textContent=eol===999?'>150':eol.toFixed(1);
+const v=$('ndVerdict'),ok=(eol===999||eol>=20);
+v.className='badge '+(ok?'pass':'fail');
+v.textContent=ok?'يحقق R1 (>=20 سنة) ✅':'❌ يفشل R1 — خفّض المعدل أو التسريب';
+const c=$('ndChart'),x=c.getContext('2d'),W=c.width,H=c.height,L=52,B=34,T=24,R=14;
+x.fillStyle='#0b1220';x.fillRect(0,0,W,H);
+const X=t=>L+(t-15)/105*(W-L-R),Y=e=>H-B-Math.min(e,150)/150*(H-B-T);
+x.strokeStyle='#334155';x.fillStyle='#94a3b8';x.font='10px Tahoma';
+[0,25,50,75,100,125,150].forEach(g=>{x.beginPath();x.moveTo(L,Y(g));x.lineTo(W-R,Y(g));x.stroke();x.fillText(g+'y',6,Y(g)+3);});
+x.fillStyle='#38bdf8';x.font='bold 12px Tahoma';x.fillText('العمر بدلالة الفاصل',L+8,T-6);
+x.strokeStyle='#ef4444';x.setLineDash([5,4]);x.beginPath();x.moveTo(L,Y(20));x.lineTo(W-R,Y(20));x.stroke();x.setLineDash([]);
+x.strokeStyle='#38bdf8';x.lineWidth=2.5;x.beginPath();
+for(let t=15;t<=120;t+=2){const e=Math.min(eolOf(t,lk),150);t===15?x.moveTo(X(t),Y(e)):x.lineTo(X(t),Y(e));}x.stroke();
+x.fillStyle='#22c55e';x.beginPath();x.arc(X(tx),Y(Math.min(eol,150)),6,0,7);x.fill();
+}
+$('ndTX').oninput=nodeUpdate;$('ndLeak').onchange=nodeUpdate;nodeUpdate();
 drawElyChart();
 </script>
 </body>

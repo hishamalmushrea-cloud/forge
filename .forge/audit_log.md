@@ -43,3 +43,8 @@
 - Computed 5y phone energy 33,762Wh; lightest physics (Ni-63) still 5.3kg isotope-only; Li-ion 129.9kg.
 - Caught + fixed own unit bug (Wh/g vs Wh/kg) via cross-check; sed broke a line, fixed with editor.
 - Files: projects/phone_battery_5y/{feasibility.py, report.md}
+
+## 2026-09-15 — sensor_node (COMPLETE: model+guides+tests+simulator tab)
+- Node TX/30min -> 28.5y (R1 met); TX/20 -> 1y (boundary = recharge 19.8min); leak 5uA kills R1 (9.5y).
+- Model 5/5 tests PASS. Files: projects/sensor_node/{00,calculations.py,results.json,chart_eol.svg,chart_week.svg,hardware_guide.md,test_plan.md,final_report.md}
+- LESSON: parallel edits to same file race (index.html corrupted) -> recovered from git, applied atomically + added id/tab static checks.

@@ -48,3 +48,9 @@
 - Node TX/30min -> 28.5y (R1 met); TX/20 -> 1y (boundary = recharge 19.8min); leak 5uA kills R1 (9.5y).
 - Model 5/5 tests PASS. Files: projects/sensor_node/{00,calculations.py,results.json,chart_eol.svg,chart_week.svg,hardware_guide.md,test_plan.md,final_report.md}
 - LESSON: parallel edits to same file race (index.html corrupted) -> recovered from git, applied atomically + added id/tab static checks.
+
+## 2026-09-15 — BUILD sensor_node (firmware compiled+tested, T4 acceptance, wiring)
+- firmware/node.{h,c} + test_host.c: gcc zero warnings, 14/14 host tests PASS (fresh/aged/starved energy scenarios).
+- Found+fixed real bug: TX gate 2.2V dips cap to 1.96V -> raised to 2.3V everywhere.
+- acceptance_t4.py selftest: nominal PASS, sag fault FAIL detected. Wiring SVG valid.
+- My errors caught by tests: wrong test expectation, missing 'def'. All fixed, all green.

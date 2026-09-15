@@ -29,7 +29,7 @@
 ```c
 // كل استيقاظ (مؤقت 30 دقيقة):
 read Vcap;
-if (Vcap < 2.2) { sleep_again(); }          // طاقة غير كافية: تخطَّ الدورة
+if (Vcap < 2.3) { sleep_again(); }          // طاقة غير كافية: تخطَّ الدورة (رُفعت من 2.2: الرشقة من 2.2 تهبط لـ1.96V)
 read temperature;
 power_radio(); send_packet(temp, Vcap); power_off_radio();
 verify Vcap > 2.0 else extend_sleep();      // حماية تكيفية

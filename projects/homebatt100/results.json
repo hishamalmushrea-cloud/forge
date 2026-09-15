@@ -1,0 +1,23 @@
+{
+ "E_day": 990,
+ "autonomy_d": 1.16,
+ "panel_W": 400,
+ "mppt_A": 40,
+ "recharge_h": 4.4,
+ "fuses": {
+  "main": 100,
+  "charge": 50,
+  "panel": 20,
+  "dc": 10
+ },
+ "gauges_mm2": {
+  "panel": 4,
+  "batt": 25,
+  "dc": 2.5
+ },
+ "drops_pct": {
+  "panel": 1.05,
+  "batt": 0.84,
+  "dc": 2.58
+ }
+}

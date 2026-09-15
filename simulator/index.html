@@ -171,22 +171,28 @@ img.blue{width:100%;border:1px solid #334155;border-radius:8px;background:#fff}
 </section>
 <!-- ============ ASSEMBLY ============ -->
 <section id="tab-asm" class="tab">
-<div class="card"><h2>🔧 رسم تجميع المحلل الكهربائي (من المشروع الحقيقي)</h2>
-<img class="blue" src="assets/assembly.svg" alt="assembly drawing">
-</div>
-<div class="card"><h2>📊 مخططات المشاريع المحسوبة</h2>
-<p class="note">المحلل (معدل الإنتاج/القدرة بدلالة التيار):</p>
-<img class="blue" src="assets/ely_chart.svg" alt="electrolyzer chart">
-<p class="note">المولد الحراري (القدرة والحرارة بدلالة ΔT):</p>
-<img class="blue" src="assets/teg_chart.svg" alt="teg chart">
-<p class="note">البطارية النووية (الاضمحلال 50 سنة):</p>
-<img class="blue" src="assets/nuc_chart.svg" alt="nuclear chart">
-<p class="note">البطارية النووية v0.2 (مثالي مقابل واقعي — امتصاص ذاتي + تدهور):</p>
-<img class="blue" src="assets/nuc_chart_v2.svg" alt="nuclear v0.2 chart">
-<p class="note">عقدة الحساس (العمر مقابل معدل الإرسال):</p>
-<img class="blue" src="assets/node_eol.svg" alt="node lifetime chart">
-<p class="note">بطارية التحلية (الطاقة مقابل الإزالة — معايرة Pasta):</p>
-<img class="blue" src="assets/desal_chart.svg" alt="desalination chart">
+<div class="card"><h2>🗺️ فهرس الرسوم — اضغط على أي رسم للقفز إليه</h2>
+<p style="font-size:14px;line-height:2">
+🔧 تجميع: <a href="#asm-ely">المحلل الكهربائي</a> • <a href="#asm-node">عقدة الحساس</a> • <a href="#asm-dcell">خلية التحلية</a> • <a href="#asm-dplumb">سباكة التحلية</a> • <a href="#asm-dwire">كهرباء التحلية</a><br>
+📊 مخططات محسوبة: <a href="#ch-all">كل المخططات</a>
+</p></div>
+<div class="card" id="asm-ely"><h2>🔧 المحلل الكهربائي — رسم التجميع</h2>
+<img class="blue" src="assets/assembly.svg" alt="electrolyzer assembly"></div>
+<div class="card" id="asm-node"><h2>🔧 عقدة الحساس — مخطط التوصيل</h2>
+<img class="blue" src="assets/node_wiring.svg" alt="node wiring"></div>
+<div class="card" id="asm-dcell"><h2>🔧 خلية التحلية — مفككة بترتيب الرص 1←7</h2>
+<img class="blue" src="assets/desal_cell.svg" alt="desal cell"></div>
+<div class="card" id="asm-dplumb"><h2>🔧 منظومة التحلية — السباكة والدورة الرباعية</h2>
+<img class="blue" src="assets/desal_plumbing.svg" alt="desal plumbing"></div>
+<div class="card" id="asm-dwire"><h2>🔧 منظومة التحلية — الكهرباء والتحكم</h2>
+<img class="blue" src="assets/desal_wiring.svg" alt="desal wiring"></div>
+<div class="card" id="ch-all"><h2>📊 كل المخططات المحسوبة</h2>
+<p class="note">المحلل:</p><img class="blue" src="assets/ely_chart.svg" alt="e">
+<p class="note">الحراري:</p><img class="blue" src="assets/teg_chart.svg" alt="t">
+<p class="note">النووية:</p><img class="blue" src="assets/nuc_chart.svg" alt="n">
+<p class="note">النووية v0.2:</p><img class="blue" src="assets/nuc_chart_v2.svg" alt="n2">
+<p class="note">العقدة:</p><img class="blue" src="assets/node_eol.svg" alt="nd">
+<p class="note">التحلية:</p><img class="blue" src="assets/desal_chart.svg" alt="d">
 </div>
 </section>
 </main>

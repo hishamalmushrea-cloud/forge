@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="660" height="360" font-family="sans-serif">
+<rect width="660" height="360" fill="white"/>
+<text x="330" y="18" text-anchor="middle" font-size="13" font-weight="bold">Desal battery: net energy vs removal (CALIBRATED to Pasta 2012)</text>
+<line x1="64" y1="314.0" x2="644" y2="314.0" stroke="#e5e7eb"/>
+<text x="58" y="318.0" text-anchor="end" font-size="10">0</text>
+<line x1="64" y1="243.0" x2="644" y2="243.0" stroke="#e5e7eb"/>
+<text x="58" y="247.0" text-anchor="end" font-size="10">1</text>
+<line x1="64" y1="172.0" x2="644" y2="172.0" stroke="#e5e7eb"/>
+<text x="58" y="176.0" text-anchor="end" font-size="10">2</text>
+<line x1="64" y1="101.0" x2="644" y2="101.0" stroke="#e5e7eb"/>
+<text x="58" y="105.0" text-anchor="end" font-size="10">3</text>
+<line x1="64" y1="30.0" x2="644" y2="30.0" stroke="#e5e7eb"/>
+<text x="58" y="34.0" text-anchor="end" font-size="10">4</text>
+<text x="64.0" y="330" text-anchor="middle" font-size="10">25%</text>
+<text x="271.1428571428571" y="330" text-anchor="middle" font-size="10">50%</text>
+<text x="436.85714285714283" y="330" text-anchor="middle" font-size="10">70%</text>
+<text x="519.7142857142858" y="330" text-anchor="middle" font-size="10">80%</text>
+<text x="602.5714285714287" y="330" text-anchor="middle" font-size="10">90%</text>
+<text x="644.0" y="330" text-anchor="middle" font-size="10">95%</text>
+<text x="330" y="354" text-anchor="middle" font-size="11">salt removal per pass</text>
+<text x="14" y="180" font-size="11" transform="rotate(-90 14 180)" text-anchor="middle">kWh/m3 net</text>
+<line x1="64" y1="243.0" x2="644" y2="243.0" stroke="#16a34a" stroke-dasharray="5,4"/>
+<text x="640" y="238.0" text-anchor="end" font-size="10" fill="#16a34a">thermo min ~1</text>
+<line x1="64" y1="65.5" x2="644" y2="65.5" stroke="#b45309" stroke-dasharray="5,4"/>
+<text x="640" y="60.5" text-anchor="end" font-size="10" fill="#b45309">RO ~3.5</text>
+<polyline points="64.0,292.984 271.1428571428571,272.039 436.85714285714283,255.212 519.7142857142858,246.834 602.5714285714287,238.456 644.0,234.196" fill="none" stroke="#2563eb" stroke-width="2.5"/>
+<circle cx="64.0" cy="292.984" r="4" fill="#2563eb"/>
+<circle cx="271.1428571428571" cy="272.039" r="4" fill="#2563eb"/>
+<circle cx="436.85714285714283" cy="255.212" r="4" fill="#2563eb"/>
+<circle cx="519.7142857142858" cy="246.834" r="4" fill="#2563eb"/>
+<circle cx="602.5714285714287" cy="238.456" r="4" fill="#2563eb"/>
+<circle cx="644.0" cy="234.196" r="4" fill="#2563eb"/>
+<circle cx="64.0" cy="293.41" r="6" fill="none" stroke="#dc2626" stroke-width="2"/>
+<text x="74.0" y="285.41" font-size="10" fill="#dc2626">Pasta measured 0.29</text>
+</svg>

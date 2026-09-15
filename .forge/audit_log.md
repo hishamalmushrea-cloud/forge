@@ -54,3 +54,9 @@
 - Found+fixed real bug: TX gate 2.2V dips cap to 1.96V -> raised to 2.3V everywhere.
 - acceptance_t4.py selftest: nominal PASS, sag fault FAIL detected. Wiring SVG valid.
 - My errors caught by tests: wrong test expectation, missing 'def'. All fixed, all green.
+
+## 2026-09-15 — desal_battery (COMPLETE: calibrated model+guides+tests+simulator tab)
+- Calibrated to Pasta 2012 measured 0.29 Wh/L @25% (model 0.296, 2% err). V1 gap assumption was 6x off - caught by research.
+- Cascade: 2 passes @90% -> 350ppm drinking at 2.13 kWh/m3 (beats RO 3.5). Electrodes/L-cycle: Ag 61.3g + PB 152.1g, 1.9A/8h.
+- Model 4/4 tests PASS (anchor, cascade, Faraday hand-check, RO comparison). T1-T6 PENDING (needs build).
+- Simulator: 6th tab (atomic edit, static checks pass). No-file-race this time.

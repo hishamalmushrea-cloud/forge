@@ -42,6 +42,7 @@ img.blue{width:100%;border:1px solid #334155;border-radius:8px;background:#fff}
 <button data-tab="teg">🔥 المولد الحراري (TEG)</button>
 <button data-tab="nuc">☢️ البطارية النووية (دراسة)</button>
 <button data-tab="node">📡 عقدة الحساس (عقود دون شحن)</button>
+<button data-tab="desal">🔋🔹 بطارية التحلية</button>
 <button data-tab="asm">🔧 رسومات التجميع</button>
 </nav>
 <main>
@@ -146,6 +147,28 @@ img.blue{width:100%;border:1px solid #334155;border-radius:8px;background:#fff}
 </div>
 </div>
 </section>
+<!-- ============ DESAL ============ -->
+<section id="tab-desal" class="tab">
+<div class="card"><h2>🔋🔹 بطارية التحلية — من ماء البحر إلى الشرب (معاير على Pasta 2012)</h2>
+<div class="grid">
+<div>
+<label>الإزالة لكل تمريرة: <b id="dsRVal">90%</b></label>
+<input type="range" id="dsR" min="50" max="95" step="5" value="90">
+<label>الفجوة الصافية ΔV (معايرة 0.07V): <b id="dsVVal">0.07 V</b></label>
+<input type="range" id="dsV" min="0.05" max="0.20" step="0.01" value="0.07">
+<div class="readout">
+<div class="ro"><b id="dsPass">—</b><span>تمريرات للشرب</span></div>
+<div class="ro"><b id="dsPpm">—</b><span>ppm النهائية</span></div>
+<div class="ro"><b id="dsE">—</b><span>kWh/m³ صافية</span></div>
+<div class="ro"><b id="dsAg">—</b><span>فضة/لتر (g)</span></div>
+</div>
+<div id="dsVerdict" class="badge pass">—</div>
+<p class="note">Q=nF/0.95 ‏| Ag ‏248mAh/g ‏| PB ‏100mAh/g — جرّب إزالة 50% وشاهد التمريرات والطاقة!</p>
+</div>
+<div><canvas id="dsChart" width="420" height="340"></canvas></div>
+</div>
+</div>
+</section>
 <!-- ============ ASSEMBLY ============ -->
 <section id="tab-asm" class="tab">
 <div class="card"><h2>🔧 رسم تجميع المحلل الكهربائي (من المشروع الحقيقي)</h2>
@@ -162,6 +185,8 @@ img.blue{width:100%;border:1px solid #334155;border-radius:8px;background:#fff}
 <img class="blue" src="assets/nuc_chart_v2.svg" alt="nuclear v0.2 chart">
 <p class="note">عقدة الحساس (العمر مقابل معدل الإرسال):</p>
 <img class="blue" src="assets/node_eol.svg" alt="node lifetime chart">
+<p class="note">بطارية التحلية (الطاقة مقابل الإزالة — معايرة Pasta):</p>
+<img class="blue" src="assets/desal_chart.svg" alt="desalination chart">
 </div>
 </section>
 </main>
@@ -308,6 +333,33 @@ for(let t=15;t<=120;t+=2){const e=Math.min(eolOf(t,lk),150);t===15?x.moveTo(X(t)
 x.fillStyle='#22c55e';x.beginPath();x.arc(X(tx),Y(Math.min(eol,150)),6,0,7);x.fill();
 }
 $('ndTX').oninput=nodeUpdate;$('ndLeak').onchange=nodeUpdate;nodeUpdate();
+// ---------- DESAL ----------
+function dsUpdate(){
+const r=parseFloat($('dsR').value)/100,dv=parseFloat($('dsV').value);
+$('dsRVal').textContent=$('dsR').value+'%';$('dsVVal').textContent=dv.toFixed(2)+' V';
+const molP=35/58.44*r,qC=molP*96485/0.95,eNet=qC*dv/3600;
+let ppm=35000,n=0;while(ppm>=1000){ppm*=1-r;n++;}
+const eTot=eNet*n,ag=(qC/3600)/0.248;
+$('dsPass').textContent=n;$('dsPpm').textContent=ppm.toFixed(0);
+$('dsE').textContent=eTot.toFixed(2);$('dsAg').textContent=ag.toFixed(1);
+const v=$('dsVerdict'),ok=eTot<3.5;
+v.className='badge '+(ok?'pass':'fail');
+v.textContent=ok?'يتفوق على التناضح (3.5) ✅':'❌ فوق التناضح — حسّن الإزالة أو الفجوة';
+const c=$('dsChart'),x=c.getContext('2d'),W=c.width,H=c.height,L=56,B=34,T=24,R=14;
+x.fillStyle='#0b1220';x.fillRect(0,0,W,H);
+const X=r2=>L+(r2-0.5)/0.45*(W-L-R),Y=e=>H-B-e/6*(H-B-T);
+x.strokeStyle='#334155';x.fillStyle='#94a3b8';x.font='10px Tahoma';
+[0,1.5,3,4.5,6].forEach(g=>{x.beginPath();x.moveTo(L,Y(g));x.lineTo(W-R,Y(g));x.stroke();x.fillText(g,8,Y(g)+3);});
+x.fillStyle='#38bdf8';x.font='bold 12px Tahoma';x.fillText('صافي الشلال الكامل (kWh/m3)',L+8,T-6);
+x.strokeStyle='#b45309';x.setLineDash([5,4]);x.beginPath();x.moveTo(L,Y(3.5));x.lineTo(W-R,Y(3.5));x.stroke();x.setLineDash([]);
+x.fillStyle='#b45309';x.font='10px Tahoma';x.fillText('RO 3.5',W-R-44,Y(3.5)-6);
+x.strokeStyle='#38bdf8';x.lineWidth=2.5;x.beginPath();
+for(let r2=0.5;r2<=0.951;r2+=0.02){const m2=35/58.44*r2,q2=m2*96485/0.95,e2=q2*dv/3600;
+let p2=35000,n2=0;while(p2>=1000){p2*=1-r2;n2++;}const eT=e2*n2;
+r2===0.5?x.moveTo(X(r2),Y(eT)):x.lineTo(X(r2),Y(eT));}x.stroke();
+x.fillStyle='#22c55e';x.beginPath();x.arc(X(r),Y(eTot),6,0,7);x.fill();
+}
+$('dsR').oninput=dsUpdate;$('dsV').oninput=dsUpdate;dsUpdate();
 drawElyChart();
 </script>
 </body>

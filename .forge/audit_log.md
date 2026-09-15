@@ -100,3 +100,9 @@
 - sms_codec 7/7 (171B->2segs, shuffle/dup, corrupt/mixed reject, UCS-2 counter) + ring_code 6/6.
 - Android Kotlin skeleton (data-SMS 8091 + ring listener + manifest + policy notes), uncompiled here.
 - Tab 13: real Whisper seal + JS codec + golden cross-check (Node-verified on shipped code) + rings.
+
+## 2026-09-15 — eternitybatt (COMPLETE: nuclear verdict + week model + MPPT FW + tab)
+- Research: Betavolt 100uW (2500x short of phone avg) -> nuclear-for-phone impossible; no radiological design ever.
+- Model: 3.1d -> 7.5d eternity mode, station +15Wh/day sustainable 30/30, cartridge 0.86Wx10h=+47%. VERIFIED.
+- FW: MPPT locks 5.31V + retracks, CC/CV, gauge exact, OV/UV/OT trips. Zero warnings.
+- HW guides: station ~$30-40 + salt-water cartridge (NaOH path marked expert-only). Tab 14 live. Checks pass.

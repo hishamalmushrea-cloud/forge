@@ -50,6 +50,7 @@ img.blue{width:100%;border:1px solid #334155;border-radius:8px;background:#fff}
 <button data-tab="whis">🤫 همس</button>
 <button data-tab="far">📡 همس بعيد</button>
 <button data-tab="sim">📲 همس الشريحة</button>
+<button data-tab="etb">🔋 بطارية الخلود</button>
 <button data-tab="asm">🔧 رسومات التجميع</button>
 </nav>
 <main>
@@ -354,6 +355,31 @@ img.blue{width:100%;border:1px solid #334155;border-radius:8px;background:#fff}
 </div>
 </div>
 <p class="note">المشغّل يرى الأرقام والأوقات لكن المحتوى شفرة. الرنّات مجانية لكن ~‏2 بت/دقيقة — إشارة طوارئ لا مراسلة.</p>
+</div>
+</section>
+<!-- ============ ETERNITY ============ -->
+<section id="tab-etb" class="tab">
+<div class="card"><h2>🔋 بطارية الخلود — 3 أيام ← 7.5 ← ∞ (بلا إشعاع!)</h2>
+<div class="grid">
+<div>
+<p class="note">شاشة <input type="range" id="eScr" min="0" max="8" step="0.5" value="4"> <b id="eScrV">4h</b></p>
+<p class="note">مكالمات <input type="range" id="eCall" min="0" max="3" step="0.5" value="1"> <b id="eCallV">1h</b></p>
+<p class="note">بيانات <input type="range" id="eData" min="0" max="4" step="0.5" value="1"> <b id="eDataV">1h</b></p>
+<p class="note">شمس <input type="range" id="eSun" min="0" max="8" step="1" value="4"> <b id="eSunV">4h</b></p>
+<button class="act warn" id="eMode">🌙 الوضع: <b id="eModeSt">عادي</b></button>
+<div class="readout">
+<div class="ro"><b id="eDays">—</b><span>الهاتف وحده (يوم)</span></div>
+<div class="ro"><b id="eSus">—</b><span>مع المحطة</span></div>
+</div>
+<p class="note" id="eUse">الاستهلاك: —</p>
+<button class="act" id="ePour">💧 اسكب الماء المالح!</button>
+<p class="note" id="eAlOut">الخرطوشة: —</p>
+</div>
+<div><canvas id="eCurve" width="460" height="200"></canvas>
+<canvas id="eBars" width="460" height="170"></canvas>
+<canvas id="eAlCurve" width="460" height="120"></canvas></div>
+</div>
+<p class="note">النووي الحقيقي (‏100µW) يعجز ‏2500× عن الهاتف — الخلود يأتي من التوفير + الشمس + كيمياء آمنة، لا من الإشعاع.</p>
 </div>
 </section>
 <!-- ============ ASSEMBLY ============ -->
@@ -973,6 +999,78 @@ $('r1').onclick=()=>playRings(1);
 $('r2').onclick=()=>playRings(2);
 $('r3').onclick=()=>playRings(3);
 initSim();
+</script>
+<script>
+let ETM=false;
+const $e=(id)=>$(id);
+function eDay(){
+const s=+$e('eScr').value,c=+$e('eCall').value,d=+$e('eData').value;
+$e('eScrV').textContent=s+'h';$e('eCallV').textContent=c+'h';$e('eDataV').textContent=d+'h';
+$e('eSunV').textContent=$e('eSun').value+'h';
+if(!ETM){const idle=Math.max(0,24-s-c-d);
+return s*0.7+c*0.8+d*1.0+idle*0.05+0.5;}
+return Math.min(s,2)*0.5+c*0.8+d*0.25*1.0+10*0.02+8*0.003+0.2;}
+function etbDraw(){
+const use=eDay(),days=18.5/use,sunWh=5*(+$e('eSun').value)*0.7+1,net=sunWh-use;
+$e('eDays').textContent=days.toFixed(1);
+$e('eSus').textContent=net>=0?('مستدام ∞ (+'+net.toFixed(1)+'Wh/يوم)'):('ينفد خلال '+(40/(-net)).toFixed(0)+' يوم');
+$e('eUse').textContent=`الاستهلاك: ${use.toFixed(2)}Wh/يوم (البطارية 18.5Wh)`;
+$e('eModeSt').textContent=ETM?'الخلود 🌙':'عادي';
+const c=$e('eCurve'),x=c.getContext('2d'),W=c.width,H=c.height;
+x.fillStyle='#0b1220';x.fillRect(0,0,W,H);
+x.strokeStyle='#334155';
+[0,50,100].forEach(v=>{const y=H-15-v/100*(H-30);
+x.beginPath();x.moveTo(35,y);x.lineTo(W-5,y);x.stroke();
+x.fillStyle='#94a3b8';x.font='10px Tahoma';x.fillText(v+'%',5,y+3);});
+const X=d=>35+d/7*(W-40),Y=v=>H-15-Math.max(0,v)/100*(H-30);
+const nU=(()=>{const s=+$e('eScr').value,cc=+$e('eCall').value,d=+$e('eData').value;
+return s*0.7+cc*0.8+d*1.0+Math.max(0,24-s-cc-d)*0.05+0.5;})();
+const eU=(()=>{const s=+$e('eScr').value,cc=+$e('eCall').value,d=+$e('eData').value;
+return Math.min(s,2)*0.5+cc*0.8+d*0.25+0.2+0.024+0.2;})();
+[['#f87171',nU,0],['#4ade80',eU,0],['#38bdf8',eU,sunWh]].forEach(([col,du,sw])=>{
+x.strokeStyle=col;x.lineWidth=2;x.beginPath();
+let b=100;x.moveTo(X(0),Y(100));
+for(let d=1;d<=7;d++){b-=du/18.5*100;if(sw)b=Math.min(100,b+sw/18.5*100);b=Math.max(0,b);
+x.lineTo(X(d),Y(b));}
+x.stroke();x.lineWidth=1;});
+x.fillStyle='#f87171';x.fillText('عادي',40,14);
+x.fillStyle='#4ade80';x.fillText('خلود',90,14);
+x.fillStyle='#38bdf8';x.fillText('خلود+محطة',140,14);
+}
+function etbBars(){
+const items=[['☀ محطة شمسية',5000,'#4ade80'],['📱 هاتف ذروة',2000,'#f87171'],
+['🧪 خرطوشة ماء مالح',860,'#38bdf8'],['📱 هاتف معدل',250,'#fb923c'],
+['☢ RTG/غرام (ممنوع)',32,'#7f1d1d'],['⚛ Ni-63 (حقيقي)',0.1,'#a78bfa'],['⚛ تريتيوم',0.001,'#64748b']];
+const c=$('eBars'),x=c.getContext('2d'),W=c.width,H=c.height;
+x.fillStyle='#0b1220';x.fillRect(0,0,W,H);
+x.fillStyle='#fff';x.font='11px Tahoma';x.fillText('مقياس لوغاريتمي mW — كل خطوة = ×10 (النووي يعجز 2500×)',120,14);
+items.forEach(([lb,v,col],i)=>{
+const y=24+i*((H-30)/items.length);
+const w=(Math.log10(v)+3)/6.7*(W-250);
+x.fillStyle='#94a3b8';x.fillText(lb,5,y+10);
+x.fillStyle=col;x.fillRect(130,y,Math.max(2,w),(H-30)/items.length-4);
+x.fillStyle='#e2e8f0';x.fillText(v>=1?v+'mW':(v*1000)+'µW',135+Math.max(2,w),y+10);});
+}
+['eScr','eCall','eData','eSun'].forEach(id=>$(id).oninput=etbDraw);
+$('eMode').onclick=()=>{ETM=!ETM;etbDraw();};
+$('ePour').onclick=()=>{
+const c=$('eAlCurve'),x=c.getContext('2d'),W=c.width,H=c.height;
+let hh=0,wh=0;
+x.fillStyle='#0b1220';x.fillRect(0,0,W,H);
+const t=setInterval(()=>{
+const p=0.864*(1-0.03*hh);
+wh+=p;x.fillStyle='#0b1220';x.fillRect(0,0,W,H);
+x.strokeStyle='#38bdf8';x.lineWidth=2;x.beginPath();
+for(let i=0;i<=hh;i++){const px=20+i/10*(W-40),py=H-10-0.864*(1-0.03*i)/1.0*(H-20);
+i?x.lineTo(px,py):x.moveTo(px,py);}
+x.stroke();x.lineWidth=1;
+x.fillStyle='#fff';x.font='11px Tahoma';
+x.fillText(`ساعة ${hh}: ${p.toFixed(2)}W ← +${(100*wh/18.5).toFixed(0)}% (${wh.toFixed(1)}Wh)`,20,14);
+$('eAlOut').textContent=`الخرطوشة تعمل… +${(100*wh/18.5).toFixed(0)}% هاتف`;
+if(++hh>10){clearInterval(t);
+$('eAlOut').textContent=`✓ اكتملت: 8.6Wh ← +47% هاتف من الماء المالح!`;}},400);
+};
+etbDraw();etbBars();
 </script>
 </body>
 </html>

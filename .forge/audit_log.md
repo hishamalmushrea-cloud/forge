@@ -71,3 +71,8 @@
 - New simulator tab: twin chaotic pendulums + figure-8 three-body (Moore 1993) + boids murmuration.
 - Physics validated headless: twins diverge 167.7deg from 0.1deg; figure-8 period return err 0.0000.
 - Static checks (ids/tabs) + node --check pass. Atomic edit (no race).
+
+## 2026-09-15 — chaos_lab (COMPLETE: RNG+cipher executed+tested, Chua guide, simulator tab)
+- Selected chaos over orbit/swarm (only fully buildable here). Lorenz RNG: 13859 bits, monobit 0.5008, runs PASS, entropy 7.891, avalanche 49.3%, roundtrip OK. 5/5 tests.
+- Tests caught 2 real bugs: sampling correlation (EVERY 25->100) + wrong runs formula. Fixed, green.
+- Chua values verified from 2 agreeing sources. T0-T5 PENDING (user build). Simulator: 8th tab (atomic, checks pass).

@@ -44,6 +44,7 @@ img.blue{width:100%;border:1px solid #334155;border-radius:8px;background:#fff}
 <button data-tab="node">📡 عقدة الحساس (عقود دون شحن)</button>
 <button data-tab="desal">🔋🔹 بطارية التحلية</button>
 <button data-tab="wonder">✨ غرفة الدهشة</button>
+<button data-tab="chaos">🦋 مختبر الفوضى</button>
 <button data-tab="asm">🔧 رسومات التجميع</button>
 </nav>
 <main>
@@ -202,6 +203,25 @@ img.blue{width:100%;border:1px solid #334155;border-radius:8px;background:#fff}
 </div><div><canvas id="wdCanvas3" width="420" height="300"></canvas></div></div>
 </div>
 </section>
+<!-- ============ CHAOS ============ -->
+<section id="tab-chaos" class="tab">
+<div class="card"><h2>🦋 فراشة Lorenz حية — قلب مولد العشوائية</h2>
+<div class="grid">
+<div>
+<button class="act warn" id="chFlip">⚡ اقلب بتًا واحدًا في البذرة</button>
+<button class="act" id="chReset">↺ إعادة التوأمين</button>
+<div class="readout">
+<div class="ro"><b>0.5008</b><span>monobit (مقاس)</span></div>
+<div class="ro"><b>7.891/8</b><span>إنتروبيا (مقاسة)</span></div>
+<div class="ro"><b>49.3%</b><span>انهيار البت (مقاس)</span></div>
+<div class="ro"><b id="chDiv">—</b><span>تباعد التوأمين الآن</span></div>
+</div>
+<p class="note">🔵🟠 توأمان من نفس البذرة إلا بتًا واحدًا — شاهدهما يطيران معًا ثم <b>ينفصلان لجناحين مختلفين</b>. هذا الانفصال هو ما يجعل الدفق غير قابل للتنبؤ — أساس التشفير. (تعليمي: للأسرار الحقيقية ChaCha20).</p>
+</div>
+<div><canvas id="chCanvas" width="420" height="360"></canvas></div>
+</div>
+</div>
+</section>
 <!-- ============ ASSEMBLY ============ -->
 <section id="tab-asm" class="tab">
 <div class="card"><h2>🗺️ فهرس الرسوم — اضغط على أي رسم للقفز إليه</h2>
@@ -226,6 +246,8 @@ img.blue{width:100%;border:1px solid #334155;border-radius:8px;background:#fff}
 <p class="note">النووية v0.2:</p><img class="blue" src="assets/nuc_chart_v2.svg" alt="n2">
 <p class="note">العقدة:</p><img class="blue" src="assets/node_eol.svg" alt="nd">
 <p class="note">التحلية:</p><img class="blue" src="assets/desal_chart.svg" alt="d">
+<p class="note">الفوضى (فراشة Lorenz المنفذة):</p>
+<img class="blue" src="assets/chaos_chart.svg" alt="c">
 </div>
 </section>
 </main>
@@ -493,6 +515,27 @@ x.fillStyle=sp>1.8?'#fbbf24':'#38bdf8';
 x.beginPath();x.moveTo(6,0);x.lineTo(-4,-3.5);x.lineTo(-4,3.5);x.closePath();x.fill();x.restore();});
 }
 (function wonderLoop(){try{drawDP();drawB3();drawBoids();}catch(e){}requestAnimationFrame(wonderLoop);})();
+// ---------- CHAOS (Lorenz twins, Euler is enough visually) ----------
+let chA={x:1,y:1,z:1},chB={x:1+1e-9,y:1,z:1},chTrA=[],chTrB=[];
+function chStep(s){const dt=0.008;
+const dx=10*(s.y-s.x),dy=s.x*(28-s.z)-s.y,dz=s.x*s.y-8/3*s.z;
+s.x+=dx*dt;s.y+=dy*dt;s.z+=dz*dt;}
+$('chFlip').onclick=()=>{chB={x:chA.x+1e-6,y:chA.y,z:chA.z};chTrB=[];};
+$('chReset').onclick=()=>{chA={x:1,y:1,z:1};chB={x:1+1e-9,y:1,z:1};chTrA=[];chTrB=[];};
+(function chaosLoop(){
+for(let k=0;k<6;k++){chStep(chA);chStep(chB);}
+chTrA.push([chA.x,chA.z]);chTrB.push([chB.x,chB.z]);
+if(chTrA.length>500){chTrA.shift();chTrB.shift();}
+const c=$('chCanvas');if(c){const x=c.getContext('2d'),W=c.width,H=c.height;
+x.fillStyle='#0b1220';x.fillRect(0,0,W,H);
+const X=v=>20+(v+22)/44*(W-40),Y=v=>H-20-v/50*(H-40);
+[[chTrA,'#38bdf8'],[chTrB,'#fb923c']].forEach(([tr,col])=>{
+for(let i=1;i<tr.length;i+=2){x.strokeStyle=col;x.globalAlpha=i/tr.length*0.8;x.lineWidth=1.5;
+x.beginPath();x.moveTo(X(tr[i-1][0]),Y(tr[i-1][1]));x.lineTo(X(tr[i][0]),Y(tr[i][1]));x.stroke();}x.globalAlpha=1;});
+x.fillStyle='#fff';x.font='11px Tahoma';x.fillText('إسقاط x-z — جناحا الفراشة',10,16);
+const d=Math.hypot(chA.x-chB.x,chA.y-chB.y,chA.z-chB.z);
+const el=$('chDiv');if(el)el.textContent=d<0.01?d.toExponential(0):d.toFixed(2);}
+requestAnimationFrame(chaosLoop);})();
 drawElyChart();
 </script>
 </body>

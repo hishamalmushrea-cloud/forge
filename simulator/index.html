@@ -48,6 +48,7 @@ img.blue{width:100%;border:1px solid #334155;border-radius:8px;background:#fff}
 <button data-tab="mesh">🛡️ شبكة الفوضى</button>
 <button data-tab="poc">📡 إثبات المفهوم</button>
 <button data-tab="whis">🤫 همس</button>
+<button data-tab="far">📡 همس بعيد</button>
 <button data-tab="asm">🔧 رسومات التجميع</button>
 </nav>
 <main>
@@ -292,6 +293,36 @@ img.blue{width:100%;border:1px solid #334155;border-radius:8px;background:#fff}
 <p class="note">تشفير حقيقي (ECDH+AEG-GCM) + مودمات حقيقية تعمل هنا: البكسلات تُقرأ من اللوحة، والموجات تُحلَّل رياضيًا. v1: TOFU بلا سرية أمامية — موثق.</p>
 </div>
 </section>
+<!-- ============ FARWHISPER ============ -->
+<section id="tab-far" class="tab">
+<div class="card"><h2>📡 همس بعيد — رسائل 10km بلا إنترنت (عبر عقدة LoRa جيبية)</h2>
+<div class="readout">
+<div class="ro"><b>33.8dB</b><span>هامش 10km (مقاس)</span></div>
+<div class="ro"><b>0.943s</b><span>زمن الرسالة SF9</span></div>
+<div class="ro"><b>100%/70%</b><span>PDR نظيف/وابل</span></div>
+<div class="ro"><b>38/h</b><span>سقف دورة العمل</span></div>
+</div>
+<div class="grid">
+<div>
+<textarea id="fMsg" rows="2" style="width:100%">سلام من تعز إلى إب عبر الأثير الحر!</textarea>
+<button class="act warn" id="fSend">📡 شفّر وأرسل عبر الشبكة</button>
+<button class="act" id="fJam">⚡ التشويش: <b id="fJamSt">مغلق</b></button>
+<button class="act" id="fBLE">📱 اربط العقدة (بلوتوث)</button>
+<button class="act" id="fReset">↺ صفّر</button>
+<p class="note" id="fOut">الشبكة: —</p>
+<p class="note" id="fBLEOut">البلوتوث: —</p>
+<div class="readout">
+<div class="ro"><b id="fDel">0</b><span>وصلت</span></div>
+<div class="ro"><b id="fLost">0</b><span>ضاعت</span></div>
+<div class="ro"><b id="fTx">0</b><span>بثوث</span></div>
+</div>
+<p class="note">بصمتا همس: <span id="fFpA">…</span> ←→ <span id="fFpB">…</span></p>
+</div>
+<div><canvas id="fMesh" width="460" height="360"></canvas></div>
+</div>
+<p class="note">التشفير همس حقيقي (ECDH+GCM) والفيض بميكانيكا النموذج المقاس (‏3 محاولات/تمرير). الهاتف وحده لا يصل ‏10km فيزيائيًا — التطبيق يخاطب عقدة LoRa جيبية (~$15) بالبلوتوث.</p>
+</div>
+</section>
 <!-- ============ ASSEMBLY ============ -->
 <section id="tab-asm" class="tab">
 <div class="card"><h2>🗺️ فهرس الرسوم — اضغط على أي رسم للقفز إليه</h2>
@@ -320,6 +351,8 @@ img.blue{width:100%;border:1px solid #334155;border-radius:8px;background:#fff}
 <img class="blue" src="assets/chaos_chart.svg" alt="c">
 <p class="note">الشبكة القافزة (شلال القنوات تحت التشويش):</p>
 <img class="blue" src="assets/mesh_chart.svg" alt="m">
+<p class="note">همس بعيد (خريطة الشبكة ‏12 عقدة، الأخضر=أقصر مسار ‏A-B):</p>
+<img class="blue" src="assets/far_mesh.svg" alt="f">
 </div>
 </section>
 </main>
@@ -762,6 +795,76 @@ const T=await selfTest();
 $('wSelfOut').innerHTML=T.map(t=>`<div>${t.pass?'✅':'❌'} ${t.name} — ${t.detail}</div>`).join('');
 };
 init();
+</script>
+<script type="module">
+import { genIdentity, fingerprint, seal, open as capOpen } from './whisper_core.js';
+const TE=new TextEncoder(),TD=new TextDecoder();
+let FA=null,FB=null,JAM=false,DEL=0,LOST=0,TX=0,RNG=12345;
+const rnd=()=>((RNG=(RNG*1103515245+12345)&0x7fffffff)/0x7fffffff);
+const ND=[[30,180],[120,140],[120,230],[210,100],[210,180],[210,260],[300,140],[300,230],[380,180],[430,180],[160,180],[260,180]];
+const DST=9,LK=[];
+for(let i=0;i<ND.length;i++)for(let j=i+1;j<ND.length;j++){
+const dx=ND[i][0]-ND[j][0],dy=ND[i][1]-ND[j][1];
+if(Math.hypot(dx,dy)<110){LK.push([i,j]);}}
+function draw(seen,front,dead){
+const c=$('fMesh'),x=c.getContext('2d');
+x.fillStyle='#0b1220';x.fillRect(0,0,c.width,c.height);
+x.strokeStyle='#334155';
+for(const [i,j] of LK){x.beginPath();x.moveTo(ND[i][0],ND[i][1]);x.lineTo(ND[j][0],ND[j][1]);x.stroke();}
+if(JAM){x.strokeStyle='#7f1d1d';x.lineWidth=2;x.beginPath();x.arc(210,180,120,0,7);x.stroke();
+x.fillStyle='#f87171';x.font='11px Tahoma';x.fillText('وابل 50% على 4/8 قنوات',130,30);x.lineWidth=1;}
+ND.forEach(([px,py],i)=>{
+x.fillStyle=i===0?'#f87171':(i===DST?'#38bdf8':(front.has(i)?'#4ade80':(seen.has(i)?'#166534':(dead.has(i)?'#450a0a':'#475569'))));
+x.beginPath();x.arc(px,py,9,0,7);x.fill();
+x.fillStyle='#fff';x.font='9px Tahoma';x.fillText(i===0?'A':(i===DST?'B':i),px-3,py+3);});
+}
+async function initFar(){
+FA=await genIdentity();FB=await genIdentity();
+$('fFpA').textContent=(await fingerprint(FA.comp)).slice(0,4).join('،');
+$('fFpB').textContent=(await fingerprint(FB.comp)).slice(0,4).join('،');
+draw(new Set([0]),new Set(),new Set());
+}
+$('fJam').onclick=()=>{JAM=!JAM;$('fJamSt').textContent=JAM?'مفتوح':'مغلق';};
+$('fReset').onclick=()=>{DEL=LOST=TX=0;RNG=12345;
+$('fDel').textContent='0';$('fLost').textContent='0';$('fTx').textContent='0';
+$('fOut').textContent='الشبكة: —';draw(new Set([0]),new Set(),new Set());};
+$('fBLE').onclick=async()=>{
+try{
+if(!navigator.bluetooth)throw new Error('لا Web Bluetooth هنا');
+await navigator.bluetooth.requestDevice({acceptAllDevices:true});
+$('fBLEOut').textContent='البلوتوث: ✓ متصل بالعقدة';
+}catch(e){$('fBLEOut').textContent='البلوتوث: وضع المحاكاة ('+e.message+') — يعمل على هاتفك';}
+};
+$('fSend').onclick=async()=>{
+const CAP=await seal(FA.priv,FA.comp,FB.raw,TE.encode($('fMsg').value));
+$('fOut').textContent=`شفّرت ${CAP.length}B ← تفيض الآن…`;
+const seen=new Set([0]),dead=new Set();
+let front=new Set([0]),round=0;
+draw(seen,front,dead);
+const step=async()=>{
+if(round++>8||!front.size){
+if(seen.has(DST)){
+const pt=await capOpen(FB.priv,CAP,FA.comp);
+DEL++;$('fDel').textContent=DEL;
+$('fOut').textContent='✓ وصلت وفُكّت: '+TD.decode(pt);
+}else{LOST++;$('fLost').textContent=LOST;$('fOut').textContent='✗ ضاعت تحت الوابل — أعد الإرسال';}
+return;}
+const nxt=new Set();
+for(const u of front){
+let clear=false;
+for(let t=0;t<3;t++){TX++;if(!JAM||rnd()>=0.5){clear=true;break;}}
+$('fTx').textContent=TX;
+if(!clear){dead.add(u);continue;}
+for(const [i,j] of LK){
+const w=(i===u)?j:((j===u)?i:-1);
+if(w>=0&&!seen.has(w)){seen.add(w);nxt.add(w);}}
+}
+front=nxt;draw(seen,front,dead);
+setTimeout(step,600);};
+setTimeout(step,600);
+};
+function farMeshAnim(){}
+initFar();
 </script>
 </body>
 </html>

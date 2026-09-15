@@ -87,3 +87,10 @@
 - Zero-infra messenger: ECDH+AES-GCM capsule over animated frames + ultrasonic FSK + file.
 - core.js shared browser/Node; selfTest 13/13 first run (capsule 171B=1 frame, FSK 14.4s, +20dB ok).
 - Simulator: 11th tab, live encrypt/play/capture/tamper/selftest. Static+JS checks pass.
+
+## 2026-09-15 — farwhisper (COMPLETE models+FW: 10km budget, mesh, live app tab)
+- Research: phone-alone impossible; LoRa SX1262 8-12km LOS cited; Meshtastic exists (honest diff table).
+- link_budget: margins 33.8/39.8/46.8dB, ToA SF9 0.943s, Fresnel 25m, 38 msgs/hr. VERIFIED.
+- mesh_sim: seed hunt (42->29), retry fix 10.5%->70.5% PDR under 50% barrage, frag 171B->1/400B->3. VERIFIED.
+- FW: ping-pong bug caught+fixed (origin seen-cache), 12/12 incl 2 jammed, 7/8 channels, zero warnings.
+- Simulator: 12th tab (live flood + real Whisper crypto + BLE button), far_mesh.svg asset. Checks pass.

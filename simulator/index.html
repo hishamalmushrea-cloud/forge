@@ -54,6 +54,7 @@ img.blue{width:100%;border:1px solid #334155;border-radius:8px;background:#fff}
 <button data-tab="asm">🔧 رسومات التجميع</button>
   <button class="tab-btn" data-tab="hb">🏠 بطارية 50</button>
   <button class="tab-btn" data-tab="wind">🌀 رياح</button>
+  <button class="tab-btn" data-tab="nucell">☢ نووية</button>
 </nav>
 <main>
 <!-- ============ ELECTROLYZER ============ -->
@@ -502,6 +503,34 @@ function upd(){var m=+s.value;sv.textContent=m;draw(m);
 var wh=daily(m);var v=wh<400?'🏙️ موقع مديني متواضع — مكمل ليلي (LED + مروحة).':(wh<900?'🏡 موقع جيد — يكمل الشمسي بقوة ليلا وغيمًا.':'⛰️ موقع تل ممتاز — يغذي المنزل وحده!');
 document.getElementById('wd-out').innerHTML='<b>الناتج اليومي ≈ '+Math.round(wh)+'Wh</b> — '+v;}
 s.oninput=upd;upd();
+})();
+</script>
+<section id="tab-nucell" class="tab-sec">
+<h2>☢ البطارية النووية — 50 سنة من 100µW</h2>
+<p>حرّك الزمن: <input id="nu-y" type="range" min="0" max="100" value="0"><b><span id="nu-yv">سنة 0 — 100µW</span></b></p>
+<canvas id="nu-cv" width="660" height="260"></canvas>
+<div id="nu-dev"></div>
+<div style="background:#3b0764;padding:8px;margin-top:8px">🚫 الجدران الثلاثة: النظير $4,000/غ ومضبوط دوليًا + فاب ألماس + الهاتف يحتاج 2,500 ضعف! نسخة الـ1W = 10,000 خلية = ملايين $ — لهذا لم تظهر منذ 2024.</div>
+<div style="background:#14532d;padding:8px;margin-top:8px">✅ الحل الحقيقي لحلمك: eternitybatt (تبويب 🔋) — هاتف 7.5 أيام + شمسية أبدية. النووية للحساسات والأقمار، لا لجيبك.</div>
+</section>
+<script>
+(function(){
+var cv=document.getElementById('nu-cv'),g=cv.getContext('2d');
+var s=document.getElementById('nu-y'),sv=document.getElementById('nu-yv');
+function X(t){return 40+t/100*600;} function Y(p){return 240-p/100*210;}
+function draw(t){g.fillStyle='#0b1220';g.fillRect(0,0,660,260);
+g.strokeStyle='#334155';for(var p=0;p<=100;p+=25){g.beginPath();g.moveTo(40,Y(p));g.lineTo(640,Y(p));g.stroke();}
+g.fillStyle='#94a3b8';g.fillText('100µW',5,Y(100)+4);g.fillText('50µW',8,Y(50)+4);g.fillText('سنة 0',36,255);g.fillText('50',335,255);g.fillText('100',625,255);
+g.strokeStyle='#a78bfa';g.lineWidth=2.5;g.beginPath();for(var x=0;x<=600;x+=3){var tt=x/600*100;var y=Y(100*Math.pow(0.5,tt/100.1));if(x===0)g.moveTo(40+x,y);else g.lineTo(40+x,y);}g.stroke();g.lineWidth=1;
+g.strokeStyle='#fbbf24';g.setLineDash([5,4]);g.beginPath();g.moveTo(X(50),30);g.lineTo(X(50),240);g.stroke();g.setLineDash([]);
+g.fillStyle='#fbbf24';g.fillText('50 سنة ← 71µW',X(50)-40,24);
+g.fillStyle='#4ade80';g.beginPath();g.arc(X(t),Y(100*Math.pow(0.5,t/100.1)),5,0,7);g.fill();}
+function upd(){var t=+s.value;sv.textContent='سنة '+t+' — '+(100*Math.pow(0.5,t/100.1)).toFixed(0)+'µW';draw(t);}
+s.oninput=upd;upd();
+var D=[['ساعة RTC ‏1µW',1],['حساس حرارة ‏5µW',1],['منارة نابضة ‏50µW',1],['حبر إلكتروني ‏10µW',1],['LED مستمر ‏1mW',0],['هاتف ‏250mW',0],['درون ‏50W',0]];
+var d=document.getElementById('nu-dev');var hh='<h4>ماذا يشغل 100µW؟</h4>';
+for(var i=0;i<D.length;i++)hh+='<div>'+(D[i][1]?'✅':'❌')+' '+D[i][0]+'</div>';
+d.innerHTML=hh;
 })();
 </script>
 </main>

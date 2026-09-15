@@ -38,3 +38,8 @@
 - Added self-absorption (ETA_SELF=0.5) + converter degradation (0.5%/yr) + quantitative RTG microscale proof.
 - Results: Ni-63 mass 0.69g, 20y 78.75uW, life 72.8Wh; RTG mg-scale dT milli-K vs 80K needed (shortfall 4800-48000x).
 - Tests 4/4 PASS. Simulator nuclear tab + v2 chart updated.
+
+## 2026-09-15 — phone_battery_5y feasibility (VERDICT: INFEASIBLE)
+- Computed 5y phone energy 33,762Wh; lightest physics (Ni-63) still 5.3kg isotope-only; Li-ion 129.9kg.
+- Caught + fixed own unit bug (Wh/g vs Wh/kg) via cross-check; sed broke a line, fixed with editor.
+- Files: projects/phone_battery_5y/{feasibility.py, report.md}

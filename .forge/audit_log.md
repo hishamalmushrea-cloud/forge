@@ -1,0 +1,35 @@
+# MUSHREA FORGE — Audit Log
+
+## 2026-09-15 — BOOT (README.md §§4–5, 67)
+- Action: FIRST BOOT sequence executed (inspect capabilities/tools/files/execution env, identify limits, create protocol, self-check).
+- Tools used: bash, read_file, write_file, fetch_page, python3.
+- Environment (verified): Debian 12, 2×CPU, 3.8GB RAM, 20GB disk, no GPU, python 3.11.2, node v22, git.
+- Result: SELF-CHECK PASSED → status READY. State in `.forge/boot.json`.
+- Note: user ref `read.me` resolved to `README.md` (http://read.me is a parked domain; README.md holds the FORGE protocol).
+
+## 2026-09-15 — PROJECT nuclear_battery v0.1
+- Goal: nuclear battery from scratch to finish. Scope decision: conceptual+analytical design only; no operational radiological instructions (§45).
+- Research: 2 web searches, 4 sources cross-checked (IEEE Spectrum, Stanford/DOE, phys.org, Chemistry World).
+- Tools: python3 stdlib (pip blocked by PEP 668); hand-written SVG chart.
+- Results: Ni-63 100uW BOL needs 0.345g, 87.1uW@20y; H-3 32.4uW@20y; Pu-238 RTG impractical at uW scale. Tests 4/4 PASS (one self-caught test bug fixed).
+- Decision: INFEASIBLE as individual/home build (licensing+materials); package delivered as analytical basis.
+- Files: projects/nuclear_battery/{00_goal_requirements.md, calculations.py, results.json, chart.svg, final_report.md}
+
+## 2026-09-15 — PROJECT teg_demonstrator v0.1 (COMPLETE to build-ready)
+- User delegated choice; autonomous decision: full TEG build (only path reaching tangible hardware). Safety philosophy NOT negotiable — explained.
+- Research: SP1848 vendor table (2 vendors agree) + LTC3108 harvesting IC docs.
+- Design: 2x SP1848 series (single fails R1), dual power path (1W matched load + LTC3108 demo), 12V-only, dual fusing.
+- Model 4/4 tests PASS. OP dT=80: 7.2V/12.9ohm/1.004W, Thot 130C. Arduino code written, NOT EXECUTED (no HW).
+- Files: projects/teg_demonstrator/{00_goal_requirements.md, calculations.py, results.json, chart.svg, hardware_guide.md, measurement.ino, test_plan.md, final_report.md}
+
+## 2026-09-15 — PROJECT electrolyzer v0.1 (COMPLETE to build-ready)
+- User chose electrolyzer option. Alkaline Hofmann-style dual-chamber selected (gas separation by design).
+- Research: alkaline specs verified (1.8-2.4V, 4.5-7.0 kWh/Nm3, KOH 25-30%, SS electrodes).
+- Model 5/5 tests PASS. OP: 4A -> 1.82 L/h H2 @8W. Code NOT EXECUTED (no HW). Physical tests PENDING.
+- Files: projects/electrolyzer/{00_goal_requirements.md, calculations.py, results.json, chart.svg, hardware_guide.md, measurement.ino, test_plan.md, final_report.md}
+
+## 2026-09-15 — BUILD electrolyzer (virtual commissioning DONE, physical PENDING user)
+- Static review found + fixed real bug: INA219 3.2A limit -> ACS712-20A + divider (v0.2, BOM/wiring/arch updated).
+- Built: assembly.svg (validated), acceptance.py, simulated_run.py.
+- Commissioning: nominal 30min PASS (918mL, 3% err), leak fault correctly FAILs. py_compile PASS.
+- Remaining: physical assembly + T1-T5 by user, then run acceptance.py on real CSV.

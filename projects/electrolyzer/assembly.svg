@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="680" height="520" font-family="sans-serif">
+<rect width="680" height="520" fill="#1e4f9c"/>
+<text x="340" y="26" text-anchor="middle" font-size="15" font-weight="bold" fill="white">Electrolyzer — Assembly Drawing v0.2 (SIDE VIEW, dims in mm, NOT TO SCALE)</text>
+<!-- vent tubes -->
+<line x1="200" y1="70" x2="120" y2="70" stroke="white" stroke-width="3"/>
+<line x1="200" y1="70" x2="200" y2="105" stroke="white" stroke-width="3"/>
+<text x="60" y="62" font-size="10" fill="white">H2 vent</text>
+<line x1="480" y1="70" x2="560" y2="70" stroke="white" stroke-width="3"/>
+<line x1="480" y1="70" x2="480" y2="105" stroke="white" stroke-width="3"/>
+<text x="566" y="62" font-size="10" fill="white">O2 vent</text>
+<!-- collection cylinders -->
+<rect x="150" y="105" width="100" height="220" fill="none" stroke="white" stroke-width="2"/>
+<rect x="430" y="105" width="100" height="220" fill="none" stroke="white" stroke-width="2"/>
+<text x="200" y="100" text-anchor="middle" font-size="11" fill="#7dd3fc">H2 cylinder ≥1L</text>
+<text x="480" y="100" text-anchor="middle" font-size="11" fill="#7dd3fc">O2 cylinder ≥1L</text>
+<line x1="150" y1="140" x2="170" y2="140" stroke="#7dd3fc" stroke-width="2"/>
+<line x1="150" y1="170" x2="165" y2="170" stroke="#7dd3fc"/>
+<line x1="150" y1="200" x2="170" y2="200" stroke="#7dd3fc" stroke-width="2"/>
+<text x="142" y="143" text-anchor="end" font-size="9" fill="#7dd3fc">0 mL</text>
+<!-- gas -->
+<rect x="154" y="109" width="92" height="45" fill="#7dd3fc" opacity="0.35"/>
+<rect x="434" y="109" width="92" height="25" fill="#7dd3fc" opacity="0.35"/>
+<text x="200" y="135" text-anchor="middle" font-size="10" fill="white">H2</text>
+<text x="480" y="128" text-anchor="middle" font-size="10" fill="white">O2 (half)</text>
+<!-- bubbles -->
+<circle cx="190" cy="280" r="3" fill="white"/><circle cx="205" cy="250" r="2" fill="white"/>
+<circle cx="195" cy="300" r="2.5" fill="white"/><circle cx="470" cy="285" r="3" fill="white"/>
+<circle cx="485" cy="255" r="2" fill="white"/>
+<!-- lid -->
+<rect x="70" y="190" width="540" height="10" fill="white" opacity="0.85"/>
+<text x="616" y="199" font-size="10" fill="white">lid</text>
+<!-- terminals -->
+<line x1="200" y1="190" x2="200" y2="150" stroke="#fbbf24" stroke-width="4"/>
+<line x1="480" y1="190" x2="480" y2="150" stroke="#fbbf24" stroke-width="4"/>
+<circle cx="200" cy="185" r="5" fill="#fbbf24"/><circle cx="480" cy="185" r="5" fill="#fbbf24"/>
+<text x="200" y="145" text-anchor="middle" font-size="11" fill="#fbbf24">(−) cathode</text>
+<text x="480" y="145" text-anchor="middle" font-size="11" fill="#fbbf24">(+) anode</text>
+<!-- basin -->
+<rect x="70" y="200" width="540" height="200" fill="none" stroke="white" stroke-width="3"/>
+<line x1="70" y1="230" x2="610" y2="230" stroke="#7dd3fc" stroke-width="2" stroke-dasharray="8,5"/>
+<text x="600" y="224" text-anchor="end" font-size="10" fill="#7dd3fc">KOH 20% level</text>
+<text x="340" y="392" text-anchor="middle" font-size="10" fill="white">basin ~300 × 200 × 150 (PP/HDPE)</text>
+<!-- electrodes -->
+<rect x="192" y="270" width="16" height="110" fill="#cbd5e1"/>
+<rect x="472" y="270" width="16" height="110" fill="#cbd5e1"/>
+<text x="184" y="330" text-anchor="end" font-size="10" fill="white">316SS 100×100</text>
+<text x="496" y="330" text-anchor="start" font-size="10" fill="white">316SS 100×100</text>
+<line x1="208" y1="395" x2="472" y2="395" stroke="white" stroke-width="1"/>
+<text x="340" y="392" text-anchor="middle" font-size="9" fill="white">gap ~40</text>
+<!-- wiring strip -->
+<rect x="70" y="425" width="540" height="75" fill="none" stroke="white" stroke-width="2"/>
+<text x="80" y="445" font-size="11" fill="#fbbf24">12V PSU → [5A fuse] → [buck CC=4A] → [ACS712] → anode(+) / cathode(−) return</text>
+<text x="80" y="465" font-size="11" fill="#7dd3fc">Arduino: A0=divider(10k/10k) A1=ACS712 D9=relay cutoff | USB = CSV log</text>
+<text x="80" y="485" font-size="10" fill="white">SAFETY: outdoors only, vents open, fuse + 2h auto-cutoff, KOH = gloves + glasses</text>
+</svg>

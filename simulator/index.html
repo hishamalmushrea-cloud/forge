@@ -43,6 +43,7 @@ img.blue{width:100%;border:1px solid #334155;border-radius:8px;background:#fff}
 <button data-tab="nuc">☢️ البطارية النووية (دراسة)</button>
 <button data-tab="node">📡 عقدة الحساس (عقود دون شحن)</button>
 <button data-tab="desal">🔋🔹 بطارية التحلية</button>
+<button data-tab="wonder">✨ غرفة الدهشة</button>
 <button data-tab="asm">🔧 رسومات التجميع</button>
 </nav>
 <main>
@@ -167,6 +168,38 @@ img.blue{width:100%;border:1px solid #334155;border-radius:8px;background:#fff}
 </div>
 <div><canvas id="dsChart" width="420" height="340"></canvas></div>
 </div>
+</div>
+</section>
+<!-- ============ WONDER ============ -->
+<section id="tab-wonder" class="tab">
+<div class="card"><h2>✨ غرفة الدهشة — ثلاثة أشياء حقيقية لا يصدقها حدسك</h2>
+<p class="note">كل تجربة تعمل بمعادلات حقيقية حيًا في متصفحك. جرّب بنفسك — الدهشة تحتاج مشاركتك.</p></div>
+<div class="card"><h2>🌀 1) التوأم الفوضوي — نفس البداية، مصيران مختلفان</h2>
+<div class="grid"><div>
+<label>فرق البداية بين التوأمين: <b id="wdEpsVal">0.1°</b> (غير مرئي!)</label>
+<input type="range" id="wdEps" min="0.01" max="2" step="0.01" value="0.1">
+<button class="act" id="wdReset1">↺ إعادة بنفس الفرق</button>
+<div class="readout"><div class="ro"><b id="wdDiv">—</b><span>التباعد الآن (درجة)</span></div></div>
+<p class="note">🔵🟠 بندولان مزدوجان متطابقان تمامًا إلا بجزء من درجة لا تراه — شاهدهما يرقصان معًا ثم <b>يخون أحدهما الآخر</b> وينفصلان لرقصتين مختلفتين كليًا. نفس القوانين، نفس البداية، مصير مختلف — لهذا يستحيل التنبؤ بالطقس.</p>
+<p class="note">الجبهة المخفية: التنبؤ بالفوضى، التشفير الفوضوي.</p>
+</div><div><canvas id="wdCanvas1" width="420" height="320"></canvas></div></div>
+</div>
+<div class="card"><h2>♾️ 2) رقصة الأجسام الثلاثة — المستحيل الذي رسمه نيوتن</h2>
+<div class="grid"><div>
+<button class="act warn" id="wdPerturb">💥 اخترق الرقصة (ركل 2%)</button>
+<button class="act" id="wdReset2">↺ استعد الرقصة المثالية</button>
+<p class="note">ثلاثة أجسام متساوية تطارد بعضها في شكل <b>∞</b> مثالي إلى الأبد (حل Moore 1993 لمعادلات نيوتن — لم يعرفه العلم حتى التسعينيات!). اضغط الزر: ركلة 2% فقط تذيب الرقصة في فوضى كاملة. الجمال هنا هش كالزجاج.</p>
+<p class="note">الجبهة المخفية: مسارات المركبات الفضائية، استقرار الأنظمة الشمسية.</p>
+</div><div><canvas id="wdCanvas2" width="420" height="340"></canvas></div></div>
+</div>
+<div class="card"><h2>🐦 3) السرب الحي — عقل بلا قائد</h2>
+<div class="grid"><div>
+<label>قوة التماسك: <b id="wdCohVal">0.4</b></label>
+<input type="range" id="wdCoh" min="0" max="1" step="0.05" value="0.4">
+<button class="act warn" id="wdScatter">🦅 هجوم مفترس!</button>
+<p class="note">70 طائرًا، كل واحد يتبع 3 قواعد غبية فقط (لا تقترب كثيرًا، اتجه مع جيرانك، ابقَ قريبًا) — <b>ولا أحد يعرف الصورة الكلية</b> — ومع ذلك يتشكل سرب حي يتماوج ككائن واحد، وينفجر ويعود عند الهجوم. من أين جاء "العقل"؟ من لا مكان — هذا هو الظهور (Emergence).</p>
+<p class="note">الجبهة المخفية: أسراب الدرونز، روبوتات الإنقاذ الجماعية.</p>
+</div><div><canvas id="wdCanvas3" width="420" height="300"></canvas></div></div>
 </div>
 </section>
 <!-- ============ ASSEMBLY ============ -->
@@ -366,6 +399,100 @@ r2===0.5?x.moveTo(X(r2),Y(eT)):x.lineTo(X(r2),Y(eT));}x.stroke();
 x.fillStyle='#22c55e';x.beginPath();x.arc(X(r),Y(eTot),6,0,7);x.fill();
 }
 $('dsR').oninput=dsUpdate;$('dsV').oninput=dsUpdate;dsUpdate();
+// ---------- WONDER ----------
+// 1) twin double pendulums (myphysicslab equations, m=L=1)
+let wdA={t1:2.2,t2:2.9,w1:0,w2:0},wdB={t1:2.2,t2:2.9,w1:0,w2:0},wdTrA=[],wdTrB=[];
+function dpAcc(s){const g=9.81,d=s.t1-s.t2,den=3-Math.cos(2*s.t1-2*s.t2);
+const a1=(-3*g*Math.sin(s.t1)-g*Math.sin(s.t1-2*s.t2)-2*Math.sin(d)*(s.w2*s.w2+s.w1*s.w1*Math.cos(d)))/den;
+const a2=(2*Math.sin(d)*(2*s.w1*s.w1+2*g*Math.cos(s.t1)+s.w2*s.w2*Math.cos(d)))/den;return[a1,a2];}
+function dpStep(s,dt){const[a1,a2]=dpAcc(s);s.w1+=a1*dt;s.w2+=a2*dt;s.t1+=w1Fix(s)*dt;s.t2+=s.w2*dt;}
+function w1Fix(s){return s.w1;}
+function wdReset(){const e=parseFloat($('wdEps').value)*Math.PI/180;
+wdA={t1:2.2,t2:2.9,w1:0,w2:0};wdB={t1:2.2+e,t2:2.9,w1:0,w2:0};wdTrA=[];wdTrB=[];
+$('wdEpsVal').textContent=parseFloat($('wdEps').value)+'°';}
+$('wdEps').oninput=wdReset;$('wdReset1').onclick=wdReset;wdReset();
+function dpBob(s,px,py,L){const x1=px+L*Math.sin(s.t1),y1=py+L*Math.cos(s.t1);
+return[x1+L*Math.sin(s.t2),y1+L*Math.cos(s.t2),x1,y1];}
+function drawDP(){
+const c=$('wdCanvas1'),x=c.getContext('2d'),W=c.width,H=c.height;
+for(let k=0;k<8;k++){dpStep(wdA,0.002);dpStep(wdB,0.002);}
+const px=W/2,py=64,L=86;
+const bA=dpBob(wdA,px,py,L),bB=dpBob(wdB,px,py,L);
+wdTrA.push([bA[0],bA[1]]);wdTrB.push([bB[0],bB[1]]);
+if(wdTrA.length>240){wdTrA.shift();wdTrB.shift();}
+x.fillStyle='#0b1220';x.fillRect(0,0,W,H);
+function trail(tr,col){if(tr.length<2)return;
+for(let i=1;i<tr.length;i++){x.strokeStyle=col;x.globalAlpha=i/tr.length*0.8;x.lineWidth=2;
+x.beginPath();x.moveTo(tr[i-1][0],tr[i-1][1]);x.lineTo(tr[i][0],tr[i][1]);x.stroke();}x.globalAlpha=1;}
+trail(wdTrA,'#38bdf8');trail(wdTrB,'#fb923c');
+x.fillStyle='#fff';x.font='11px Tahoma';x.fillText('🔵 توأم 1',10,16);x.fillText('🟠 توأم 2 (فرق غير مرئي)',10,30);
+let dv=Math.abs(wdA.t1-wdB.t1)%(2*Math.PI);if(dv>Math.PI)dv=2*Math.PI-dv;
+$('wdDiv').textContent=(dv*180/Math.PI).toFixed(1);
+}
+// 2) figure-8 three body (Moore 1993 ICs, G=m=1, RK4)
+let wdB3=null;function wd8Reset(){wdB3={b:[
+{x:0.97000436,y:-0.24308753,vx:0.4662036850,vy:0.4323657300,tr:[]},
+{x:-0.97000436,y:0.24308753,vx:0.4662036850,vy:0.4323657300,tr:[]},
+{x:0,y:0,vx:-0.93240737,vy:-0.86473146,tr:[]}]};}
+wd8Reset();
+$('wdReset2').onclick=wd8Reset;
+$('wdPerturb').onclick=()=>{wdB3.b[0].vx*=1.02;wdB3.b[0].vy*=1.02;};
+function b3Acc(b){const a=[{x:0,y:0},{x:0,y:0},{x:0,y:0}];
+for(let i=0;i<3;i++)for(let j=0;j<3;j++){if(i===j)continue;
+const dx=b[j].x-b[i].x,dy=b[j].y-b[i].y,r=Math.pow(dx*dx+dy*dy+1e-6,1.5);
+a[i].x+=dx/r;a[i].y+=dy/r;}return a;}
+function b3Step(dt){const b=wdB3.b;
+const s0=b.map(p=>({x:p.x,y:p.y,vx:p.vx,vy:p.vy}));
+function deriv(s){const tb=s.map(p=>({x:p.x,y:p.y}));const a=b3Acc(tb);
+return s.map((p,i)=>({x:p.vx,y:p.vy,vx:a[i].x,vy:a[i].y}));}
+function add(s,k,h){return s.map((p,i)=>({x:p.x+k[i].x*h,y:p.y+k[i].y*h,vx:p.vx+k[i].vx*h,vy:p.vy+k[i].vy*h}));}
+const k1=deriv(s0),k2=deriv(add(s0,k1,dt/2)),k3=deriv(add(s0,k2,dt/2)),k4=deriv(add(s0,k3,dt));
+const s1=add(s0,k1,dt/6).map((p,i)=>({x:p.x+(k2[i].x+k3[i].x)*dt/3+k4[i].x*dt/6,
+y:p.y+(k2[i].y+k3[i].y)*dt/3+k4[i].y*dt/6,
+vx:s0[i].vx+(k1[i].vx+2*k2[i].vx+2*k3[i].vx+k4[i].vx)*dt/6,
+vy:s0[i].vy+(k1[i].vy+2*k2[i].vy+2*k3[i].vy+k4[i].vy)*dt/6}));
+for(let i=0;i<3;i++){b[i].x=s1[i].x;b[i].y=s1[i].y;b[i].vx=s1[i].vx;b[i].vy=s1[i].vy;}}
+function drawB3(){
+const c=$('wdCanvas2'),x=c.getContext('2d'),W=c.width,H=c.height;
+for(let k=0;k<6;k++)b3Step(0.002);
+const S=120,cx=W/2,cy=H/2+10;
+x.fillStyle='#0b1220';x.fillRect(0,0,W,H);
+const cols=['#38bdf8','#22c55e','#f472b6'];
+wdB3.b.forEach((p,i)=>{p.tr.push([cx+p.x*S,cy+p.y*S]);if(p.tr.length>650)p.tr.shift();
+if(p.tr.length>1){for(let k=1;k<p.tr.length;k+=2){x.strokeStyle=cols[i];
+x.globalAlpha=k/p.tr.length*0.7;x.lineWidth=1.5;x.beginPath();
+x.moveTo(p.tr[k-1][0],p.tr[k-1][1]);x.lineTo(p.tr[k][0],p.tr[k][1]);x.stroke();}x.globalAlpha=1;}
+x.fillStyle=cols[i];x.beginPath();x.arc(cx+p.x*S,cy+p.y*S,5,0,7);x.fill();});
+x.fillStyle='#fff';x.font='11px Tahoma';x.fillText('3 أجسام متساوية — حل ∞ الدوري',10,16);
+}
+// 3) boids murmuration
+let wdFlock=[];for(let i=0;i<70;i++)wdFlock.push({x:Math.random()*420,y:Math.random()*300,
+vx:Math.random()*2-1,vy:Math.random()*2-1});
+$('wdCoh').oninput=()=>{$('wdCohVal').textContent=$('wdCoh').value;};
+$('wdScatter').onclick=()=>{wdFlock.forEach(b=>{const dx=b.x-210,dy=b.y-150,d=Math.hypot(dx,dy)+1;
+b.vx+=dx/d*6;b.vy+=dy/d*6;});};
+function drawBoids(){
+const c=$('wdCanvas3'),x=c.getContext('2d'),W=c.width,H=c.height;
+const coh=parseFloat($('wdCoh').value);
+x.fillStyle='#0b1220';x.fillRect(0,0,W,H);
+wdFlock.forEach(b=>{
+let cx=0,cy=0,ax=0,ay=0,sx=0,sy=0,n=0;
+wdFlock.forEach(o=>{if(o===b)return;const dx=o.x-b.x,dy=o.y-b.y,d=Math.hypot(dx,dy);
+if(d<30){cx+=o.x;cy+=o.y;ax+=o.vx;ay+=o.vy;n++;
+if(d<12&&d>0.01){sx-=dx/d;sy-=dy/d;}}});
+if(n>0){b.vx+=(cx/n-b.x)*0.004*coh*2.5+(ax/n-b.vx)*0.05+sx*0.08;
+b.vy+=(cy/n-b.y)*0.004*coh*2.5+(ay/n-b.vy)*0.05+sy*0.08;}
+if(b.x<30)b.vx+=0.15;if(b.x>W-30)b.vx-=0.15;if(b.y<30)b.vy+=0.15;if(b.y>H-30)b.vy-=0.15;
+const sp=Math.hypot(b.vx,b.vy),ms=2.4;
+if(sp>ms){b.vx*=ms/sp;b.vy*=ms/sp;}
+b.x+=b.vx;b.y+=b.vy;});
+wdFlock.forEach(b=>{const a=Math.atan2(b.vy,b.vx);
+x.save();x.translate(b.x,b.y);x.rotate(a);
+const sp=Math.hypot(b.vx,b.vy);
+x.fillStyle=sp>1.8?'#fbbf24':'#38bdf8';
+x.beginPath();x.moveTo(6,0);x.lineTo(-4,-3.5);x.lineTo(-4,3.5);x.closePath();x.fill();x.restore();});
+}
+(function wonderLoop(){try{drawDP();drawB3();drawBoids();}catch(e){}requestAnimationFrame(wonderLoop);})();
 drawElyChart();
 </script>
 </body>

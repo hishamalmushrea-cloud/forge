@@ -66,3 +66,8 @@
 - firmware/cycle: gcc zero warnings, 7/7 host tests (7.6Ah charge, 82% recovery sim, 3 fault paths).
 - acceptance_t3t4.py: nominal T3 (25.0%/0.290) PASS + T4 (350ppm/2.13) PASS; both fault types detected.
 - Binary cleanup done pre-commit (lesson applied). No same-file parallel edits (lesson applied).
+
+## 2026-09-15 — wonder room (user asked to be astonished: built, not proposed)
+- New simulator tab: twin chaotic pendulums + figure-8 three-body (Moore 1993) + boids murmuration.
+- Physics validated headless: twins diverge 167.7deg from 0.1deg; figure-8 period return err 0.0000.
+- Static checks (ids/tabs) + node --check pass. Atomic edit (no race).

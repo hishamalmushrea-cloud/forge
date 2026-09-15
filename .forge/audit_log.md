@@ -94,3 +94,9 @@
 - mesh_sim: seed hunt (42->29), retry fix 10.5%->70.5% PDR under 50% barrage, frag 171B->1/400B->3. VERIFIED.
 - FW: ping-pong bug caught+fixed (origin seen-cache), 12/12 incl 2 jammed, 7/8 channels, zero warnings.
 - Simulator: 12th tab (live flood + real Whisper crypto + BLE button), far_mesh.svg asset. Checks pass.
+
+## 2026-09-15 — simwhisper (COMPLETE: SMS codec + rings + android skeleton + tab)
+- Research: only Silence did E2E-SMS, dead since 2019 (source gone) -> honest revival story.
+- sms_codec 7/7 (171B->2segs, shuffle/dup, corrupt/mixed reject, UCS-2 counter) + ring_code 6/6.
+- Android Kotlin skeleton (data-SMS 8091 + ring listener + manifest + policy notes), uncompiled here.
+- Tab 13: real Whisper seal + JS codec + golden cross-check (Node-verified on shipped code) + rings.

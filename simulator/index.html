@@ -49,6 +49,7 @@ img.blue{width:100%;border:1px solid #334155;border-radius:8px;background:#fff}
 <button data-tab="poc">📡 إثبات المفهوم</button>
 <button data-tab="whis">🤫 همس</button>
 <button data-tab="far">📡 همس بعيد</button>
+<button data-tab="sim">📲 همس الشريحة</button>
 <button data-tab="asm">🔧 رسومات التجميع</button>
 </nav>
 <main>
@@ -321,6 +322,38 @@ img.blue{width:100%;border:1px solid #334155;border-radius:8px;background:#fff}
 <div><canvas id="fMesh" width="460" height="360"></canvas></div>
 </div>
 <p class="note">التشفير همس حقيقي (ECDH+GCM) والفيض بميكانيكا النموذج المقاس (‏3 محاولات/تمرير). الهاتف وحده لا يصل ‏10km فيزيائيًا — التطبيق يخاطب عقدة LoRa جيبية (~$15) بالبلوتوث.</p>
+</div>
+</section>
+<!-- ============ SIMWHISPER ============ -->
+<section id="tab-sim" class="tab">
+<div class="card"><h2>📲 همس الشريحة — SMS مشفر + رنّات مجانية (بلا إنترنت)</h2>
+<div class="readout">
+<div class="ro"><b id="sCodec">…</b><span>فحص JS↔بايثون</span></div>
+<div class="ro"><b>2 SMS</b><span>تكلفة الرسالة المشفرة</span></div>
+<div class="ro"><b>0</b><span>تكلفة الرنّة (مجانية)</span></div>
+<div class="ro"><b id="sCost">0</b><span>SMS أُنفقت هنا</span></div>
+</div>
+<div class="grid">
+<div>
+<p class="note">بصمتان: <span id="sFpA">…</span> ←→ <span id="sFpB">…</span></p>
+<textarea id="sMsg" rows="2" style="width:100%">قابلني عند البئر بعد المغرب — ولا تخبر أحدًا.</textarea>
+<button class="act warn" id="sSeal">🔒 شفّر وقطّع SMS</button>
+<p class="note" id="sSegs">المقاطع: —</p>
+<button class="act" id="sRecv">📥 استلم وفك (معكوس الترتيب!)</button>
+<button class="act warn" id="sCorrupt">⚡ أفسد مقطعًا</button>
+<p class="note" id="sOut">المستلم: —</p>
+<p class="note">نص عادي للمقارنة: <input id="sPlain" value="سلام" style="width:40%"> → <b id="sPlainCost">1</b> مقطع (غير مشفر!)</p>
+</div>
+<div>
+<p class="note">رنّات مجانية (‏1-بت):</p>
+<button class="act" id="r1">🔔 رنّة (تمام ✓)</button>
+<button class="act" id="r2">🔔🔔 رنّتان (اتصل بي)</button>
+<button class="act" id="r3">🔔🔔🔔 ‏3 (تعال/خطر)</button>
+<p class="note" id="rTime">الخط: —</p>
+<p class="note" id="rOut">الفك: —</p>
+</div>
+</div>
+<p class="note">المشغّل يرى الأرقام والأوقات لكن المحتوى شفرة. الرنّات مجانية لكن ~‏2 بت/دقيقة — إشارة طوارئ لا مراسلة.</p>
 </div>
 </section>
 <!-- ============ ASSEMBLY ============ -->
@@ -865,6 +898,81 @@ setTimeout(step,600);
 };
 function farMeshAnim(){}
 initFar();
+</script>
+<script type="module">
+import { genIdentity, fingerprint, seal, open as capOpen } from './whisper_core.js';
+const TE=new TextEncoder(),TD=new TextDecoder();
+const GOLD={"capsule_hex": "01080f161d242b323940474e555c636a71787f868d949ba2a9b0b7bec5ccd3dae1e8eff6fd040b121920272e353c434a51585f666d747b828990979ea5acb3bac1c8cfd6dde4ebf2f900070e151c232a31383f464d545b626970777e858c939aa1a8afb6bdc4cbd2d9e0e7eef5fc030a11181f262d343b424950575e656c737a81888f969da4abb2b9c0c7ced5dce3eaf1f8ff060d141b222930373e454c535a61686f767d848b9299a0a7", "msgid": 9, "segments_hex": ["02090200e101080f161d242b323940474e555c636a71787f868d949ba2a9b0b7bec5ccd3dae1e8eff6fd040b121920272e353c434a51585f666d747b828990979ea5acb3bac1c8cfd6dde4ebf2f900070e151c232a31383f464d545b626970777e858c939aa1a8afb6bdc4cbd2d9e0e7eef5fc030a11181f262d343b424950575e656c737a81888f969da4ab", "02090201e1b2b9c0c7ced5dce3eaf1f8ff060d141b222930373e454c535a61686f767d848b9299a0a7"], "port": 8091};
+let SA=null,SB=null,SCAP=null,SSEGS=null,MID=20,COST=0;
+function crc8(u8){let c=0;for(const b of u8){c^=b;for(let k=0;k<8;k++)c=(c&0x80)?((c<<1)^7)&255:(c<<1)&255;}return c;}
+function smsEncode(cap,mid){
+const n=Math.ceil(cap.length/135),c=crc8(cap),o=[];
+for(let i=0;i<n;i++){const body=cap.slice(i*135,(i+1)*135);
+const s=new Uint8Array(5+body.length);
+s[0]=2;s[1]=mid;s[2]=n;s[3]=i;s[4]=c;s.set(body,5);o.push(s);}return o;}
+function smsDecode(segs){
+if(!segs.length)throw new Error('فارغ');
+const [v,mid,n,,c]=segs[0];
+const parts=new Map();
+for(const s of segs){
+if(s.length<5||s[0]!==v||s[1]!==mid||s[2]!==n||s[4]!==c||s[3]>=n)throw new Error('مقطع فاسد/مختلط');
+if(!parts.has(s[3]))parts.set(s[3],s.slice(5));}
+if(parts.size!==n)throw new Error('ناقص');
+const out=new Uint8Array([...parts.entries()].sort((a,b)=>a[0]-b[0]).reduce((t,[,p])=>t+p.length,0));
+let o=0;for(const [,p] of [...parts.entries()].sort((a,b)=>a[0]-b[0])){out.set(p,o);o+=p.length;}
+if(crc8(out)!==c)throw new Error('CRC8');
+return out;}
+const hex=(u8)=>[...u8].map(b=>b.toString(16).padStart(2,'0')).join('');
+async function initSim(){
+SA=await genIdentity();SB=await genIdentity();
+$('sFpA').textContent=(await fingerprint(SA.comp)).slice(0,4).join('،');
+$('sFpB').textContent=(await fingerprint(SB.comp)).slice(0,4).join('،');
+try{
+const cap=Uint8Array.from(GOLD.capsule_hex.match(/../g).map(x=>parseInt(x,16)));
+const mine=smsEncode(cap,GOLD.msgid).map(hex);
+const ok=mine.length===GOLD.segments_hex.length&&mine.every((s,i)=>s===GOLD.segments_hex[i]);
+$('sCodec').textContent=ok?'✓ يطابق بايثون':'✗ اختلاف!';
+}catch(e){$('sCodec').textContent='✗ '+e.message;}
+}
+$('sSeal').onclick=async()=>{
+SCAP=await seal(SA.priv,SA.comp,SB.raw,TE.encode($('sMsg').value));
+SSEGS=smsEncode(SCAP,MID=(MID+1)%256);
+COST+=SSEGS.length;$('sCost').textContent=COST;
+$('sSegs').textContent='المقاطع ('+SSEGS.length+'): '+SSEGS.map((s,i)=>`#${i}:[${hex(s.slice(0,5))}..${hex(s.slice(-3))}]`).join(' ');
+$('sOut').textContent='أُرسلت عبر التغطية (محاكاة) — المشغّل يرى شفرة فقط';
+};
+$('sRecv').onclick=async()=>{
+try{
+if(!SSEGS){$('sOut').textContent='شفّر أولًا';return;}
+const back=smsDecode([...SSEGS].reverse());
+const pt=await capOpen(SB.priv,back,SA.comp);
+$('sOut').textContent='✓ وصلت وفُكّت (ترتيب معكوس!): '+TD.decode(pt);
+}catch(e){$('sOut').textContent='✗ '+e.message;}
+};
+$('sCorrupt').onclick=async()=>{
+try{
+if(!SSEGS){$('sOut').textContent='شفّر أولًا';return;}
+const bad=SSEGS.map(s=>s.slice());bad[0][10]^=1;
+smsDecode(bad);
+$('sOut').textContent='✗ كارثة: قُبِل الفاسد!';
+}catch(e){$('sOut').textContent='✓ الفاسد مرفوض: '+e.message;}
+};
+$('sPlain').oninput=()=>{
+const L=$('sPlain').value.length;
+$('sPlainCost').textContent=L<=70?1:Math.ceil(L/67);
+};
+const RING={1:'تمام ✓',2:'اتصل بي ضروري',3:'تعال/خطر'};
+async function playRings(n){
+$('rTime').textContent='الخط: ';
+for(let i=0;i<n;i++){
+await new Promise(r=>setTimeout(r,700));
+$('rTime').textContent+='🔔 ';}
+$('rOut').textContent=`الفك: ${n} رنّات ← ${RING[n]} — مجانًا ✓ (الناقل 1-بت)`;
+}
+$('r1').onclick=()=>playRings(1);
+$('r2').onclick=()=>playRings(2);
+$('r3').onclick=()=>playRings(3);
+initSim();
 </script>
 </body>
 </html>

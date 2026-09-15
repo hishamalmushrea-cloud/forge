@@ -33,3 +33,8 @@
 - Built: assembly.svg (validated), acceptance.py, simulated_run.py.
 - Commissioning: nominal 30min PASS (918mL, 3% err), leak fault correctly FAILs. py_compile PASS.
 - Remaining: physical assembly + T1-T5 by user, then run acceptance.py on real CSV.
+
+## 2026-09-15 — nuclear_battery v0.2 (COMPLETE: review gaps closed)
+- Added self-absorption (ETA_SELF=0.5) + converter degradation (0.5%/yr) + quantitative RTG microscale proof.
+- Results: Ni-63 mass 0.69g, 20y 78.75uW, life 72.8Wh; RTG mg-scale dT milli-K vs 80K needed (shortfall 4800-48000x).
+- Tests 4/4 PASS. Simulator nuclear tab + v2 chart updated.

@@ -113,6 +113,7 @@ img.blue{width:100%;border:1px solid #334155;border-radius:8px;background:#fff}
 <select id="nucIso"><option value="Ni-63">Ni-63 بيتافولطي (100 سنة)</option><option value="H-3">Tritium بيتافولطي (12.3 سنة)</option><option value="Pu-238">Pu-238 حراري RTG (87.7 سنة)</option></select>
 <label>القدرة المستهدفة BOL: <b id="nucPVal">100 µW</b></label>
 <input type="range" id="nucP" min="10" max="500" step="10" value="100">
+<label><input type="checkbox" id="nucDeg" checked> تدهور المحول 0.5%/سنة (نموذج v0.2 الواقعي)</label>
 <div class="readout">
 <div class="ro"><b id="nMass">—</b><span>كتلة النظير (g)</span></div>
 <div class="ro"><b id="nP20">—</b><span>بعد 20 سنة (µW)</span></div>
@@ -136,6 +137,8 @@ img.blue{width:100%;border:1px solid #334155;border-radius:8px;background:#fff}
 <img class="blue" src="assets/teg_chart.svg" alt="teg chart">
 <p class="note">البطارية النووية (الاضمحلال 50 سنة):</p>
 <img class="blue" src="assets/nuc_chart.svg" alt="nuclear chart">
+<p class="note">البطارية النووية v0.2 (مثالي مقابل واقعي — امتصاص ذاتي + تدهور):</p>
+<img class="blue" src="assets/nuc_chart_v2.svg" alt="nuclear v0.2 chart">
 </div>
 </section>
 </main>

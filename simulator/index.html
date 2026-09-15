@@ -45,6 +45,7 @@ img.blue{width:100%;border:1px solid #334155;border-radius:8px;background:#fff}
 <button data-tab="desal">🔋🔹 بطارية التحلية</button>
 <button data-tab="wonder">✨ غرفة الدهشة</button>
 <button data-tab="chaos">🦋 مختبر الفوضى</button>
+<button data-tab="mesh">🛡️ شبكة الفوضى</button>
 <button data-tab="asm">🔧 رسومات التجميع</button>
 </nav>
 <main>
@@ -222,6 +223,24 @@ img.blue{width:100%;border:1px solid #334155;border-radius:8px;background:#fff}
 </div>
 </div>
 </section>
+<!-- ============ MESH ============ -->
+<section id="tab-mesh" class="tab">
+<div class="card"><h2>🛡️ شبكة الفوضى — القافزة التي لا يجدها التشويش</h2>
+<div class="grid">
+<div>
+<button class="act" id="mReset">↺ صفّر العدادات</button>
+<div class="readout">
+<div class="ro"><b id="mHopP">—</b><span>نجاح القافزة (حي)</span></div>
+<div class="ro"><b id="mFixP">—</b><span>نجاح الثابتة (حي)</span></div>
+<div class="ro"><b>2000/2000</b><span>تطابق بايثون↔C</span></div>
+<div class="ro"><b>RFC✓</b><span>HMAC-SHA256</span></div>
+</div>
+<p class="note">المحرك هنا <b>نقطة ثابتة Q16 بت-متطابق</b> مع العتاد — نفس البذرة تُنتج نفس القفزات في المتصفح والعقدة (تحقق: T1b). المشوش يشل نصف النطاق (أحمر) لكن القافزة تنجو ~48% بينما الثابتة على ch0 = ‏0%.</p>
+</div>
+<div><canvas id="mCanvas" width="460" height="300"></canvas></div>
+</div>
+</div>
+</section>
 <!-- ============ ASSEMBLY ============ -->
 <section id="tab-asm" class="tab">
 <div class="card"><h2>🗺️ فهرس الرسوم — اضغط على أي رسم للقفز إليه</h2>
@@ -248,6 +267,8 @@ img.blue{width:100%;border:1px solid #334155;border-radius:8px;background:#fff}
 <p class="note">التحلية:</p><img class="blue" src="assets/desal_chart.svg" alt="d">
 <p class="note">الفوضى (فراشة Lorenz المنفذة):</p>
 <img class="blue" src="assets/chaos_chart.svg" alt="c">
+<p class="note">الشبكة القافزة (شلال القنوات تحت التشويش):</p>
+<img class="blue" src="assets/mesh_chart.svg" alt="m">
 </div>
 </section>
 </main>
@@ -536,6 +557,40 @@ x.fillStyle='#fff';x.font='11px Tahoma';x.fillText('إسقاط x-z — جناح�
 const d=Math.hypot(chA.x-chB.x,chA.y-chB.y,chA.z-chB.z);
 const el=$('chDiv');if(el)el.textContent=d<0.01?d.toExponential(0):d.toFixed(2);}
 requestAnimationFrame(chaosLoop);})();
+// ---------- MESH (bit-exact Q16 engine — same seed as firmware) ----------
+const MS=65536n;
+function mfsh(v,n){n=BigInt(n);return v>=0n?v>>n:-(((-v)+(1n<<n)-1n)>>n);}
+function mstep(s){
+s.x+=mfsh(10n*(s.y-s.x),7);
+s.y+=mfsh(mfsh(s.x*(28n*MS-s.z),16)-s.y,7);
+let t=8n*s.z;t=t>=0n?t/3n:-(((-t)+2n)/3n);
+s.z+=mfsh(mfsh(s.x*s.y,16)-t,7);}
+function mhop(s){const w=s.y>0n?0:1;const az=s.z>=0n?s.z:-s.z;return (w*4+Number(mfsh(az,16)/6n)%4)%8;}
+let MU=1515567440092209359n;
+let mSpan=40n*MS;
+let M={x:MS+MU%mSpan,y:MS+((MU>>3n)%mSpan),z:MS+((MU>>5n)%mSpan)};
+for(let i=0;i<3000;i++)mstep(M);
+function mnext(){for(let i=0;i<50;i++)mstep(M);return mhop(M);}
+const MJAM=new Set([0,1,2,3]);
+let mHist=[],mFT=0,mFO=0,mHT=0,mHO=0;
+$('mReset').onclick=()=>{mHist=[];mFT=mFO=mHT=mHO=0;};
+(function meshLoop(){
+for(let k=0;k<2;k++){const hh=mnext();mHist.push(hh);if(mHist.length>140)mHist.shift();
+mHT++;if(!MJAM.has(hh))mHO++;mFT++;}
+const c=$('mCanvas');
+if(c){const x=c.getContext('2d'),W=c.width,H=c.height;x.fillStyle='#0b1220';x.fillRect(0,0,W,H);
+const RH=H/8,CW=3,LM=34;
+for(let ch=0;ch<8;ch++){const y=ch*RH;
+if(MJAM.has(ch)){x.fillStyle='#7f1d1d';x.fillRect(LM,y,W-LM,RH);}
+x.fillStyle='#e2e8f0';x.font='10px Tahoma';x.fillText('ch'+ch,4,y+RH/2+3);}
+mHist.forEach((hh,i)=>{const px=LM+i*CW;
+x.fillStyle='#4ade80';x.fillRect(px,hh*RH+2,2,RH-4);
+x.fillStyle='#f87171';x.fillRect(px,2,2,5);});
+x.fillStyle='#fff';x.font='11px Tahoma';x.fillText('شلال القنوات حي — نفس البذرة والمحرك في العتاد',LM+6,14);}
+const fp=$('mFixP'),hp=$('mHopP');
+if(fp)fp.textContent=mFT?(100*mFO/mFT).toFixed(1)+'%':'—';
+if(hp)hp.textContent=mHT?(100*mHO/mHT).toFixed(1)+'%':'—';
+setTimeout(meshLoop,120);})();
 drawElyChart();
 </script>
 </body>

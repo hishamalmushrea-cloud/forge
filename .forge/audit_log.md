@@ -76,3 +76,9 @@
 - Selected chaos over orbit/swarm (only fully buildable here). Lorenz RNG: 13859 bits, monobit 0.5008, runs PASS, entropy 7.891, avalanche 49.3%, roundtrip OK. 5/5 tests.
 - Tests caught 2 real bugs: sampling correlation (EVERY 25->100) + wrong runs formula. Fixed, green.
 - Chua values verified from 2 agreeing sources. T0-T5 PENDING (user build). Simulator: 8th tab (atomic, checks pass).
+
+## 2026-09-15 — chaos_mesh (COMPLETE: rendezvous hops verified, HMAC firmware, sim tab)
+- Keyless-sync attempt FAILED 3x with data (PC slow, coupled impostor-follows, R Eq NaN) -> pivoted to paired-seed + Q16 hops + HMAC. Documented in final_report.
+- Sim 5/5: determinism 2000/2000, rendezvous 2000/2000, jam 47.9% vs 0%, avalanche 86.3%, energy 2.52%.
+- Firmware: golden 2000/2000 bit-exact, FIPS + RFC4237 PASS, zero warnings. Browser BigInt engine verified same hops.
+- Simulator: 9th tab (atomic, checks pass).

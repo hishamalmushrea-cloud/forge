@@ -1,0 +1,1 @@
+- homebatt50 [DESIGNED+SIMULATED]: 4S 50Ah LiFePO4 640Wh, 200W/20A, 8.5y, TCO 6.6x, BMS 9/9, tab15

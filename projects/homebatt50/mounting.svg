@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="660" height="380" font-family="Tahoma" font-size="12">
+<rect width="660" height="380" fill="#0b1220"/>
+<text x="20" y="28" fill="#fff" font-size="15">التركيب — تعز 13.6° شمالًا: ميل 14° نحو الجنوب</text>
+<line x1="20" y1="320" x2="640" y2="320" stroke="#64748b" stroke-width="3"/>
+<rect x="380" y="220" width="200" height="100" fill="#27272a" stroke="#64748b"/>
+<text x="390" y="245" fill="#e2e8f0" font-family="Tahoma" font-size="12">غرفة/سطح مظلل</text>
+<rect x="410" y="260" width="120" height="45" fill="#3b0764" stroke="#a78bfa"/>
+<text x="420" y="287" fill="#e2e8f0" font-family="Tahoma" font-size="12">صندوق البطارية + تهوية</text>
+<line x1="150" y1="320" x2="150" y2="200" stroke="#64748b" stroke-width="5"/>
+<g transform="rotate(-14 150 200)"><rect x="60" y="188" width="180" height="16" fill="#1e3a5f" stroke="#38bdf8" stroke-width="2"/></g>
+<text x="40" y="360" fill="#94a3b8" font-family="Tahoma" font-size="12">قاعدة حديد + اللوح 14° ← الشمس ظهرًا جنوبًا ☀ (نظف الغبار أسبوعيًا!)</text>
+<line x1="240" y1="200" x2="410" y2="270" stroke="#f87171" stroke-width="2" stroke-dasharray="5,4"/>
+<text x="250" y="250" fill="#94a3b8" font-family="Tahoma" font-size="12">كابل 4mm² بمواسير</text>
+</svg>

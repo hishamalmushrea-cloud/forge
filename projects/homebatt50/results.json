@@ -1,0 +1,24 @@
+{
+ "E_day": 550,
+ "autonomy_d": 1.05,
+ "panel_W": 200,
+ "mppt_A": 20,
+ "recharge_h": 4.8,
+ "fuses": {
+  "main": 100,
+  "charge": 25,
+  "panel": 15,
+  "dc": 10
+ },
+ "drops_pct": {
+  "panel_4mm2": 2.12,
+  "batt_25mm2": 0.86,
+  "dc_2p5mm2": 2.58
+ },
+ "drawings": [
+  "wiring.svg",
+  "battery_pack.svg",
+  "mounting.svg",
+  "charge_curve.svg"
+ ]
+}

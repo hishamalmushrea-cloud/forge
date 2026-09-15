@@ -52,6 +52,7 @@ img.blue{width:100%;border:1px solid #334155;border-radius:8px;background:#fff}
 <button data-tab="sim">📲 همس الشريحة</button>
 <button data-tab="etb">🔋 بطارية الخلود</button>
 <button data-tab="asm">🔧 رسومات التجميع</button>
+  <button class="tab-btn" data-tab="hb">🏠 بطارية 50</button>
 </nav>
 <main>
 <!-- ============ ELECTROLYZER ============ -->
@@ -414,6 +415,55 @@ img.blue{width:100%;border:1px solid #334155;border-radius:8px;background:#fff}
 <img class="blue" src="assets/far_mesh.svg" alt="f">
 </div>
 </section>
+<section id="tab-hb" class="tab-sec">
+<h2>🏠 بطارية المنزل 50 — يوم شمسي حي</h2>
+<div class="subnav"><button class="hb-btn on" data-hbv="dash">⚡ المحاكاة</button><button class="hb-btn" data-hbv="tco">💰 العمر والتكلفة</button><button class="hb-btn" data-hbv="build">🔧 التجميع</button></div>
+<div id="hb-v-dash" class="hb-v">
+<p>من 06:00 وبطارية 20%: <label>الغيوم <input id="hb-cloud" type="range" min="0" max="90" value="10"><span id="hb-cloudv">10%</span></label></p>
+<p>الأحمال: <label><input type="checkbox" id="hb-led" checked> LED 20W</label> <label><input type="checkbox" id="hb-fan" checked> مروحة 30W</label> <label><input type="checkbox" id="hb-ph" checked> هواتف 10W</label> <label><input type="checkbox" id="hb-tv" checked> TV 50W</label> <label><input type="checkbox" id="hb-fr"> 🧊 ثلاجة 80W (جرّب الفخ!)</label></p>
+<p><button class="act" id="hb-start">▶ ابدأ اليوم</button> <span id="hb-clock">06:00 — SOC 20%</span></p>
+<canvas id="hb-cv" width="660" height="260"></canvas>
+<div id="hb-out"></div>
+</div>
+<div id="hb-v-tco" class="hb-v" style="display:none"><h3>LiFePO4 مقابل الرصاص — 10 سنوات</h3><div id="hb-tco"></div></div>
+<div id="hb-v-build" class="hb-v" style="display:none"><h3>رسوم التجميع</h3>
+<p>1) التوصيل الكامل (فيوزات 100/25/15/10A):</p><img src="drawings-hb/wiring.svg" width="660">
+<p>2) تجميع الخلايا 4S + BMS:</p><img src="drawings-hb/battery_pack.svg" width="660">
+<p>3) التركيب والتموضع (تعز 14° جنوبًا):</p><img src="drawings-hb/mounting.svg" width="660">
+<p>4) منحنى الشحن + اليوم الشمسي:</p><img src="drawings-hb/charge_curve.svg" width="660"></div>
+</section>
+<script>
+(function(){
+var hbB=document.querySelectorAll('.hb-btn');
+for(var i=0;i<hbB.length;i++){hbB[i].onclick=function(){for(var j=0;j<hbB.length;j++)hbB[j].classList.remove('on');this.classList.add('on');var vs=document.querySelectorAll('.hb-v');for(var k=0;k<vs.length;k++)vs[k].style.display='none';document.getElementById('hb-v-'+this.getAttribute('data-hbv')).style.display='block';};}
+var cloud=document.getElementById('hb-cloud'),cloudv=document.getElementById('hb-cloudv');
+cloud.oninput=function(){cloudv.textContent=cloud.value+'%';};
+var cv=document.getElementById('hb-cv'),g=cv.getContext('2d'),timer=null,tr=[];
+var W=[[20,18,23,'led'],[30,10,24,'fan'],[10,19,21,'ph'],[50,19,22,'tv'],[80,0,24,'fr']];
+function sunP(h,cl){var x=(h-6)/12;if(x<=0||x>=1)return 0;return 200*Math.sin(Math.PI*x)*0.72*(1-cl);}
+function ldW(h){var t=0;for(var i=0;i<W.length;i++){if(!document.getElementById('hb-'+W[i][3]).checked)continue;if(h>=W[i][1]&&h<W[i][2])t+=W[i][0];}return t;}
+function X(h){return 40+(h-6)/24*600;} function Y(s){return 240-s/100*210;}
+function draw(cl){g.fillStyle='#0b1220';g.fillRect(0,0,660,260);
+g.strokeStyle='#fbbf24';g.beginPath();for(var x=0;x<=600;x+=4){var hh=6+x/600*24;var y=240-sunP(hh,cl)/200*200;if(x===0)g.moveTo(40+x,y);else g.lineTo(40+x,y);}g.stroke();
+g.strokeStyle='#f87171';g.setLineDash([5,4]);g.beginPath();g.moveTo(40,Y(10));g.lineTo(640,Y(10));g.stroke();g.setLineDash([]);
+g.fillStyle='#94a3b8';g.fillText('قطع BMS ‏10%',520,Y(10)-6);g.fillText('06',36,255);g.fillText('12',335,255);g.fillText('18',485,255);g.fillText('06+',625,255);
+g.strokeStyle='#4ade80';g.lineWidth=2.5;g.beginPath();for(var t=0;t<tr.length;t++){var px=X(tr[t][0]),py=Y(Math.max(0,tr[t][1]));if(t===0)g.moveTo(px,py);else g.lineTo(px,py);}g.stroke();g.lineWidth=1;}
+document.getElementById('hb-start').onclick=function(){
+if(timer){clearInterval(timer);timer=null;}
+var cl=cloud.value/100,soc=20,hh=6,minS=20,bo=-1;tr=[[6,20]];
+document.getElementById('hb-out').textContent='';draw(cl);
+timer=setInterval(function(){var net=sunP(hh,cl)-ldW(hh);soc+=net/640*100/6;hh+=1/6;
+if(soc<minS)minS=soc;if(soc<=0&&bo<0){bo=hh;soc=0;}if(soc>100)soc=100;tr.push([hh,Math.max(0,soc)]);draw(cl);
+var H=Math.floor(hh)%24,M=Math.floor((hh%1)*60);
+document.getElementById('hb-clock').textContent=(H<10?'0':'')+H+':'+(M<10?'0':'')+M+' — SOC '+Math.max(0,soc).toFixed(0)+'%';
+if(hh>=30){clearInterval(timer);timer=null;
+document.getElementById('hb-out').textContent=bo<0?'✅ صمدت المنظومة! أدنى شحن '+minS.toFixed(0)+'% — هامش مريح.':'⚡ انقطاع عند '+Math.floor(bo)+':00 (BMS فصل الحمل) — أطفئ الثلاجة أو الـTV في الغيوم!';}},120);};
+(function(){var d=document.getElementById('hb-tco');
+function bar(lb,v,mx,c){return '<div>'+lb+' <div style="display:inline-block;background:#1e293b;width:300px"><div style="background:'+c+';width:'+(v/mx*300)+'px">&nbsp;</div></div> '+v+'</div>';}
+d.innerHTML='<h4>التكلفة 10 سنوات ($)</h4>'+bar('LiFePO4',176,1170,'#4ade80')+bar('رصاص ×9',1170,1170,'#f87171')+'<h4>العمر (سنة)</h4>'+bar('LiFePO4',8.5,8.5,'#4ade80')+bar('رصاص',1.1,8.5,'#f87171')+'<h4>احتفاظ 30 يوما (%)</h4>'+bar('LiFePO4',97,100,'#4ade80')+bar('رصاص',80,100,'#f87171');})();
+})();
+</script>
+
 </main>
 <script>
 // ---------- tabs ----------

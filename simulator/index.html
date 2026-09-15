@@ -53,6 +53,7 @@ img.blue{width:100%;border:1px solid #334155;border-radius:8px;background:#fff}
 <button data-tab="etb">🔋 بطارية الخلود</button>
 <button data-tab="asm">🔧 رسومات التجميع</button>
   <button class="tab-btn" data-tab="hb">🏠 بطارية 50</button>
+  <button class="tab-btn" data-tab="wind">🌀 رياح</button>
 </nav>
 <main>
 <!-- ============ ELECTROLYZER ============ -->
@@ -473,6 +474,36 @@ document.getElementById('hb-cap').onchange=tco;tco();
 })();
 </script>
 
+<section id="tab-wind" class="tab-sec">
+<h2>🌀 توربين الرياح المغناطيسي — كهرباء الليل</h2>
+<p>متوسط رياح موقعك (م/ث): <input id="wd-avg" type="range" min="2" max="7" step="0.5" value="3"><b><span id="wd-avgv">3</span></b> — تعز-مدينة ~3، التلال ~5</p>
+<canvas id="wd-cv" width="660" height="260"></canvas>
+<div id="wd-out"></div>
+<div style="background:#1e293b;padding:8px;margin-top:8px">⚖️ شريط الحقيقة: المغناطيس <b>يحوّل</b> الريح إلى كهرباء ولا <b>يخلقها</b> — أي «مولد مغناطيسي بلا ريح/حركة» خدعة (بطارية مخفية). البراهين الخمسة في ملف المشروع.</div>
+<div style="background:#3b0764;padding:8px;margin-top:8px">🔥 bonus: عجلة كوري — محرك مغناطيسي حقيقي يدور بنار الشمعة (~100mW)! دليل البناء في المشروع.</div>
+</section>
+<script>
+(function(){
+var K=0.5*1.2*(Math.PI*0.49)*0.35*0.75;
+function tp(v){if(v<3||v>15)return 0;return Math.min(K*v*v*v,300);}
+function pdf(v,m){return (Math.PI/2)*(v/(m*m))*Math.exp(-Math.PI/4*(v/m)*(v/m));}
+function daily(m){var e=0;for(var v=0;v<25;v+=0.1)e+=tp(v)*pdf(v,m)*0.1;return e*24;}
+var s=document.getElementById('wd-avg'),sv=document.getElementById('wd-avgv');
+var cv=document.getElementById('wd-cv'),g=cv.getContext('2d');
+function X(v){return 40+v/15*600;} function Y(p){return 240-p/300*210;}
+function draw(m){g.fillStyle='#0b1220';g.fillRect(0,0,660,260);
+g.strokeStyle='#334155';for(var p=0;p<=300;p+=100){g.beginPath();g.moveTo(40,Y(p));g.lineTo(640,Y(p));g.stroke();}
+g.fillStyle='#94a3b8';g.fillText('300W',8,Y(300)+4);g.fillText('0',30,244);g.fillText('3 قطع-دخول',X(3)-20,255);g.fillText('15 فرملة',X(15)-20,255);
+g.strokeStyle='#38bdf8';g.lineWidth=2.5;g.beginPath();for(var x=0;x<=600;x+=3){var v=x/600*15;var y=Y(tp(v));if(x===0)g.moveTo(40+x,y);else g.lineTo(40+x,y);}g.stroke();g.lineWidth=1;
+g.strokeStyle='#4ade80';g.setLineDash([5,4]);g.beginPath();g.moveTo(X(m),30);g.lineTo(X(m),240);g.stroke();g.setLineDash([]);
+g.fillStyle='#4ade80';g.fillText('موقعك '+m, X(m)-20, 24);
+g.fillStyle='#fbbf24';g.fillText('الريح تهب ليلا — نصف الطاقة خارج الشمس!',380,60);}
+function upd(){var m=+s.value;sv.textContent=m;draw(m);
+var wh=daily(m);var v=wh<400?'🏙️ موقع مديني متواضع — مكمل ليلي (LED + مروحة).':(wh<900?'🏡 موقع جيد — يكمل الشمسي بقوة ليلا وغيمًا.':'⛰️ موقع تل ممتاز — يغذي المنزل وحده!');
+document.getElementById('wd-out').innerHTML='<b>الناتج اليومي ≈ '+Math.round(wh)+'Wh</b> — '+v;}
+s.oninput=upd;upd();
+})();
+</script>
 </main>
 <script>
 // ---------- tabs ----------

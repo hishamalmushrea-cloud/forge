@@ -46,6 +46,7 @@ img.blue{width:100%;border:1px solid #334155;border-radius:8px;background:#fff}
 <button data-tab="wonder">✨ غرفة الدهشة</button>
 <button data-tab="chaos">🦋 مختبر الفوضى</button>
 <button data-tab="mesh">🛡️ شبكة الفوضى</button>
+<button data-tab="poc">📡 إثبات المفهوم</button>
 <button data-tab="asm">🔧 رسومات التجميع</button>
 </nav>
 <main>
@@ -239,6 +240,19 @@ img.blue{width:100%;border:1px solid #334155;border-radius:8px;background:#fff}
 </div>
 <div><canvas id="mCanvas" width="460" height="300"></canvas></div>
 </div>
+</div>
+</section>
+<!-- ============ POC ============ -->
+<section id="tab-poc" class="tab">
+<div class="card"><h2>📡 مناظرة القفز — متوقع (ما قبل العتاد)</h2>
+<div class="readout">
+<div class="ro"><b>88.4%</b><span>الفوضوي ضد المتتبع</span></div>
+<div class="ro"><b>0.9%</b><span>LFSR ضد المتتبع (مكسور)</span></div>
+<div class="ro"><b>≈48%</b><span>الثلاثة ضد الوابل (تعادل)</span></div>
+<div class="ro"><b>±10pp</b><span>معيار قبول القياس</span></div>
+</div>
+<table class='cmp'><tr><th>الاختبار</th><th>ثابت</th><th>LFSR</th><th>Hash</th><th>فوضوي</th></tr><tr><td>PDR نظيف</td><td>100.0%</td><td>100.0%</td><td>100.0%</td><td><b>100.0%</b></td></tr><tr><td>PDR وابل 1/8</td><td>0.0%</td><td>88.9%</td><td>85.7%</td><td><b>91.0%</b></td></tr><tr><td>PDR وابل 2/8</td><td>0.0%</td><td>76.2%</td><td>73.7%</td><td><b>82.7%</b></td></tr><tr><td>PDR وابل 4/8</td><td>0.0%</td><td>49.8%</td><td>48.8%</td><td><b>47.9%</b></td></tr><tr><td>PDR وابل 6/8</td><td>0.0%</td><td>23.8%</td><td>25.4%</td><td><b>28.1%</b></td></tr><tr><td>PDR متتبع K=1</td><td>0.8%</td><td>0.9%</td><td>86.4%</td><td><b>88.4%</b></td></tr><tr><td>دقة المتتبع</td><td>100.0%</td><td>100.0%</td><td>13.6%</td><td><b>11.4%</b></td></tr><tr><td>زمن@50% ms</td><td>∞</td><td>200.9</td><td>204.9</td><td><b>209.0</b></td></tr><tr><td>mJ/حزمة@50%</td><td>∞</td><td>4.972</td><td>5.071</td><td><b>5.173</b></td></tr><tr><td>إعادة قفل</td><td>N/A</td><td>4</td><td>4</td><td><b>4</b></td></tr></table>
+<p class="note">المتتبع يكسر LFSR بـBerlekamp-Massey (دقة 100%) ويعجز عن الفوضوي (11.4% ≈ صدفة). ضد الوابل الأعمى: لا تفوق — أي مولد منتظم متساوٍ. الأعمدة المقاسة تُملأ بعد العتاد (poc/results_table.md).</p>
 </div>
 </section>
 <!-- ============ ASSEMBLY ============ -->

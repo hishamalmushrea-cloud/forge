@@ -55,6 +55,7 @@ img.blue{width:100%;border:1px solid #334155;border-radius:8px;background:#fff}
   <button class="tab-btn" data-tab="hb">🏠 بطارية 50</button>
   <button class="tab-btn" data-tab="wind">🌀 رياح</button>
   <button class="tab-btn" data-tab="nucell">☢ نووية</button>
+  <button class="tab-btn" data-tab="rf">📡 راديو</button>
 </nav>
 <main>
 <!-- ============ ELECTROLYZER ============ -->
@@ -531,6 +532,57 @@ var D=[['ساعة RTC ‏1µW',1],['حساس حرارة ‏5µW',1],['منارة
 var d=document.getElementById('nu-dev');var hh='<h4>ماذا يشغل 100µW؟</h4>';
 for(var i=0;i<D.length;i++)hh+='<div>'+(D[i][1]?'✅':'❌')+' '+D[i][0]+'</div>';
 d.innerHTML=hh;
+})();
+</script>
+<section id="tab-rf" class="tab-sec">
+<h2>📡 ForgeRF — راسم الطيف + الجدار الناري</h2>
+<div class="subnav"><button class="rf-btn on" data-rfv="scope">📊 الطيف</button><button class="rf-btn" data-rfv="fw">🔥 الجدار الناري</button></div>
+<div id="rf-v-scope" class="rf-v">
+<p>نطاق FM ‏88–108: الكسب <input id="rf-g" type="range" min="0" max="40" value="15"><b><span id="rf-gv">15dB</span></b> <label><input type="checkbox" id="rf-f"> فلتر FM-notch</label></p>
+<canvas id="rf-cv" width="660" height="260"></canvas>
+<div id="rf-out"></div>
+</div>
+<div id="rf-v-fw" class="rf-v" style="display:none">
+<p>التردد (MHz): <input id="rf-fq" type="number" value="433.9" step="0.1" style="width:90px"> القدرة (dBm): <input id="rf-p" type="number" value="10" style="width:60px"> <label><input type="checkbox" id="rf-ham"> رخصة هواة</label> <button class="act" id="rf-go">افحص</button></p>
+<p>جرّب: <button class="act" id="rf-p1">433.9 ✅</button> <button class="act" id="rf-p2">121.5 🚫</button> <button class="act" id="rf-p3">145 بدون رخصة 🚫</button></p>
+<div id="rf-verd"></div>
+</div>
+</section>
+<script>
+(function(){
+var rb=document.querySelectorAll('.rf-btn');
+for(var i=0;i<rb.length;i++){rb[i].onclick=function(){for(var j=0;j<rb.length;j++)rb[j].classList.remove('on');this.classList.add('on');var vs=document.querySelectorAll('.rf-v');for(var k=0;k<vs.length;k++)vs[k].style.display='none';document.getElementById('rf-v-'+this.getAttribute('data-rfv')).style.display='block';};}
+var ST=[[90.1,30],[93.5,55],[96.2,40],[99.0,80],[102.3,45],[105.7,60]];
+var gs=document.getElementById('rf-g'),gv=document.getElementById('rf-gv'),fl=document.getElementById('rf-f');
+var cv=document.getElementById('rf-cv'),g=cv.getContext('2d');
+function draw(){var gn=+gs.value;gv.textContent=gn+'dB';g.fillStyle='#0b1220';g.fillRect(0,0,660,260);
+var X=function(f){return 40+(f-88)/20*600;},Y=function(p){return 240-p/100*210;};
+g.strokeStyle='#334155';for(var p=0;p<=100;p+=25){g.beginPath();g.moveTo(40,Y(p));g.lineTo(640,Y(p));g.stroke();}
+g.fillStyle='#94a3b8';g.fillText('88',36,255);g.fillText('98',335,255);g.fillText('108',625,255);
+var floor=8+gn*0.5+(fl.checked?-15:0);if(floor<5)floor=5;
+g.fillStyle='#1e293b';g.fillRect(40,Y(floor),600,240-Y(floor));
+for(var i=0;i<ST.length;i++){var hh=ST[i][1]*(0.5+gn/40)*(fl.checked?0.25:1);var clip=0;
+if(40+hh>240-30){hh=240-30-Y(0)-0;clip=1;}
+g.fillStyle=clip?'#f87171':'#38bdf8';var bw=600/20*0.3;
+g.fillRect(X(ST[i][0])-bw/2,Y(floor)-hh,bw,hh);}
+var ov=!fl.checked&&gn>25;
+document.getElementById('rf-out').innerHTML=ov?'<b style="color:#f87171">⚠️ إغراق! المحطة القوية تشبع المستقبل وترفع الأرضية — فعّل الفلتر.</b>':'الأرضية: '+Math.round(floor)+' — '+(fl.checked?'الفلتر يحمي المستقبل ✅':'ارفع الكسب وشاهد الإغراق');
+}
+gs.oninput=draw;fl.onchange=draw;draw();
+function inB(f,a,b){return f>=a&&f<=b;}
+function fw(f,p,ham){if(inB(f,121.4,121.6)||inB(f,242.9,243.1)||inB(f,405.9,406.1))return [0,'طوارئ/استغاثة — محظور دائمًا'];
+if(inB(f,108,137))return [0,'نطاق طيران — محظور'];if(inB(f,87,108))return [0,'بث FM — محظور'];
+if(inB(f,433.05,434.79))return p<=10?[1,'ISM ‏433 مسموح ✅']:[0,'يتجاوز 10dBm'];
+if(inB(f,868,868.6))return p<=14?[1,'ISM ‏868 مسموح ✅']:[0,'يتجاوز 14dBm'];
+if(inB(f,2400,2483.5))return p<=20?[1,'ISM ‏2.4G مسموح ✅']:[0,'يتجاوز 20dBm'];
+if(inB(f,144,146)||inB(f,430,440))return ham?(p<=30?[1,'هواة برخصة ✅']:[0,'يتجاوز 30dBm']):[0,'هواة — يلزم رخصة'];
+return [0,'خارج كل النطاقات المسموحة'];}
+function go(){var r=fw(+document.getElementById('rf-fq').value,+document.getElementById('rf-p').value,document.getElementById('rf-ham').checked);
+document.getElementById('rf-verd').innerHTML=r[0]?'<b style="color:#4ade80">مسموح ✅ — '+r[1]+'</b>':'<b style="color:#f87171">مرفوض 🚫 — '+r[1]+'</b>';}
+document.getElementById('rf-go').onclick=go;
+document.getElementById('rf-p1').onclick=function(){document.getElementById('rf-fq').value=433.9;document.getElementById('rf-p').value=10;go();};
+document.getElementById('rf-p2').onclick=function(){document.getElementById('rf-fq').value=121.5;document.getElementById('rf-p').value=0;go();};
+document.getElementById('rf-p3').onclick=function(){document.getElementById('rf-fq').value=145;document.getElementById('rf-p').value=20;document.getElementById('rf-ham').checked=false;go();};
 })();
 </script>
 </main>

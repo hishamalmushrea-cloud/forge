@@ -2,3 +2,4 @@
 - homebatt100 [DESIGNED+SIMULATED]: 4S 100Ah 1280Wh, 400W/40A, 10y, TCO 8.4x, BMS 9/9; tab15 50/100 toggle
 - magwind [DESIGNED+SIMULATED]: free-energy debunked (5 proofs), 1.4m PMA turbine city-273Wh/hill-1280Wh, Curie demo 104mW, dump FW 6/6, tab16
 - nucell [ANALYZED+SIMULATED]: BV100 truth model (71%@50y, 43.8Wh, 2500x phone, $700+ isotope, 10k units/W), red lines, tab17
+- forgerf [SCOUT:BUILDABLE/ForgeRF-1:DESIGNED]: beats HackRF Pro (full-duplex 12-bit 74dB), TX firewall 9/9, linkbudget verified, tab18

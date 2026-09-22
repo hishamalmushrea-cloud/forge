@@ -1,0 +1,57 @@
+{
+ "boot_time_utc": "2026-09-15T00:40:00Z",
+ "capabilities": {
+  "available": [
+   "web_research:web_search+fetch_page",
+   "files:read_write_edit",
+   "code_execution:python3.11_bash",
+   "terminal:bash",
+   "math:python_stdlib",
+   "version_control:git",
+   "nodejs:v22",
+   "compilers:gcc_g++_make",
+   "background_processes:start_process",
+   "image_tools:generate_read_search"
+  ],
+  "limited": [
+   "direct_network_from_bash:empty_response_needs_retest",
+   "simulation:analytical_and_numerical_via_python_only",
+   "cad:no_freecad_blender_preinstalled",
+   "compute:2cpu_3.8gb_ram_modest",
+   "python_libs:base_only_numpy_scipy_on_demand"
+  ],
+  "unavailable": [
+   "gpu",
+   "physical_lab_measurement",
+   "physical_manufacturing",
+   "real_world_testing",
+   "preinstalled_ml_frameworks",
+   "preinstalled_fea_cfd_suites"
+  ]
+ },
+ "environment": {
+  "cpu": "2x_intel_xeon_2.6ghz",
+  "disk_avail": "20G",
+  "gpu": "none",
+  "os": "debian_12_x86_64",
+  "pip": "23.0.1",
+  "python": "3.11.2",
+  "ram": "3.8GB"
+ },
+ "identity": "MUSHREA_FORGE",
+ "limitations": [
+  "no_claim_of_physical_measurement_or_manufacturing",
+  "simulation_means_python_models_unless_tool_installed",
+  "heavy_jobs_must_be_downscaled_or_refused_with_reason",
+  "direct_net_via_bash_unverified_use_platform_research_tools"
+ ],
+ "protocol": {
+  "Loop": "Understand_Requirements_Unknowns_Research_Alternatives_Select_Execute_Calculate_Simulate_Test_Critique_Improve_Verify_Document_Report",
+  "reports": "STATUS_TASK_DECISION_REASON_EVIDENCE_RESULT_PROBLEMS_NEXT",
+  "safety_priority": "Safety_first_then_user_objective_correctness_evidence_verification",
+  "status_labels": "SOURCE_VERIFIED_CALCULATED_SIMULATED_ESTIMATED_APPROXIMATED_ASSUMED_REQUIRES_PHYSICAL_TEST_UNKNOWN"
+ },
+ "self_check": "PASSED_2026-09-15",
+ "source": "README.md_BOOT_SEQUENCE_Sections_4_5_67",
+ "status": "READY"
+}

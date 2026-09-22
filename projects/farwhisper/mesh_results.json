@@ -1,0 +1,13 @@
+{
+ "pdr_clean": 1.0,
+ "pdr_jam50": 0.705,
+ "hops": 4.12,
+ "path": [
+  0,
+  6,
+  3,
+  9,
+  11
+ ],
+ "verdict": "MESH [VERIFIED]"
+}

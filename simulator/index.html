@@ -1,0 +1,1247 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MUSHREA FORGE — محاكي المشاريع</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#0f172a;color:#e2e8f0;font-family:Tahoma,Arial,sans-serif}
+header{background:#1e293b;padding:14px 18px;border-bottom:3px solid #38bdf8}
+header h1{margin:0;font-size:20px}header p{margin:4px 0 0;font-size:12px;color:#94a3b8}
+.tabs{display:flex;gap:8px;padding:12px 18px;background:#0b1220;flex-wrap:wrap}
+.tabs button{background:#1e293b;color:#e2e8f0;border:1px solid #334155;border-radius:8px;padding:10px 16px;font-size:14px;cursor:pointer}
+.tabs button.active{background:#38bdf8;color:#0f172a;font-weight:bold}
+main{padding:16px 18px;max-width:1060px}
+section.tab{display:none}section.tab.active{display:block}
+.card{background:#1e293b;border:1px solid #334155;border-radius:12px;padding:14px;margin-bottom:14px}
+.card h2{margin:0 0 10px;font-size:16px;color:#38bdf8}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:800px){.grid{grid-template-columns:1fr}}
+label{display:block;font-size:13px;margin:8px 0 2px;color:#cbd5e1}
+input[type=range]{width:100%}
+select,button.act{background:#0ea5e9;color:#06202e;border:none;border-radius:8px;padding:9px 14px;font-size:14px;cursor:pointer;margin:6px 4px 0}
+button.act.warn{background:#f59e0b}button.act.stop{background:#ef4444;color:#fff}
+canvas{width:100%;background:#0b1220;border:1px solid #334155;border-radius:8px}
+.readout{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin-top:10px}
+.ro{background:#0b1220;border:1px solid #334155;border-radius:8px;padding:8px;text-align:center}
+.ro b{display:block;font-size:17px;color:#7dd3fc}.ro span{font-size:11px;color:#94a3b8}
+.badge{display:inline-block;padding:6px 14px;border-radius:20px;font-weight:bold;font-size:14px;margin-top:8px}
+.pass{background:#14532d;color:#86efac;border:1px solid #22c55e}
+.fail{background:#450a0a;color:#fca5a5;border:1px solid #ef4444}
+img.blue{width:100%;border:1px solid #334155;border-radius:8px;background:#fff}
+.note{font-size:12px;color:#94a3b8;margin-top:8px}
+</style>
+</head>
+<body>
+<header>
+<h1>⚗️ MUSHREA FORGE — محاكي المشاريع التفاعلي</h1>
+<p>SIMULATED — نفس النماذج الفيزيائية المستخدمة في المشاريع (فاراداي / سيبك / الاضمحلال الإشعاعي) — تعمل داخل متصفحك دون إنترنت</p>
+</header>
+<nav class="tabs">
+<button class="active" data-tab="ely">💧 المحلل الكهربائي (H2+O2)</button>
+<button data-tab="teg">🔥 المولد الحراري (TEG)</button>
+<button data-tab="nuc">☢️ البطارية النووية (دراسة)</button>
+<button data-tab="node">📡 عقدة الحساس (عقود دون شحن)</button>
+<button data-tab="desal">🔋🔹 بطارية التحلية</button>
+<button data-tab="wonder">✨ غرفة الدهشة</button>
+<button data-tab="chaos">🦋 مختبر الفوضى</button>
+<button data-tab="mesh">🛡️ شبكة الفوضى</button>
+<button data-tab="poc">📡 إثبات المفهوم</button>
+<button data-tab="whis">🤫 همس</button>
+<button data-tab="far">📡 همس بعيد</button>
+<button data-tab="sim">📲 همس الشريحة</button>
+<button data-tab="etb">🔋 بطارية الخلود</button>
+<button data-tab="asm">🔧 رسومات التجميع</button>
+  <button class="tab-btn" data-tab="hb">🏠 بطارية 50</button>
+  <button class="tab-btn" data-tab="wind">🌀 رياح</button>
+  <button class="tab-btn" data-tab="nucell">☢ نووية</button>
+  <button class="tab-btn" data-tab="rf">📡 راديو</button>
+</nav>
+<main>
+<!-- ============ ELECTROLYZER ============ -->
+<section id="tab-ely" class="tab active">
+<div class="card"><h2>💧 محلل الماء القلوي — تشغيل افتراضي حي</h2>
+<div class="grid">
+<div>
+<label>التيار: <b id="elyIVal">4.0 A</b></label>
+<input type="range" id="elyI" min="1" max="10" step="0.5" value="4">
+<label>جهد الخلية: <b id="elyVVal">2.00 V</b></label>
+<input type="range" id="elyV" min="1.8" max="2.2" step="0.05" value="2.0">
+<label>سرعة الزمن الافتراضي</label>
+<select id="elySpeed"><option value="1">×1 حقيقي</option><option value="10" selected>×10</option><option value="60">×60</option></select><br>
+<button class="act" id="elyStart">▶ بدء التشغيل</button>
+<button class="act stop" id="elyReset">↺ إعادة ضبط</button>
+<button class="act warn" id="elyFault">⚠ محاكاة تسريب: إيقاف</button>
+<div class="readout">
+<div class="ro"><b id="rLph">—</b><span>H2 لتر/ساعة</span></div>
+<div class="ro"><b id="rPwr">—</b><span>القدرة (واط)</span></div>
+<div class="ro"><b id="rWhL">—</b><span>واط·ساعة/لتر</span></div>
+<div class="ro"><b id="rEff">—</b><span>كفاءة LHV</span></div>
+<div class="ro"><b id="rTime">—</b><span>الزمن الافتراضي</span></div>
+<div class="ro"><b id="rMl">—</b><span>H2 متراكم (mL)</span></div>
+</div>
+<div id="elyVerdict" class="badge pass">بانتظار التشغيل (T2/T3 على البيانات الحية)</div>
+</div>
+<div>
+<canvas id="elyCell" width="420" height="240"></canvas>
+<p class="note">الخلية: فقاعات ∝ التيار — المهبط (−) ينتج H2 ضعف المصعد</p>
+</div>
+</div>
+</div>
+<div class="card"><h2>📈 الإنتاج التراكمي مقابل نظرية فاراداي</h2>
+<canvas id="elyChart" width="640" height="300"></canvas>
+</div>
+</section>
+<!-- ============ TEG ============ -->
+<section id="tab-teg" class="tab">
+<div class="card"><h2>🔥 المولد الحراري SP1848 — نقطة التشغيل</h2>
+<div class="grid">
+<div>
+<label>فرق الحرارة ΔT: <b id="tegDVal">85 K</b></label>
+<input type="range" id="tegD" min="10" max="100" step="5" value="85">
+<label>عدد الوحدات (تسلسل)</label>
+<select id="tegN"><option value="1">وحدة واحدة</option><option value="2" selected>وحدتان</option></select>
+<label>المقاومة الحرارية للمشتت: <b id="tegRVal">0.5 K/W</b></label>
+<input type="range" id="tegR" min="0.3" max="1.2" step="0.1" value="0.5">
+<div class="readout">
+<div class="ro"><b id="tVoc">—</b><span>Voc النظام (V)</span></div>
+<div class="ro"><b id="tR">—</b><span>R النظام (Ω)</span></div>
+<div class="ro"><b id="tP">—</b><span>Pmax (W)</span></div>
+<div class="ro"><b id="tQ">—</b><span>حرارة السخان (W)</span></div>
+<div class="ro"><b id="tHot">—</b><span>Thot (°C)</span></div>
+<div class="ro"><b id="tCold">—</b><span>Tcold (°C)</span></div>
+</div>
+<div id="tegVerdict" class="badge pass">—</div>
+<p class="note">الجدول الكهربائي مُقاس من البائع (SOURCE VERIFIED)؛ الحرارية: η=4%، Tamb=35°C (تعز)</p>
+</div>
+<div><canvas id="tegChart" width="420" height="340"></canvas></div>
+</div>
+</div>
+</section>
+<!-- ============ NUCLEAR ============ -->
+<section id="tab-nuc" class="tab">
+<div class="card"><h2>☢️ البطارية النووية — دراسة نظرية (لا بناء فيزيائي)</h2>
+<div class="grid">
+<div>
+<label>النظير</label>
+<select id="nucIso"><option value="Ni-63">Ni-63 بيتافولطي (100 سنة)</option><option value="H-3">Tritium بيتافولطي (12.3 سنة)</option><option value="Pu-238">Pu-238 حراري RTG (87.7 سنة)</option></select>
+<label>القدرة المستهدفة BOL: <b id="nucPVal">100 µW</b></label>
+<input type="range" id="nucP" min="10" max="500" step="10" value="100">
+<label><input type="checkbox" id="nucDeg" checked> تدهور المحول 0.5%/سنة (نموذج v0.2 الواقعي)</label>
+<div class="readout">
+<div class="ro"><b id="nMass">—</b><span>كتلة النظير (g)</span></div>
+<div class="ro"><b id="nP20">—</b><span>بعد 20 سنة (µW)</span></div>
+<div class="ro"><b id="nLife">—</b><span>طاقة العمر (Wh)</span></div>
+</div>
+<p class="note">INFEASIBLE للبناء الفردي — منشأة مرخصة حصرًا. Pu-238 بالمليغرامات غير عملي حراريًا.</p>
+</div>
+<div><canvas id="nucChart" width="420" height="340"></canvas></div>
+</div>
+</div>
+</section>
+<!-- ============ NODE ============ -->
+<section id="tab-node" class="tab">
+<div class="card"><h2>📡 عقدة الحساس — العمر مقابل معدل الإرسال (نموذج v0.2)</h2>
+<div class="grid">
+<div>
+<label>الفاصل بين الإرسالات: <b id="ndTXVal">30 دقيقة</b></label>
+<input type="range" id="ndTX" min="15" max="120" step="5" value="30">
+<label>تسريب المكثف الفائق</label>
+<select id="ndLeak"><option value="0.000001">1µA ممتاز</option><option value="0.000002" selected>2µA اسمي</option><option value="0.000005">5µA رديء</option></select>
+<div class="readout">
+<div class="ro"><b id="ndLoad">—</b><span>متوسط الحمل (µW)</span></div>
+<div class="ro"><b id="ndEOL">—</b><span>العمر (سنة)</span></div>
+</div>
+<div id="ndVerdict" class="badge pass">—</div>
+<p class="note">مصدر 100µW ‏(v0.2) × حصاد 50% + نوم 2µW + رشقة 50mJ — جرّب إرسال/20دقيقة أو تسريب 5µA وشاهد الفشل!</p>
+</div>
+<div><canvas id="ndChart" width="420" height="340"></canvas></div>
+</div>
+</div>
+</section>
+<!-- ============ DESAL ============ -->
+<section id="tab-desal" class="tab">
+<div class="card"><h2>🔋🔹 بطارية التحلية — من ماء البحر إلى الشرب (معاير على Pasta 2012)</h2>
+<div class="grid">
+<div>
+<label>الإزالة لكل تمريرة: <b id="dsRVal">90%</b></label>
+<input type="range" id="dsR" min="50" max="95" step="5" value="90">
+<label>الفجوة الصافية ΔV (معايرة 0.07V): <b id="dsVVal">0.07 V</b></label>
+<input type="range" id="dsV" min="0.05" max="0.20" step="0.01" value="0.07">
+<div class="readout">
+<div class="ro"><b id="dsPass">—</b><span>تمريرات للشرب</span></div>
+<div class="ro"><b id="dsPpm">—</b><span>ppm النهائية</span></div>
+<div class="ro"><b id="dsE">—</b><span>kWh/m³ صافية</span></div>
+<div class="ro"><b id="dsAg">—</b><span>فضة/لتر (g)</span></div>
+</div>
+<div id="dsVerdict" class="badge pass">—</div>
+<p class="note">Q=nF/0.95 ‏| Ag ‏248mAh/g ‏| PB ‏100mAh/g — جرّب إزالة 50% وشاهد التمريرات والطاقة!</p>
+</div>
+<div><canvas id="dsChart" width="420" height="340"></canvas></div>
+</div>
+</div>
+</section>
+<!-- ============ WONDER ============ -->
+<section id="tab-wonder" class="tab">
+<div class="card"><h2>✨ غرفة الدهشة — ثلاثة أشياء حقيقية لا يصدقها حدسك</h2>
+<p class="note">كل تجربة تعمل بمعادلات حقيقية حيًا في متصفحك. جرّب بنفسك — الدهشة تحتاج مشاركتك.</p></div>
+<div class="card"><h2>🌀 1) التوأم الفوضوي — نفس البداية، مصيران مختلفان</h2>
+<div class="grid"><div>
+<label>فرق البداية بين التوأمين: <b id="wdEpsVal">0.1°</b> (غير مرئي!)</label>
+<input type="range" id="wdEps" min="0.01" max="2" step="0.01" value="0.1">
+<button class="act" id="wdReset1">↺ إعادة بنفس الفرق</button>
+<div class="readout"><div class="ro"><b id="wdDiv">—</b><span>التباعد الآن (درجة)</span></div></div>
+<p class="note">🔵🟠 بندولان مزدوجان متطابقان تمامًا إلا بجزء من درجة لا تراه — شاهدهما يرقصان معًا ثم <b>يخون أحدهما الآخر</b> وينفصلان لرقصتين مختلفتين كليًا. نفس القوانين، نفس البداية، مصير مختلف — لهذا يستحيل التنبؤ بالطقس.</p>
+<p class="note">الجبهة المخفية: التنبؤ بالفوضى، التشفير الفوضوي.</p>
+</div><div><canvas id="wdCanvas1" width="420" height="320"></canvas></div></div>
+</div>
+<div class="card"><h2>♾️ 2) رقصة الأجسام الثلاثة — المستحيل الذي رسمه نيوتن</h2>
+<div class="grid"><div>
+<button class="act warn" id="wdPerturb">💥 اخترق الرقصة (ركل 2%)</button>
+<button class="act" id="wdReset2">↺ استعد الرقصة المثالية</button>
+<p class="note">ثلاثة أجسام متساوية تطارد بعضها في شكل <b>∞</b> مثالي إلى الأبد (حل Moore 1993 لمعادلات نيوتن — لم يعرفه العلم حتى التسعينيات!). اضغط الزر: ركلة 2% فقط تذيب الرقصة في فوضى كاملة. الجمال هنا هش كالزجاج.</p>
+<p class="note">الجبهة المخفية: مسارات المركبات الفضائية، استقرار الأنظمة الشمسية.</p>
+</div><div><canvas id="wdCanvas2" width="420" height="340"></canvas></div></div>
+</div>
+<div class="card"><h2>🐦 3) السرب الحي — عقل بلا قائد</h2>
+<div class="grid"><div>
+<label>قوة التماسك: <b id="wdCohVal">0.4</b></label>
+<input type="range" id="wdCoh" min="0" max="1" step="0.05" value="0.4">
+<button class="act warn" id="wdScatter">🦅 هجوم مفترس!</button>
+<p class="note">70 طائرًا، كل واحد يتبع 3 قواعد غبية فقط (لا تقترب كثيرًا، اتجه مع جيرانك، ابقَ قريبًا) — <b>ولا أحد يعرف الصورة الكلية</b> — ومع ذلك يتشكل سرب حي يتماوج ككائن واحد، وينفجر ويعود عند الهجوم. من أين جاء "العقل"؟ من لا مكان — هذا هو الظهور (Emergence).</p>
+<p class="note">الجبهة المخفية: أسراب الدرونز، روبوتات الإنقاذ الجماعية.</p>
+</div><div><canvas id="wdCanvas3" width="420" height="300"></canvas></div></div>
+</div>
+</section>
+<!-- ============ CHAOS ============ -->
+<section id="tab-chaos" class="tab">
+<div class="card"><h2>🦋 فراشة Lorenz حية — قلب مولد العشوائية</h2>
+<div class="grid">
+<div>
+<button class="act warn" id="chFlip">⚡ اقلب بتًا واحدًا في البذرة</button>
+<button class="act" id="chReset">↺ إعادة التوأمين</button>
+<div class="readout">
+<div class="ro"><b>0.5008</b><span>monobit (مقاس)</span></div>
+<div class="ro"><b>7.891/8</b><span>إنتروبيا (مقاسة)</span></div>
+<div class="ro"><b>49.3%</b><span>انهيار البت (مقاس)</span></div>
+<div class="ro"><b id="chDiv">—</b><span>تباعد التوأمين الآن</span></div>
+</div>
+<p class="note">🔵🟠 توأمان من نفس البذرة إلا بتًا واحدًا — شاهدهما يطيران معًا ثم <b>ينفصلان لجناحين مختلفين</b>. هذا الانفصال هو ما يجعل الدفق غير قابل للتنبؤ — أساس التشفير. (تعليمي: للأسرار الحقيقية ChaCha20).</p>
+</div>
+<div><canvas id="chCanvas" width="420" height="360"></canvas></div>
+</div>
+</div>
+</section>
+<!-- ============ MESH ============ -->
+<section id="tab-mesh" class="tab">
+<div class="card"><h2>🛡️ شبكة الفوضى — القافزة التي لا يجدها التشويش</h2>
+<div class="grid">
+<div>
+<button class="act" id="mReset">↺ صفّر العدادات</button>
+<div class="readout">
+<div class="ro"><b id="mHopP">—</b><span>نجاح القافزة (حي)</span></div>
+<div class="ro"><b id="mFixP">—</b><span>نجاح الثابتة (حي)</span></div>
+<div class="ro"><b>2000/2000</b><span>تطابق بايثون↔C</span></div>
+<div class="ro"><b>RFC✓</b><span>HMAC-SHA256</span></div>
+</div>
+<p class="note">المحرك هنا <b>نقطة ثابتة Q16 بت-متطابق</b> مع العتاد — نفس البذرة تُنتج نفس القفزات في المتصفح والعقدة (تحقق: T1b). المشوش يشل نصف النطاق (أحمر) لكن القافزة تنجو ~48% بينما الثابتة على ch0 = ‏0%.</p>
+</div>
+<div><canvas id="mCanvas" width="460" height="300"></canvas></div>
+</div>
+</div>
+</section>
+<!-- ============ POC ============ -->
+<section id="tab-poc" class="tab">
+<div class="card"><h2>📡 مناظرة القفز — متوقع (ما قبل العتاد)</h2>
+<div class="readout">
+<div class="ro"><b>88.4%</b><span>الفوضوي ضد المتتبع</span></div>
+<div class="ro"><b>0.9%</b><span>LFSR ضد المتتبع (مكسور)</span></div>
+<div class="ro"><b>≈48%</b><span>الثلاثة ضد الوابل (تعادل)</span></div>
+<div class="ro"><b>±10pp</b><span>معيار قبول القياس</span></div>
+</div>
+<table class='cmp'><tr><th>الاختبار</th><th>ثابت</th><th>LFSR</th><th>Hash</th><th>فوضوي</th></tr><tr><td>PDR نظيف</td><td>100.0%</td><td>100.0%</td><td>100.0%</td><td><b>100.0%</b></td></tr><tr><td>PDR وابل 1/8</td><td>0.0%</td><td>88.9%</td><td>85.7%</td><td><b>91.0%</b></td></tr><tr><td>PDR وابل 2/8</td><td>0.0%</td><td>76.2%</td><td>73.7%</td><td><b>82.7%</b></td></tr><tr><td>PDR وابل 4/8</td><td>0.0%</td><td>49.8%</td><td>48.8%</td><td><b>47.9%</b></td></tr><tr><td>PDR وابل 6/8</td><td>0.0%</td><td>23.8%</td><td>25.4%</td><td><b>28.1%</b></td></tr><tr><td>PDR متتبع K=1</td><td>0.8%</td><td>0.9%</td><td>86.4%</td><td><b>88.4%</b></td></tr><tr><td>دقة المتتبع</td><td>100.0%</td><td>100.0%</td><td>13.6%</td><td><b>11.4%</b></td></tr><tr><td>زمن@50% ms</td><td>∞</td><td>200.9</td><td>204.9</td><td><b>209.0</b></td></tr><tr><td>mJ/حزمة@50%</td><td>∞</td><td>4.972</td><td>5.071</td><td><b>5.173</b></td></tr><tr><td>إعادة قفل</td><td>N/A</td><td>4</td><td>4</td><td><b>4</b></td></tr></table>
+<p class="note">المتتبع يكسر LFSR بـBerlekamp-Massey (دقة 100%) ويعجز عن الفوضوي (11.4% ≈ صدفة). ضد الوابل الأعمى: لا تفوق — أي مولد منتظم متساوٍ. الأعمدة المقاسة تُملأ بعد العتاد (poc/results_table.md).</p>
+</div>
+</section>
+<!-- ============ WHISPER ============ -->
+<section id="tab-whis" class="tab">
+<div class="card"><h2>🤫 همس — مراسلة مشفرة بصفر بنية تحتية</h2>
+<div class="grid">
+<div>
+<button class="act" id="wGenA">🎲 هوية آليس</button>
+<button class="act" id="wGenB">🎲 هوية بوب</button>
+<div class="readout">
+<div class="ro"><b id="wFpA">…</b><span>بصمة آليس (12 كلمة)</span></div>
+<div class="ro"><b id="wFpB">…</b><span>بصمة بوب (12 كلمة)</span></div>
+</div>
+<textarea id="wMsg" rows="2" style="width:100%">صباح الخير يا تعز! هذه رسالة همس مشفرة تسبق التقنية.</textarea>
+<button class="act warn" id="wSeal">🔒 شفّر لآليس ← بوب</button>
+<p class="note" id="wCapInfo">الكبسولة: —</p>
+<button class="act" id="wVPlay">📡 اعرض الإطارات الضوئية</button>
+<button class="act" id="wVCap">📷 التقط وفك التشفير</button>
+<p class="note" id="wVOut">المرئي: —</p>
+<button class="act" id="wSPlay">🔊 شغّل الهمس فوق الصوتي</button>
+<button class="act" id="wSCap">🎤 التقط من الصوت وفك</button>
+<p class="note">ضجيج القناة: <input type="range" id="wNoise" min="5" max="30" value="20"> <b id="wNoiseV">20dB</b></p>
+<p class="note" id="wSOut">الصوتي: —</p>
+<button class="act" id="wExport">📄 صدّر كنص</button>
+<button class="act" id="wImport">📥 استورد وفك</button>
+<textarea id="wFileBox" rows="2" style="width:100%" placeholder="base64 الكبسولة…"></textarea>
+<p class="note" id="wFOut">الملف: —</p>
+<button class="act warn" id="wTamper">⚡ اعبث ببايت واحد</button>
+<p class="note" id="wTamperOut">العبث: —</p>
+<button class="act" id="wSelf">🧪 الاختبار الذاتي (13)</button>
+<div id="wSelfOut"></div>
+</div>
+<div><canvas id="wVCanvas" width="450" height="450"></canvas>
+<canvas id="wSCanvas" width="440" height="160"></canvas></div>
+</div>
+<p class="note">تشفير حقيقي (ECDH+AEG-GCM) + مودمات حقيقية تعمل هنا: البكسلات تُقرأ من اللوحة، والموجات تُحلَّل رياضيًا. v1: TOFU بلا سرية أمامية — موثق.</p>
+</div>
+</section>
+<!-- ============ FARWHISPER ============ -->
+<section id="tab-far" class="tab">
+<div class="card"><h2>📡 همس بعيد — رسائل 10km بلا إنترنت (عبر عقدة LoRa جيبية)</h2>
+<div class="readout">
+<div class="ro"><b>33.8dB</b><span>هامش 10km (مقاس)</span></div>
+<div class="ro"><b>0.943s</b><span>زمن الرسالة SF9</span></div>
+<div class="ro"><b>100%/70%</b><span>PDR نظيف/وابل</span></div>
+<div class="ro"><b>38/h</b><span>سقف دورة العمل</span></div>
+</div>
+<div class="grid">
+<div>
+<textarea id="fMsg" rows="2" style="width:100%">سلام من تعز إلى إب عبر الأثير الحر!</textarea>
+<button class="act warn" id="fSend">📡 شفّر وأرسل عبر الشبكة</button>
+<button class="act" id="fJam">⚡ التشويش: <b id="fJamSt">مغلق</b></button>
+<button class="act" id="fBLE">📱 اربط العقدة (بلوتوث)</button>
+<button class="act" id="fReset">↺ صفّر</button>
+<p class="note" id="fOut">الشبكة: —</p>
+<p class="note" id="fBLEOut">البلوتوث: —</p>
+<div class="readout">
+<div class="ro"><b id="fDel">0</b><span>وصلت</span></div>
+<div class="ro"><b id="fLost">0</b><span>ضاعت</span></div>
+<div class="ro"><b id="fTx">0</b><span>بثوث</span></div>
+</div>
+<p class="note">بصمتا همس: <span id="fFpA">…</span> ←→ <span id="fFpB">…</span></p>
+</div>
+<div><canvas id="fMesh" width="460" height="360"></canvas></div>
+</div>
+<p class="note">التشفير همس حقيقي (ECDH+GCM) والفيض بميكانيكا النموذج المقاس (‏3 محاولات/تمرير). الهاتف وحده لا يصل ‏10km فيزيائيًا — التطبيق يخاطب عقدة LoRa جيبية (~$15) بالبلوتوث.</p>
+</div>
+</section>
+<!-- ============ SIMWHISPER ============ -->
+<section id="tab-sim" class="tab">
+<div class="card"><h2>📲 همس الشريحة — SMS مشفر + رنّات مجانية (بلا إنترنت)</h2>
+<div class="readout">
+<div class="ro"><b id="sCodec">…</b><span>فحص JS↔بايثون</span></div>
+<div class="ro"><b>2 SMS</b><span>تكلفة الرسالة المشفرة</span></div>
+<div class="ro"><b>0</b><span>تكلفة الرنّة (مجانية)</span></div>
+<div class="ro"><b id="sCost">0</b><span>SMS أُنفقت هنا</span></div>
+</div>
+<div class="grid">
+<div>
+<p class="note">بصمتان: <span id="sFpA">…</span> ←→ <span id="sFpB">…</span></p>
+<textarea id="sMsg" rows="2" style="width:100%">قابلني عند البئر بعد المغرب — ولا تخبر أحدًا.</textarea>
+<button class="act warn" id="sSeal">🔒 شفّر وقطّع SMS</button>
+<p class="note" id="sSegs">المقاطع: —</p>
+<button class="act" id="sRecv">📥 استلم وفك (معكوس الترتيب!)</button>
+<button class="act warn" id="sCorrupt">⚡ أفسد مقطعًا</button>
+<p class="note" id="sOut">المستلم: —</p>
+<p class="note">نص عادي للمقارنة: <input id="sPlain" value="سلام" style="width:40%"> → <b id="sPlainCost">1</b> مقطع (غير مشفر!)</p>
+</div>
+<div>
+<p class="note">رنّات مجانية (‏1-بت):</p>
+<button class="act" id="r1">🔔 رنّة (تمام ✓)</button>
+<button class="act" id="r2">🔔🔔 رنّتان (اتصل بي)</button>
+<button class="act" id="r3">🔔🔔🔔 ‏3 (تعال/خطر)</button>
+<p class="note" id="rTime">الخط: —</p>
+<p class="note" id="rOut">الفك: —</p>
+</div>
+</div>
+<p class="note">المشغّل يرى الأرقام والأوقات لكن المحتوى شفرة. الرنّات مجانية لكن ~‏2 بت/دقيقة — إشارة طوارئ لا مراسلة.</p>
+</div>
+</section>
+<!-- ============ ETERNITY ============ -->
+<section id="tab-etb" class="tab">
+<div class="card"><h2>🔋 بطارية الخلود — 3 أيام ← 7.5 ← ∞ (بلا إشعاع!)</h2>
+<div class="grid">
+<div>
+<p class="note">شاشة <input type="range" id="eScr" min="0" max="8" step="0.5" value="4"> <b id="eScrV">4h</b></p>
+<p class="note">مكالمات <input type="range" id="eCall" min="0" max="3" step="0.5" value="1"> <b id="eCallV">1h</b></p>
+<p class="note">بيانات <input type="range" id="eData" min="0" max="4" step="0.5" value="1"> <b id="eDataV">1h</b></p>
+<p class="note">شمس <input type="range" id="eSun" min="0" max="8" step="1" value="4"> <b id="eSunV">4h</b></p>
+<button class="act warn" id="eMode">🌙 الوضع: <b id="eModeSt">عادي</b></button>
+<div class="readout">
+<div class="ro"><b id="eDays">—</b><span>الهاتف وحده (يوم)</span></div>
+<div class="ro"><b id="eSus">—</b><span>مع المحطة</span></div>
+</div>
+<p class="note" id="eUse">الاستهلاك: —</p>
+<button class="act" id="ePour">💧 اسكب الماء المالح!</button>
+<p class="note" id="eAlOut">الخرطوشة: —</p>
+</div>
+<div><canvas id="eCurve" width="460" height="200"></canvas>
+<canvas id="eBars" width="460" height="170"></canvas>
+<canvas id="eAlCurve" width="460" height="120"></canvas></div>
+</div>
+<p class="note">النووي الحقيقي (‏100µW) يعجز ‏2500× عن الهاتف — الخلود يأتي من التوفير + الشمس + كيمياء آمنة، لا من الإشعاع.</p>
+</div>
+</section>
+<!-- ============ ASSEMBLY ============ -->
+<section id="tab-asm" class="tab">
+<div class="card"><h2>🗺️ فهرس الرسوم — اضغط على أي رسم للقفز إليه</h2>
+<p style="font-size:14px;line-height:2">
+🔧 تجميع: <a href="#asm-ely">المحلل الكهربائي</a> • <a href="#asm-node">عقدة الحساس</a> • <a href="#asm-dcell">خلية التحلية</a> • <a href="#asm-dplumb">سباكة التحلية</a> • <a href="#asm-dwire">كهرباء التحلية</a><br>
+📊 مخططات محسوبة: <a href="#ch-all">كل المخططات</a>
+</p></div>
+<div class="card" id="asm-ely"><h2>🔧 المحلل الكهربائي — رسم التجميع</h2>
+<img class="blue" src="assets/assembly.svg" alt="electrolyzer assembly"></div>
+<div class="card" id="asm-node"><h2>🔧 عقدة الحساس — مخطط التوصيل</h2>
+<img class="blue" src="assets/node_wiring.svg" alt="node wiring"></div>
+<div class="card" id="asm-dcell"><h2>🔧 خلية التحلية — مفككة بترتيب الرص 1←7</h2>
+<img class="blue" src="assets/desal_cell.svg" alt="desal cell"></div>
+<div class="card" id="asm-dplumb"><h2>🔧 منظومة التحلية — السباكة والدورة الرباعية</h2>
+<img class="blue" src="assets/desal_plumbing.svg" alt="desal plumbing"></div>
+<div class="card" id="asm-dwire"><h2>🔧 منظومة التحلية — الكهرباء والتحكم</h2>
+<img class="blue" src="assets/desal_wiring.svg" alt="desal wiring"></div>
+<div class="card" id="ch-all"><h2>📊 كل المخططات المحسوبة</h2>
+<p class="note">المحلل:</p><img class="blue" src="assets/ely_chart.svg" alt="e">
+<p class="note">الحراري:</p><img class="blue" src="assets/teg_chart.svg" alt="t">
+<p class="note">النووية:</p><img class="blue" src="assets/nuc_chart.svg" alt="n">
+<p class="note">النووية v0.2:</p><img class="blue" src="assets/nuc_chart_v2.svg" alt="n2">
+<p class="note">العقدة:</p><img class="blue" src="assets/node_eol.svg" alt="nd">
+<p class="note">التحلية:</p><img class="blue" src="assets/desal_chart.svg" alt="d">
+<p class="note">الفوضى (فراشة Lorenz المنفذة):</p>
+<img class="blue" src="assets/chaos_chart.svg" alt="c">
+<p class="note">الشبكة القافزة (شلال القنوات تحت التشويش):</p>
+<img class="blue" src="assets/mesh_chart.svg" alt="m">
+<p class="note">همس بعيد (خريطة الشبكة ‏12 عقدة، الأخضر=أقصر مسار ‏A-B):</p>
+<img class="blue" src="assets/far_mesh.svg" alt="f">
+</div>
+</section>
+<section id="tab-hb" class="tab-sec">
+<h2>🏠 بطارية المنزل — 50 أم 100؟</h2>
+<div class="subnav"><button class="hb-btn on" data-hbv="dash">⚡ المحاكاة</button><button class="hb-btn" data-hbv="tco">💰 العمر والتكلفة</button><button class="hb-btn" data-hbv="build">🔧 التجميع</button></div>
+<div id="hb-v-dash" class="hb-v">
+<p>البطارية: <select id="hb-cap"><option value="640">50Ah (640Wh) + لوح 200W</option><option value="1280">100Ah (1280Wh) + لوحان 400W</option></select></p>
+<p>من 06:00 وبطارية 20%: <label>الغيوم <input id="hb-cloud" type="range" min="0" max="90" value="10"><span id="hb-cloudv">10%</span></label></p>
+<p>الأحمال: <label><input type="checkbox" id="hb-led" checked> LED 20W</label> <label><input type="checkbox" id="hb-fan" checked> مروحة 30W</label> <label><input type="checkbox" id="hb-ph" checked> هواتف 10W</label> <label><input type="checkbox" id="hb-tv" checked> TV 50W</label> <label><input type="checkbox" id="hb-fr"> 🧊 ثلاجة 80W (جرّب الفخ!)</label></p>
+<p><button class="act" id="hb-start">▶ ابدأ اليوم</button> <span id="hb-clock">06:00 — SOC 20%</span></p>
+<canvas id="hb-cv" width="660" height="260"></canvas>
+<div id="hb-out"></div>
+</div>
+<div id="hb-v-tco" class="hb-v" style="display:none"><h3>LiFePO4 مقابل الرصاص — 10 سنوات</h3><div id="hb-tco"></div></div>
+<div id="hb-v-build" class="hb-v" style="display:none"><h3>رسوم التجميع — 50Ah</h3>
+<p>1) التوصيل:</p><img src="drawings-hb/wiring.svg" width="660">
+<p>2) الخلايا:</p><img src="drawings-hb/battery_pack.svg" width="660">
+<p>3) التركيب:</p><img src="drawings-hb/mounting.svg" width="660">
+<p>4) الشحن:</p><img src="drawings-hb/charge_curve.svg" width="660">
+<h3>رسوم التجميع — 100Ah</h3>
+<p>1) التوصيل (400W/40A):</p><img src="drawings-hb/wiring100.svg" width="660">
+<p>2) الخلايا:</p><img src="drawings-hb/battery_pack100.svg" width="660">
+<p>3) التركيب:</p><img src="drawings-hb/mounting100.svg" width="660">
+<p>4) الشحن:</p><img src="drawings-hb/charge_curve100.svg" width="660"></div>
+</section>
+<script>
+(function(){
+var hbB=document.querySelectorAll('.hb-btn');
+for(var i=0;i<hbB.length;i++){hbB[i].onclick=function(){for(var j=0;j<hbB.length;j++)hbB[j].classList.remove('on');this.classList.add('on');var vs=document.querySelectorAll('.hb-v');for(var k=0;k<vs.length;k++)vs[k].style.display='none';document.getElementById('hb-v-'+this.getAttribute('data-hbv')).style.display='block';};}
+var cloud=document.getElementById('hb-cloud'),cloudv=document.getElementById('hb-cloudv');
+cloud.oninput=function(){cloudv.textContent=cloud.value+'%';};
+var cv=document.getElementById('hb-cv'),g=cv.getContext('2d'),timer=null,tr=[];
+var W=[[20,18,23,'led'],[30,10,24,'fan'],[10,19,21,'ph'],[50,19,22,'tv'],[80,0,24,'fr']];
+function cap(){return +document.getElementById('hb-cap').value;}
+function pan(){return cap()>1000?400:200;}
+function sunP(h,cl){var x=(h-6)/12;if(x<=0||x>=1)return 0;return pan()*Math.sin(Math.PI*x)*0.72*(1-cl);}
+function ldW(h){var t=0;for(var i=0;i<W.length;i++){if(!document.getElementById('hb-'+W[i][3]).checked)continue;if(h>=W[i][1]&&h<W[i][2])t+=W[i][0];}return t;}
+function X(h){return 40+(h-6)/24*600;} function Y(s){return 240-s/100*210;}
+function draw(cl){g.fillStyle='#0b1220';g.fillRect(0,0,660,260);
+g.strokeStyle='#fbbf24';g.beginPath();for(var x=0;x<=600;x+=4){var hh=6+x/600*24;var y=240-sunP(hh,cl)/pan()*200;if(x===0)g.moveTo(40+x,y);else g.lineTo(40+x,y);}g.stroke();
+g.strokeStyle='#f87171';g.setLineDash([5,4]);g.beginPath();g.moveTo(40,Y(10));g.lineTo(640,Y(10));g.stroke();g.setLineDash([]);
+g.fillStyle='#94a3b8';g.fillText('قطع BMS ‏10%',520,Y(10)-6);g.fillText('06',36,255);g.fillText('12',335,255);g.fillText('18',485,255);g.fillText('06+',625,255);
+g.strokeStyle='#4ade80';g.lineWidth=2.5;g.beginPath();for(var t=0;t<tr.length;t++){var px=X(tr[t][0]),py=Y(Math.max(0,tr[t][1]));if(t===0)g.moveTo(px,py);else g.lineTo(px,py);}g.stroke();g.lineWidth=1;}
+document.getElementById('hb-start').onclick=function(){
+if(timer){clearInterval(timer);timer=null;}
+var cl=cloud.value/100,soc=20,hh=6,minS=20,bo=-1;tr=[[6,20]];
+document.getElementById('hb-out').textContent='';draw(cl);
+timer=setInterval(function(){var net=sunP(hh,cl)-ldW(hh);soc+=net/cap()*100/6;hh+=1/6;
+if(soc<minS)minS=soc;if(soc<=0&&bo<0){bo=hh;soc=0;}if(soc>100)soc=100;tr.push([hh,Math.max(0,soc)]);draw(cl);
+var H=Math.floor(hh)%24,M=Math.floor((hh%1)*60);
+document.getElementById('hb-clock').textContent=(H<10?'0':'')+H+':'+(M<10?'0':'')+M+' — SOC '+Math.max(0,soc).toFixed(0)+'%';
+if(hh>=30){clearInterval(timer);timer=null;
+document.getElementById('hb-out').textContent=bo<0?'✅ صمدت المنظومة! أدنى شحن '+minS.toFixed(0)+'% — هامش مريح.':'⚡ انقطاع عند '+Math.floor(bo)+':00 (BMS فصل الحمل) — أطفئ الثلاجة أو الـTV في الغيوم!';}},120);};
+var T={640:{lfp:176,lead:1170,yL:8.5,yP:1.1},1280:{lfp:280,lead:2340,yL:10,yP:1.1}};
+function bar(lb,v,mx,c){return '<div>'+lb+' <div style="display:inline-block;background:#1e293b;width:300px"><div style="background:'+c+';width:'+(v/mx*300)+'px">&nbsp;</div></div> '+v+'</div>';}
+function tco(){var t=T[cap()];document.getElementById('hb-tco').innerHTML='<h4>التكلفة 10 سنوات ($)</h4>'+bar('LiFePO4',t.lfp,t.lead,'#4ade80')+bar('رصاص',t.lead,t.lead,'#f87171')+'<h4>العمر (سنة)</h4>'+bar('LiFePO4',t.yL,t.yL,'#4ade80')+bar('رصاص',t.yP,t.yL,'#f87171')+'<h4>احتفاظ 30 يوما (%)</h4>'+bar('LiFePO4',97,100,'#4ade80')+bar('رصاص',80,100,'#f87171');}
+document.getElementById('hb-cap').onchange=tco;tco();
+})();
+</script>
+
+<section id="tab-wind" class="tab-sec">
+<h2>🌀 توربين الرياح المغناطيسي — كهرباء الليل</h2>
+<p>متوسط رياح موقعك (م/ث): <input id="wd-avg" type="range" min="2" max="7" step="0.5" value="3"><b><span id="wd-avgv">3</span></b> — تعز-مدينة ~3، التلال ~5</p>
+<canvas id="wd-cv" width="660" height="260"></canvas>
+<div id="wd-out"></div>
+<div style="background:#1e293b;padding:8px;margin-top:8px">⚖️ شريط الحقيقة: المغناطيس <b>يحوّل</b> الريح إلى كهرباء ولا <b>يخلقها</b> — أي «مولد مغناطيسي بلا ريح/حركة» خدعة (بطارية مخفية). البراهين الخمسة في ملف المشروع.</div>
+<div style="background:#3b0764;padding:8px;margin-top:8px">🔥 bonus: عجلة كوري — محرك مغناطيسي حقيقي يدور بنار الشمعة (~100mW)! دليل البناء في المشروع.</div>
+</section>
+<script>
+(function(){
+var K=0.5*1.2*(Math.PI*0.49)*0.35*0.75;
+function tp(v){if(v<3||v>15)return 0;return Math.min(K*v*v*v,300);}
+function pdf(v,m){return (Math.PI/2)*(v/(m*m))*Math.exp(-Math.PI/4*(v/m)*(v/m));}
+function daily(m){var e=0;for(var v=0;v<25;v+=0.1)e+=tp(v)*pdf(v,m)*0.1;return e*24;}
+var s=document.getElementById('wd-avg'),sv=document.getElementById('wd-avgv');
+var cv=document.getElementById('wd-cv'),g=cv.getContext('2d');
+function X(v){return 40+v/15*600;} function Y(p){return 240-p/300*210;}
+function draw(m){g.fillStyle='#0b1220';g.fillRect(0,0,660,260);
+g.strokeStyle='#334155';for(var p=0;p<=300;p+=100){g.beginPath();g.moveTo(40,Y(p));g.lineTo(640,Y(p));g.stroke();}
+g.fillStyle='#94a3b8';g.fillText('300W',8,Y(300)+4);g.fillText('0',30,244);g.fillText('3 قطع-دخول',X(3)-20,255);g.fillText('15 فرملة',X(15)-20,255);
+g.strokeStyle='#38bdf8';g.lineWidth=2.5;g.beginPath();for(var x=0;x<=600;x+=3){var v=x/600*15;var y=Y(tp(v));if(x===0)g.moveTo(40+x,y);else g.lineTo(40+x,y);}g.stroke();g.lineWidth=1;
+g.strokeStyle='#4ade80';g.setLineDash([5,4]);g.beginPath();g.moveTo(X(m),30);g.lineTo(X(m),240);g.stroke();g.setLineDash([]);
+g.fillStyle='#4ade80';g.fillText('موقعك '+m, X(m)-20, 24);
+g.fillStyle='#fbbf24';g.fillText('الريح تهب ليلا — نصف الطاقة خارج الشمس!',380,60);}
+function upd(){var m=+s.value;sv.textContent=m;draw(m);
+var wh=daily(m);var v=wh<400?'🏙️ موقع مديني متواضع — مكمل ليلي (LED + مروحة).':(wh<900?'🏡 موقع جيد — يكمل الشمسي بقوة ليلا وغيمًا.':'⛰️ موقع تل ممتاز — يغذي المنزل وحده!');
+document.getElementById('wd-out').innerHTML='<b>الناتج اليومي ≈ '+Math.round(wh)+'Wh</b> — '+v;}
+s.oninput=upd;upd();
+})();
+</script>
+<section id="tab-nucell" class="tab-sec">
+<h2>☢ البطارية النووية — 50 سنة من 100µW</h2>
+<p>حرّك الزمن: <input id="nu-y" type="range" min="0" max="100" value="0"><b><span id="nu-yv">سنة 0 — 100µW</span></b></p>
+<canvas id="nu-cv" width="660" height="260"></canvas>
+<div id="nu-dev"></div>
+<div style="background:#3b0764;padding:8px;margin-top:8px">🚫 الجدران الثلاثة: النظير $4,000/غ ومضبوط دوليًا + فاب ألماس + الهاتف يحتاج 2,500 ضعف! نسخة الـ1W = 10,000 خلية = ملايين $ — لهذا لم تظهر منذ 2024.</div>
+<div style="background:#14532d;padding:8px;margin-top:8px">✅ الحل الحقيقي لحلمك: eternitybatt (تبويب 🔋) — هاتف 7.5 أيام + شمسية أبدية. النووية للحساسات والأقمار، لا لجيبك.</div>
+</section>
+<script>
+(function(){
+var cv=document.getElementById('nu-cv'),g=cv.getContext('2d');
+var s=document.getElementById('nu-y'),sv=document.getElementById('nu-yv');
+function X(t){return 40+t/100*600;} function Y(p){return 240-p/100*210;}
+function draw(t){g.fillStyle='#0b1220';g.fillRect(0,0,660,260);
+g.strokeStyle='#334155';for(var p=0;p<=100;p+=25){g.beginPath();g.moveTo(40,Y(p));g.lineTo(640,Y(p));g.stroke();}
+g.fillStyle='#94a3b8';g.fillText('100µW',5,Y(100)+4);g.fillText('50µW',8,Y(50)+4);g.fillText('سنة 0',36,255);g.fillText('50',335,255);g.fillText('100',625,255);
+g.strokeStyle='#a78bfa';g.lineWidth=2.5;g.beginPath();for(var x=0;x<=600;x+=3){var tt=x/600*100;var y=Y(100*Math.pow(0.5,tt/100.1));if(x===0)g.moveTo(40+x,y);else g.lineTo(40+x,y);}g.stroke();g.lineWidth=1;
+g.strokeStyle='#fbbf24';g.setLineDash([5,4]);g.beginPath();g.moveTo(X(50),30);g.lineTo(X(50),240);g.stroke();g.setLineDash([]);
+g.fillStyle='#fbbf24';g.fillText('50 سنة ← 71µW',X(50)-40,24);
+g.fillStyle='#4ade80';g.beginPath();g.arc(X(t),Y(100*Math.pow(0.5,t/100.1)),5,0,7);g.fill();}
+function upd(){var t=+s.value;sv.textContent='سنة '+t+' — '+(100*Math.pow(0.5,t/100.1)).toFixed(0)+'µW';draw(t);}
+s.oninput=upd;upd();
+var D=[['ساعة RTC ‏1µW',1],['حساس حرارة ‏5µW',1],['منارة نابضة ‏50µW',1],['حبر إلكتروني ‏10µW',1],['LED مستمر ‏1mW',0],['هاتف ‏250mW',0],['درون ‏50W',0]];
+var d=document.getElementById('nu-dev');var hh='<h4>ماذا يشغل 100µW؟</h4>';
+for(var i=0;i<D.length;i++)hh+='<div>'+(D[i][1]?'✅':'❌')+' '+D[i][0]+'</div>';
+d.innerHTML=hh;
+})();
+</script>
+<section id="tab-rf" class="tab-sec">
+<h2>📡 ForgeRF — راسم الطيف + الجدار الناري</h2>
+<div class="subnav"><button class="rf-btn on" data-rfv="scope">📊 الطيف</button><button class="rf-btn" data-rfv="fw">🔥 الجدار الناري</button></div>
+<div id="rf-v-scope" class="rf-v">
+<p>نطاق FM ‏88–108: الكسب <input id="rf-g" type="range" min="0" max="40" value="15"><b><span id="rf-gv">15dB</span></b> <label><input type="checkbox" id="rf-f"> فلتر FM-notch</label></p>
+<canvas id="rf-cv" width="660" height="260"></canvas>
+<div id="rf-out"></div>
+</div>
+<div id="rf-v-fw" class="rf-v" style="display:none">
+<p>التردد (MHz): <input id="rf-fq" type="number" value="433.9" step="0.1" style="width:90px"> القدرة (dBm): <input id="rf-p" type="number" value="10" style="width:60px"> <label><input type="checkbox" id="rf-ham"> رخصة هواة</label> <button class="act" id="rf-go">افحص</button></p>
+<p>جرّب: <button class="act" id="rf-p1">433.9 ✅</button> <button class="act" id="rf-p2">121.5 🚫</button> <button class="act" id="rf-p3">145 بدون رخصة 🚫</button></p>
+<div id="rf-verd"></div>
+</div>
+</section>
+<script>
+(function(){
+var rb=document.querySelectorAll('.rf-btn');
+for(var i=0;i<rb.length;i++){rb[i].onclick=function(){for(var j=0;j<rb.length;j++)rb[j].classList.remove('on');this.classList.add('on');var vs=document.querySelectorAll('.rf-v');for(var k=0;k<vs.length;k++)vs[k].style.display='none';document.getElementById('rf-v-'+this.getAttribute('data-rfv')).style.display='block';};}
+var ST=[[90.1,30],[93.5,55],[96.2,40],[99.0,80],[102.3,45],[105.7,60]];
+var gs=document.getElementById('rf-g'),gv=document.getElementById('rf-gv'),fl=document.getElementById('rf-f');
+var cv=document.getElementById('rf-cv'),g=cv.getContext('2d');
+function draw(){var gn=+gs.value;gv.textContent=gn+'dB';g.fillStyle='#0b1220';g.fillRect(0,0,660,260);
+var X=function(f){return 40+(f-88)/20*600;},Y=function(p){return 240-p/100*210;};
+g.strokeStyle='#334155';for(var p=0;p<=100;p+=25){g.beginPath();g.moveTo(40,Y(p));g.lineTo(640,Y(p));g.stroke();}
+g.fillStyle='#94a3b8';g.fillText('88',36,255);g.fillText('98',335,255);g.fillText('108',625,255);
+var floor=8+gn*0.5+(fl.checked?-15:0);if(floor<5)floor=5;
+g.fillStyle='#1e293b';g.fillRect(40,Y(floor),600,240-Y(floor));
+for(var i=0;i<ST.length;i++){var hh=ST[i][1]*(0.5+gn/40)*(fl.checked?0.25:1);var clip=0;
+if(40+hh>240-30){hh=240-30-Y(0)-0;clip=1;}
+g.fillStyle=clip?'#f87171':'#38bdf8';var bw=600/20*0.3;
+g.fillRect(X(ST[i][0])-bw/2,Y(floor)-hh,bw,hh);}
+var ov=!fl.checked&&gn>25;
+document.getElementById('rf-out').innerHTML=ov?'<b style="color:#f87171">⚠️ إغراق! المحطة القوية تشبع المستقبل وترفع الأرضية — فعّل الفلتر.</b>':'الأرضية: '+Math.round(floor)+' — '+(fl.checked?'الفلتر يحمي المستقبل ✅':'ارفع الكسب وشاهد الإغراق');
+}
+gs.oninput=draw;fl.onchange=draw;draw();
+function inB(f,a,b){return f>=a&&f<=b;}
+function fw(f,p,ham){if(inB(f,121.4,121.6)||inB(f,242.9,243.1)||inB(f,405.9,406.1))return [0,'طوارئ/استغاثة — محظور دائمًا'];
+if(inB(f,108,137))return [0,'نطاق طيران — محظور'];if(inB(f,87,108))return [0,'بث FM — محظور'];
+if(inB(f,433.05,434.79))return p<=10?[1,'ISM ‏433 مسموح ✅']:[0,'يتجاوز 10dBm'];
+if(inB(f,868,868.6))return p<=14?[1,'ISM ‏868 مسموح ✅']:[0,'يتجاوز 14dBm'];
+if(inB(f,2400,2483.5))return p<=20?[1,'ISM ‏2.4G مسموح ✅']:[0,'يتجاوز 20dBm'];
+if(inB(f,144,146)||inB(f,430,440))return ham?(p<=30?[1,'هواة برخصة ✅']:[0,'يتجاوز 30dBm']):[0,'هواة — يلزم رخصة'];
+return [0,'خارج كل النطاقات المسموحة'];}
+function go(){var r=fw(+document.getElementById('rf-fq').value,+document.getElementById('rf-p').value,document.getElementById('rf-ham').checked);
+document.getElementById('rf-verd').innerHTML=r[0]?'<b style="color:#4ade80">مسموح ✅ — '+r[1]+'</b>':'<b style="color:#f87171">مرفوض 🚫 — '+r[1]+'</b>';}
+document.getElementById('rf-go').onclick=go;
+document.getElementById('rf-p1').onclick=function(){document.getElementById('rf-fq').value=433.9;document.getElementById('rf-p').value=10;go();};
+document.getElementById('rf-p2').onclick=function(){document.getElementById('rf-fq').value=121.5;document.getElementById('rf-p').value=0;go();};
+document.getElementById('rf-p3').onclick=function(){document.getElementById('rf-fq').value=145;document.getElementById('rf-p').value=20;document.getElementById('rf-ham').checked=false;go();};
+})();
+</script>
+</main>
+<script>
+// ---------- tabs ----------
+document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{
+document.querySelectorAll('.tabs button').forEach(x=>x.classList.remove('active'));
+document.querySelectorAll('section.tab').forEach(x=>x.classList.remove('active'));
+b.classList.add('active');document.getElementById('tab-'+b.dataset.tab).classList.add('active');});
+// ---------- ELECTROLYZER ----------
+const FF=96485,VM=24.45;
+let ely={run:false,t:0,q:0,fault:false,pts:[],bub:[]};
+const $=id=>document.getElementById(id);
+function h2lph(I){return I*3600/(2*FF)*VM;}
+function elyStatic(){
+const I=parseFloat($('elyI').value),V=parseFloat($('elyV').value);
+$('elyIVal').textContent=I.toFixed(1)+' A';$('elyVVal').textContent=V.toFixed(2)+' V';
+const lph=h2lph(I),p=V*I,whl=p/lph;
+$('rLph').textContent=lph.toFixed(2);$('rPwr').textContent=p.toFixed(1);
+$('rWhL').textContent=whl.toFixed(2);$('rEff').textContent=(2.79/whl*100).toFixed(1)+'%';
+}
+$('elyI').oninput=elyStatic;$('elyV').oninput=elyStatic;elyStatic();
+$('elyStart').onclick=()=>{ely.run=!ely.run;$('elyStart').textContent=ely.run?'⏸ إيقاف مؤقت':'▶ بدء التشغيل';};
+$('elyReset').onclick=()=>{ely.run=false;ely.t=0;ely.q=0;ely.pts=[];$('elyStart').textContent='▶ بدء التشغيل';drawElyChart();};
+$('elyFault').onclick=()=>{ely.fault=!ely.fault;$('elyFault').textContent='⚠ محاكاة تسريب: '+(ely.fault?'تشغيل':'إيقاف');};
+setInterval(()=>{
+if(!ely.run)return;
+const I=parseFloat($('elyI').value),sp=parseFloat($('elySpeed').value),adv=0.2*sp;
+ely.t+=adv;ely.q+=I*adv;
+const th=ely.q/(2*FF)*24450,me=th*(ely.fault?0.65:0.97);
+ely.pts.push([ely.t,th,me]);if(ely.pts.length>1200)ely.pts.shift();
+const mm=Math.floor(ely.t/60),ss=Math.floor(ely.t%60);
+$('rTime').textContent=mm+':'+String(ss).padStart(2,'0');$('rMl').textContent=me.toFixed(0);
+const err=Math.abs(me-th)/th,v=$('elyVerdict');
+if(err<=0.15){v.className='badge pass';v.textContent='T2 PASS — خطأ فاراداي '+(err*100).toFixed(1)+'% ✅';}
+else{v.className='badge fail';v.textContent='T2 FAIL — خطأ '+(err*100).toFixed(1)+'% (تسريب مُكتشف!) ❌';}
+drawElyChart();
+},200);
+function drawElyChart(){
+const c=$('elyChart'),x=c.getContext('2d'),W=c.width,H=c.height,L=56,B=34,T=14,R=14;
+x.fillStyle='#0b1220';x.fillRect(0,0,W,H);
+const tMax=Math.max(60,...ely.pts.map(p=>p[0])),yMax=Math.max(100,...ely.pts.map(p=>p[1]))*1.1;
+const X=t=>L+t/tMax*(W-L-R),Y=v=>H-B-v/yMax*(H-B-T);
+x.strokeStyle='#334155';x.fillStyle='#94a3b8';x.font='10px Tahoma';
+for(let g=0;g<=4;g++){const v=yMax*g/4;x.beginPath();x.moveTo(L,Y(v));x.lineTo(W-R,Y(v));x.stroke();x.fillText(v.toFixed(0)+'mL',4,Y(v)+3);}
+x.fillStyle='#38bdf8';x.font='bold 12px Tahoma';x.fillText('H2 تراكمي (mL) — أزرق=نظرية فاراداي، أخضر/أحمر=مُقاس',L+8,T+8);
+function line(idx,col){if(ely.pts.length<2)return;x.strokeStyle=col;x.lineWidth=2;x.beginPath();
+ely.pts.forEach((p,i)=>{i?x.lineTo(X(p[0]),Y(p[idx])):x.moveTo(X(p[0]),Y(p[idx]));});x.stroke();}
+line(1,'#38bdf8');line(2,ely.fault?'#ef4444':'#22c55e');
+}
+// animated cell
+const cell=$('elyCell').getContext('2d');
+(function anim(){
+const I=ely.run?parseFloat($('elyI').value):0;
+if(ely.run)for(let k=0;k<I/2;k++){const h2=Math.random()<0.67;
+ely.bub.push({x:(h2?130:290)+Math.random()*24-12,y:200,r:1+Math.random()*2});}
+ely.bub.forEach(b=>b.y-=1.5);ely.bub=ely.bub.filter(b=>b.y>70);
+cell.fillStyle='#0b1220';cell.fillRect(0,0,420,240);
+cell.fillStyle='#0c4a6e';cell.fillRect(40,60,340,160);
+cell.fillStyle='#155e75';cell.fillRect(90,80,80,140);cell.fillRect(250,80,80,140);
+cell.fillStyle='#94a3b8';cell.fillRect(122,150,16,60);cell.fillRect(282,150,16,60);
+cell.fillStyle='#fff';cell.font='bold 13px Tahoma';
+cell.fillText('H2 (−)',110,75);cell.fillText('O2 (+)',270,75);
+cell.fillStyle='#bae6fd';ely.bub.forEach(b=>{cell.beginPath();cell.arc(b.x,b.y,b.r,0,7);cell.fill();});
+if(ely.fault&&ely.run){cell.fillStyle='#ef4444';cell.font='bold 12px Tahoma';cell.fillText('⚠ تسريب!',300,75);}
+requestAnimationFrame(anim);
+})();
+// ---------- TEG ----------
+const TT=[[20,0.97,0.225],[40,1.80,0.368],[60,2.40,0.469],[80,3.60,0.558],[100,4.80,0.669]];
+function tegLerp(dt){if(dt<=20)return[0.97*dt/20,0.225*dt/20];
+for(let k=0;k<TT.length-1;k++){const a=TT[k],b=TT[k+1];
+if(dt<=b[0]){const f=(dt-a[0])/(b[0]-a[0]);return[a[1]+f*(b[1]-a[1]),a[2]+f*(b[2]-a[2])];}}
+return[4.80,0.669];}
+function tegCalc(dt,N,Rth){const[v1,i1]=tegLerp(dt),r1=v1/i1,Voc=N*v1,R=N*r1,
+P=Voc*Voc/(4*R),Q=P/0.04*1.2,Tc=35+Q*Rth,Th=Tc+dt;return{Voc,R,P,Q,Tc,Th};}
+function tegUpdate(){
+const dt=parseFloat($('tegD').value),N=parseInt($('tegN').value),Rth=parseFloat($('tegR').value);
+$('tegDVal').textContent=dt+' K';$('tegRVal').textContent=Rth.toFixed(1)+' K/W';
+const o=tegCalc(dt,N,Rth);
+$('tVoc').textContent=o.Voc.toFixed(2);$('tR').textContent=o.R.toFixed(1);
+$('tP').textContent=o.P.toFixed(3);$('tQ').textContent=o.Q.toFixed(1);
+$('tHot').textContent=o.Th.toFixed(1);$('tCold').textContent=o.Tc.toFixed(1);
+const v=$('tegVerdict');
+if(o.P>=1&&o.Th<=140){v.className='badge pass';v.textContent='يحقق R1 بأمان ✅ (P≥1W وThot≤140)';}
+else{v.className='badge fail';v.textContent='❌ '+(o.P<1?'P<1W ':'')+(o.Th>140?'Thot>140°C':'(راجع Rth/ΔT)');}
+const c=$('tegChart'),x=c.getContext('2d'),W=c.width,H=c.height,L=52,B=34,T=24,R=14;
+x.fillStyle='#0b1220';x.fillRect(0,0,W,H);
+const yMax=2,X=d=>L+(d-10)/90*(W-L-R),Y=p=>H-B-p/yMax*(H-B-T);
+x.strokeStyle='#334155';x.fillStyle='#94a3b8';x.font='10px Tahoma';
+[0,0.5,1,1.5,2].forEach(g=>{x.beginPath();x.moveTo(L,Y(g));x.lineTo(W-R,Y(g));x.stroke();x.fillText(g+'W',8,Y(g)+3);});
+x.fillStyle='#38bdf8';x.font='bold 12px Tahoma';x.fillText('Pmax بدلالة ΔT — '+N+' وحدة',L+8,T-6);
+x.strokeStyle='#ef4444';x.setLineDash([5,4]);x.beginPath();x.moveTo(L,Y(1));x.lineTo(W-R,Y(1));x.stroke();x.setLineDash([]);
+[1,2].forEach(n=>{x.strokeStyle=n===N?'#38bdf8':'#475569';x.lineWidth=n===N?3:1.5;x.beginPath();
+for(let d=10;d<=100;d+=2){const p=tegCalc(d,n,Rth).P;d===10?x.moveTo(X(d),Y(p)):x.lineTo(X(d),Y(p));}x.stroke();});
+x.fillStyle='#22c55e';x.beginPath();x.arc(X(dt),Y(o.P),6,0,7);x.fill();
+x.fillStyle='#fff';x.font='11px Tahoma';x.fillText(dt+'K → '+o.P.toFixed(2)+'W',X(dt)-30,Y(o.P)-10);
+}
+$('tegD').oninput=tegUpdate;$('tegN').onchange=tegUpdate;$('tegR').oninput=tegUpdate;tegUpdate();
+// ---------- NUCLEAR ----------
+const ISO={'Ni-63':{hl:100,sp:0.0058,eta:0.05},'H-3':{hl:12.3,sp:0.33,eta:0.05},'Pu-238':{hl:87.7,sp:0.56,eta:0.06}};
+function nucUpdate(){
+const iso=ISO[$('nucIso').value],P0=parseFloat($('nucP').value)*1e-6;
+$('nucPVal').textContent=$('nucP').value+' µW';
+const degOn=$('nucDeg').checked;
+const dF=t=>Math.pow(2,-t/iso.hl)*(degOn?Math.pow(0.995,t):1);
+const mass=(P0/iso.eta)/iso.sp,p20=P0*dF(20)*1e6;
+let lifeJ=0;for(let t=0;t<400;t++)lifeJ+=P0*dF(t+0.5)*365.25*24*3600;
+const life=lifeJ/3600;
+$('nMass').textContent=mass.toFixed(mass<0.01?5:3);$('nP20').textContent=p20.toFixed(1);$('nLife').textContent=life.toFixed(1);
+const c=$('nucChart'),x=c.getContext('2d'),W=c.width,H=c.height,L=56,B=34,T=24,R=14;
+x.fillStyle='#0b1220';x.fillRect(0,0,W,H);
+const P0u=P0*1e6,X=t=>L+t/50*(W-L-R),Y=p=>H-B-p/P0u*(H-B-T);
+x.strokeStyle='#334155';x.fillStyle='#94a3b8';x.font='10px Tahoma';
+for(let g=0;g<=4;g++){const v=P0u*g/4;x.beginPath();x.moveTo(L,Y(v));x.lineTo(W-R,Y(v));x.stroke();x.fillText(v.toFixed(0),4,Y(v)+3);}
+for(let t=0;t<=50;t+=10)x.fillText(t+'y',X(t)-8,H-16);
+x.fillStyle='#38bdf8';x.font='bold 12px Tahoma';x.fillText('اضمحلال القدرة 50 سنة',L+8,T-6);
+x.strokeStyle='#f59e0b';x.lineWidth=2.5;x.beginPath();
+for(let t=0;t<=50;t++){const p=P0u*dF(t);t?x.lineTo(X(t),Y(p)):x.moveTo(X(t),Y(p));}x.stroke();
+x.fillStyle='#22c55e';x.beginPath();x.arc(X(20),Y(p20),5,0,7);x.fill();
+x.fillStyle='#fff';x.font='11px Tahoma';x.fillText('20y: '+p20.toFixed(1)+'µW',X(20)-20,Y(p20)-10);
+}
+$('nucIso').onchange=nucUpdate;$('nucP').oninput=nucUpdate;$('nucDeg').onchange=nucUpdate;nucUpdate();
+// ---------- NODE ----------
+function eolOf(tx,lk){const harv=t=>100e-6*Math.pow(2,-t/100)*Math.pow(0.995,t)*0.5;
+const need=50e-3/(tx*60)+2e-6+3.0*lk;
+for(let t=0;t<=150;t+=0.5)if(harv(t)<need)return t;return 999;}
+function nodeUpdate(){
+const tx=parseFloat($('ndTX').value),lk=parseFloat($('ndLeak').value);
+$('ndTXVal').textContent=tx+' دقيقة';
+const need=50e-3/(tx*60)+2e-6+3.0*lk,eol=eolOf(tx,lk);
+$('ndLoad').textContent=(need*1e6).toFixed(1);$('ndEOL').textContent=eol===999?'>150':eol.toFixed(1);
+const v=$('ndVerdict'),ok=(eol===999||eol>=20);
+v.className='badge '+(ok?'pass':'fail');
+v.textContent=ok?'يحقق R1 (>=20 سنة) ✅':'❌ يفشل R1 — خفّض المعدل أو التسريب';
+const c=$('ndChart'),x=c.getContext('2d'),W=c.width,H=c.height,L=52,B=34,T=24,R=14;
+x.fillStyle='#0b1220';x.fillRect(0,0,W,H);
+const X=t=>L+(t-15)/105*(W-L-R),Y=e=>H-B-Math.min(e,150)/150*(H-B-T);
+x.strokeStyle='#334155';x.fillStyle='#94a3b8';x.font='10px Tahoma';
+[0,25,50,75,100,125,150].forEach(g=>{x.beginPath();x.moveTo(L,Y(g));x.lineTo(W-R,Y(g));x.stroke();x.fillText(g+'y',6,Y(g)+3);});
+x.fillStyle='#38bdf8';x.font='bold 12px Tahoma';x.fillText('العمر بدلالة الفاصل',L+8,T-6);
+x.strokeStyle='#ef4444';x.setLineDash([5,4]);x.beginPath();x.moveTo(L,Y(20));x.lineTo(W-R,Y(20));x.stroke();x.setLineDash([]);
+x.strokeStyle='#38bdf8';x.lineWidth=2.5;x.beginPath();
+for(let t=15;t<=120;t+=2){const e=Math.min(eolOf(t,lk),150);t===15?x.moveTo(X(t),Y(e)):x.lineTo(X(t),Y(e));}x.stroke();
+x.fillStyle='#22c55e';x.beginPath();x.arc(X(tx),Y(Math.min(eol,150)),6,0,7);x.fill();
+}
+$('ndTX').oninput=nodeUpdate;$('ndLeak').onchange=nodeUpdate;nodeUpdate();
+// ---------- DESAL ----------
+function dsUpdate(){
+const r=parseFloat($('dsR').value)/100,dv=parseFloat($('dsV').value);
+$('dsRVal').textContent=$('dsR').value+'%';$('dsVVal').textContent=dv.toFixed(2)+' V';
+const molP=35/58.44*r,qC=molP*96485/0.95,eNet=qC*dv/3600;
+let ppm=35000,n=0;while(ppm>=1000){ppm*=1-r;n++;}
+const eTot=eNet*n,ag=(qC/3600)/0.248;
+$('dsPass').textContent=n;$('dsPpm').textContent=ppm.toFixed(0);
+$('dsE').textContent=eTot.toFixed(2);$('dsAg').textContent=ag.toFixed(1);
+const v=$('dsVerdict'),ok=eTot<3.5;
+v.className='badge '+(ok?'pass':'fail');
+v.textContent=ok?'يتفوق على التناضح (3.5) ✅':'❌ فوق التناضح — حسّن الإزالة أو الفجوة';
+const c=$('dsChart'),x=c.getContext('2d'),W=c.width,H=c.height,L=56,B=34,T=24,R=14;
+x.fillStyle='#0b1220';x.fillRect(0,0,W,H);
+const X=r2=>L+(r2-0.5)/0.45*(W-L-R),Y=e=>H-B-e/6*(H-B-T);
+x.strokeStyle='#334155';x.fillStyle='#94a3b8';x.font='10px Tahoma';
+[0,1.5,3,4.5,6].forEach(g=>{x.beginPath();x.moveTo(L,Y(g));x.lineTo(W-R,Y(g));x.stroke();x.fillText(g,8,Y(g)+3);});
+x.fillStyle='#38bdf8';x.font='bold 12px Tahoma';x.fillText('صافي الشلال الكامل (kWh/m3)',L+8,T-6);
+x.strokeStyle='#b45309';x.setLineDash([5,4]);x.beginPath();x.moveTo(L,Y(3.5));x.lineTo(W-R,Y(3.5));x.stroke();x.setLineDash([]);
+x.fillStyle='#b45309';x.font='10px Tahoma';x.fillText('RO 3.5',W-R-44,Y(3.5)-6);
+x.strokeStyle='#38bdf8';x.lineWidth=2.5;x.beginPath();
+for(let r2=0.5;r2<=0.951;r2+=0.02){const m2=35/58.44*r2,q2=m2*96485/0.95,e2=q2*dv/3600;
+let p2=35000,n2=0;while(p2>=1000){p2*=1-r2;n2++;}const eT=e2*n2;
+r2===0.5?x.moveTo(X(r2),Y(eT)):x.lineTo(X(r2),Y(eT));}x.stroke();
+x.fillStyle='#22c55e';x.beginPath();x.arc(X(r),Y(eTot),6,0,7);x.fill();
+}
+$('dsR').oninput=dsUpdate;$('dsV').oninput=dsUpdate;dsUpdate();
+// ---------- WONDER ----------
+// 1) twin double pendulums (myphysicslab equations, m=L=1)
+let wdA={t1:2.2,t2:2.9,w1:0,w2:0},wdB={t1:2.2,t2:2.9,w1:0,w2:0},wdTrA=[],wdTrB=[];
+function dpAcc(s){const g=9.81,d=s.t1-s.t2,den=3-Math.cos(2*s.t1-2*s.t2);
+const a1=(-3*g*Math.sin(s.t1)-g*Math.sin(s.t1-2*s.t2)-2*Math.sin(d)*(s.w2*s.w2+s.w1*s.w1*Math.cos(d)))/den;
+const a2=(2*Math.sin(d)*(2*s.w1*s.w1+2*g*Math.cos(s.t1)+s.w2*s.w2*Math.cos(d)))/den;return[a1,a2];}
+function dpStep(s,dt){const[a1,a2]=dpAcc(s);s.w1+=a1*dt;s.w2+=a2*dt;s.t1+=w1Fix(s)*dt;s.t2+=s.w2*dt;}
+function w1Fix(s){return s.w1;}
+function wdReset(){const e=parseFloat($('wdEps').value)*Math.PI/180;
+wdA={t1:2.2,t2:2.9,w1:0,w2:0};wdB={t1:2.2+e,t2:2.9,w1:0,w2:0};wdTrA=[];wdTrB=[];
+$('wdEpsVal').textContent=parseFloat($('wdEps').value)+'°';}
+$('wdEps').oninput=wdReset;$('wdReset1').onclick=wdReset;wdReset();
+function dpBob(s,px,py,L){const x1=px+L*Math.sin(s.t1),y1=py+L*Math.cos(s.t1);
+return[x1+L*Math.sin(s.t2),y1+L*Math.cos(s.t2),x1,y1];}
+function drawDP(){
+const c=$('wdCanvas1'),x=c.getContext('2d'),W=c.width,H=c.height;
+for(let k=0;k<8;k++){dpStep(wdA,0.002);dpStep(wdB,0.002);}
+const px=W/2,py=64,L=86;
+const bA=dpBob(wdA,px,py,L),bB=dpBob(wdB,px,py,L);
+wdTrA.push([bA[0],bA[1]]);wdTrB.push([bB[0],bB[1]]);
+if(wdTrA.length>240){wdTrA.shift();wdTrB.shift();}
+x.fillStyle='#0b1220';x.fillRect(0,0,W,H);
+function trail(tr,col){if(tr.length<2)return;
+for(let i=1;i<tr.length;i++){x.strokeStyle=col;x.globalAlpha=i/tr.length*0.8;x.lineWidth=2;
+x.beginPath();x.moveTo(tr[i-1][0],tr[i-1][1]);x.lineTo(tr[i][0],tr[i][1]);x.stroke();}x.globalAlpha=1;}
+trail(wdTrA,'#38bdf8');trail(wdTrB,'#fb923c');
+x.fillStyle='#fff';x.font='11px Tahoma';x.fillText('🔵 توأم 1',10,16);x.fillText('🟠 توأم 2 (فرق غير مرئي)',10,30);
+let dv=Math.abs(wdA.t1-wdB.t1)%(2*Math.PI);if(dv>Math.PI)dv=2*Math.PI-dv;
+$('wdDiv').textContent=(dv*180/Math.PI).toFixed(1);
+}
+// 2) figure-8 three body (Moore 1993 ICs, G=m=1, RK4)
+let wdB3=null;function wd8Reset(){wdB3={b:[
+{x:0.97000436,y:-0.24308753,vx:0.4662036850,vy:0.4323657300,tr:[]},
+{x:-0.97000436,y:0.24308753,vx:0.4662036850,vy:0.4323657300,tr:[]},
+{x:0,y:0,vx:-0.93240737,vy:-0.86473146,tr:[]}]};}
+wd8Reset();
+$('wdReset2').onclick=wd8Reset;
+$('wdPerturb').onclick=()=>{wdB3.b[0].vx*=1.02;wdB3.b[0].vy*=1.02;};
+function b3Acc(b){const a=[{x:0,y:0},{x:0,y:0},{x:0,y:0}];
+for(let i=0;i<3;i++)for(let j=0;j<3;j++){if(i===j)continue;
+const dx=b[j].x-b[i].x,dy=b[j].y-b[i].y,r=Math.pow(dx*dx+dy*dy+1e-6,1.5);
+a[i].x+=dx/r;a[i].y+=dy/r;}return a;}
+function b3Step(dt){const b=wdB3.b;
+const s0=b.map(p=>({x:p.x,y:p.y,vx:p.vx,vy:p.vy}));
+function deriv(s){const tb=s.map(p=>({x:p.x,y:p.y}));const a=b3Acc(tb);
+return s.map((p,i)=>({x:p.vx,y:p.vy,vx:a[i].x,vy:a[i].y}));}
+function add(s,k,h){return s.map((p,i)=>({x:p.x+k[i].x*h,y:p.y+k[i].y*h,vx:p.vx+k[i].vx*h,vy:p.vy+k[i].vy*h}));}
+const k1=deriv(s0),k2=deriv(add(s0,k1,dt/2)),k3=deriv(add(s0,k2,dt/2)),k4=deriv(add(s0,k3,dt));
+const s1=add(s0,k1,dt/6).map((p,i)=>({x:p.x+(k2[i].x+k3[i].x)*dt/3+k4[i].x*dt/6,
+y:p.y+(k2[i].y+k3[i].y)*dt/3+k4[i].y*dt/6,
+vx:s0[i].vx+(k1[i].vx+2*k2[i].vx+2*k3[i].vx+k4[i].vx)*dt/6,
+vy:s0[i].vy+(k1[i].vy+2*k2[i].vy+2*k3[i].vy+k4[i].vy)*dt/6}));
+for(let i=0;i<3;i++){b[i].x=s1[i].x;b[i].y=s1[i].y;b[i].vx=s1[i].vx;b[i].vy=s1[i].vy;}}
+function drawB3(){
+const c=$('wdCanvas2'),x=c.getContext('2d'),W=c.width,H=c.height;
+for(let k=0;k<6;k++)b3Step(0.002);
+const S=120,cx=W/2,cy=H/2+10;
+x.fillStyle='#0b1220';x.fillRect(0,0,W,H);
+const cols=['#38bdf8','#22c55e','#f472b6'];
+wdB3.b.forEach((p,i)=>{p.tr.push([cx+p.x*S,cy+p.y*S]);if(p.tr.length>650)p.tr.shift();
+if(p.tr.length>1){for(let k=1;k<p.tr.length;k+=2){x.strokeStyle=cols[i];
+x.globalAlpha=k/p.tr.length*0.7;x.lineWidth=1.5;x.beginPath();
+x.moveTo(p.tr[k-1][0],p.tr[k-1][1]);x.lineTo(p.tr[k][0],p.tr[k][1]);x.stroke();}x.globalAlpha=1;}
+x.fillStyle=cols[i];x.beginPath();x.arc(cx+p.x*S,cy+p.y*S,5,0,7);x.fill();});
+x.fillStyle='#fff';x.font='11px Tahoma';x.fillText('3 أجسام متساوية — حل ∞ الدوري',10,16);
+}
+// 3) boids murmuration
+let wdFlock=[];for(let i=0;i<70;i++)wdFlock.push({x:Math.random()*420,y:Math.random()*300,
+vx:Math.random()*2-1,vy:Math.random()*2-1});
+$('wdCoh').oninput=()=>{$('wdCohVal').textContent=$('wdCoh').value;};
+$('wdScatter').onclick=()=>{wdFlock.forEach(b=>{const dx=b.x-210,dy=b.y-150,d=Math.hypot(dx,dy)+1;
+b.vx+=dx/d*6;b.vy+=dy/d*6;});};
+function drawBoids(){
+const c=$('wdCanvas3'),x=c.getContext('2d'),W=c.width,H=c.height;
+const coh=parseFloat($('wdCoh').value);
+x.fillStyle='#0b1220';x.fillRect(0,0,W,H);
+wdFlock.forEach(b=>{
+let cx=0,cy=0,ax=0,ay=0,sx=0,sy=0,n=0;
+wdFlock.forEach(o=>{if(o===b)return;const dx=o.x-b.x,dy=o.y-b.y,d=Math.hypot(dx,dy);
+if(d<30){cx+=o.x;cy+=o.y;ax+=o.vx;ay+=o.vy;n++;
+if(d<12&&d>0.01){sx-=dx/d;sy-=dy/d;}}});
+if(n>0){b.vx+=(cx/n-b.x)*0.004*coh*2.5+(ax/n-b.vx)*0.05+sx*0.08;
+b.vy+=(cy/n-b.y)*0.004*coh*2.5+(ay/n-b.vy)*0.05+sy*0.08;}
+if(b.x<30)b.vx+=0.15;if(b.x>W-30)b.vx-=0.15;if(b.y<30)b.vy+=0.15;if(b.y>H-30)b.vy-=0.15;
+const sp=Math.hypot(b.vx,b.vy),ms=2.4;
+if(sp>ms){b.vx*=ms/sp;b.vy*=ms/sp;}
+b.x+=b.vx;b.y+=b.vy;});
+wdFlock.forEach(b=>{const a=Math.atan2(b.vy,b.vx);
+x.save();x.translate(b.x,b.y);x.rotate(a);
+const sp=Math.hypot(b.vx,b.vy);
+x.fillStyle=sp>1.8?'#fbbf24':'#38bdf8';
+x.beginPath();x.moveTo(6,0);x.lineTo(-4,-3.5);x.lineTo(-4,3.5);x.closePath();x.fill();x.restore();});
+}
+(function wonderLoop(){try{drawDP();drawB3();drawBoids();}catch(e){}requestAnimationFrame(wonderLoop);})();
+// ---------- CHAOS (Lorenz twins, Euler is enough visually) ----------
+let chA={x:1,y:1,z:1},chB={x:1+1e-9,y:1,z:1},chTrA=[],chTrB=[];
+function chStep(s){const dt=0.008;
+const dx=10*(s.y-s.x),dy=s.x*(28-s.z)-s.y,dz=s.x*s.y-8/3*s.z;
+s.x+=dx*dt;s.y+=dy*dt;s.z+=dz*dt;}
+$('chFlip').onclick=()=>{chB={x:chA.x+1e-6,y:chA.y,z:chA.z};chTrB=[];};
+$('chReset').onclick=()=>{chA={x:1,y:1,z:1};chB={x:1+1e-9,y:1,z:1};chTrA=[];chTrB=[];};
+(function chaosLoop(){
+for(let k=0;k<6;k++){chStep(chA);chStep(chB);}
+chTrA.push([chA.x,chA.z]);chTrB.push([chB.x,chB.z]);
+if(chTrA.length>500){chTrA.shift();chTrB.shift();}
+const c=$('chCanvas');if(c){const x=c.getContext('2d'),W=c.width,H=c.height;
+x.fillStyle='#0b1220';x.fillRect(0,0,W,H);
+const X=v=>20+(v+22)/44*(W-40),Y=v=>H-20-v/50*(H-40);
+[[chTrA,'#38bdf8'],[chTrB,'#fb923c']].forEach(([tr,col])=>{
+for(let i=1;i<tr.length;i+=2){x.strokeStyle=col;x.globalAlpha=i/tr.length*0.8;x.lineWidth=1.5;
+x.beginPath();x.moveTo(X(tr[i-1][0]),Y(tr[i-1][1]));x.lineTo(X(tr[i][0]),Y(tr[i][1]));x.stroke();}x.globalAlpha=1;});
+x.fillStyle='#fff';x.font='11px Tahoma';x.fillText('إسقاط x-z — جناحا الفراشة',10,16);
+const d=Math.hypot(chA.x-chB.x,chA.y-chB.y,chA.z-chB.z);
+const el=$('chDiv');if(el)el.textContent=d<0.01?d.toExponential(0):d.toFixed(2);}
+requestAnimationFrame(chaosLoop);})();
+// ---------- MESH (bit-exact Q16 engine — same seed as firmware) ----------
+const MS=65536n;
+function mfsh(v,n){n=BigInt(n);return v>=0n?v>>n:-(((-v)+(1n<<n)-1n)>>n);}
+function mstep(s){
+s.x+=mfsh(10n*(s.y-s.x),7);
+s.y+=mfsh(mfsh(s.x*(28n*MS-s.z),16)-s.y,7);
+let t=8n*s.z;t=t>=0n?t/3n:-(((-t)+2n)/3n);
+s.z+=mfsh(mfsh(s.x*s.y,16)-t,7);}
+function mhop(s){const w=s.y>0n?0:1;const az=s.z>=0n?s.z:-s.z;return (w*4+Number(mfsh(az,16)/6n)%4)%8;}
+let MU=1515567440092209359n;
+let mSpan=40n*MS;
+let M={x:MS+MU%mSpan,y:MS+((MU>>3n)%mSpan),z:MS+((MU>>5n)%mSpan)};
+for(let i=0;i<3000;i++)mstep(M);
+function mnext(){for(let i=0;i<50;i++)mstep(M);return mhop(M);}
+const MJAM=new Set([0,1,2,3]);
+let mHist=[],mFT=0,mFO=0,mHT=0,mHO=0;
+$('mReset').onclick=()=>{mHist=[];mFT=mFO=mHT=mHO=0;};
+(function meshLoop(){
+for(let k=0;k<2;k++){const hh=mnext();mHist.push(hh);if(mHist.length>140)mHist.shift();
+mHT++;if(!MJAM.has(hh))mHO++;mFT++;}
+const c=$('mCanvas');
+if(c){const x=c.getContext('2d'),W=c.width,H=c.height;x.fillStyle='#0b1220';x.fillRect(0,0,W,H);
+const RH=H/8,CW=3,LM=34;
+for(let ch=0;ch<8;ch++){const y=ch*RH;
+if(MJAM.has(ch)){x.fillStyle='#7f1d1d';x.fillRect(LM,y,W-LM,RH);}
+x.fillStyle='#e2e8f0';x.font='10px Tahoma';x.fillText('ch'+ch,4,y+RH/2+3);}
+mHist.forEach((hh,i)=>{const px=LM+i*CW;
+x.fillStyle='#4ade80';x.fillRect(px,hh*RH+2,2,RH-4);
+x.fillStyle='#f87171';x.fillRect(px,2,2,5);});
+x.fillStyle='#fff';x.font='11px Tahoma';x.fillText('شلال القنوات حي — نفس البذرة والمحرك في العتاد',LM+6,14);}
+const fp=$('mFixP'),hp=$('mHopP');
+if(fp)fp.textContent=mFT?(100*mFO/mFT).toFixed(1)+'%':'—';
+if(hp)hp.textContent=mHT?(100*mHO/mHT).toFixed(1)+'%':'—';
+setTimeout(meshLoop,120);})();
+drawElyChart();
+</script>
+<script type="module">
+import { genIdentity, fingerprint, seal, open as capOpen, encodeFrames, decodeFrames, fskMod, fskDemod, addNoise, selfTest, GRID } from './whisper_core.js';
+const TE=new TextEncoder(),TD=new TextDecoder();
+let A=null,B=null,CAP=null,SOUND=null;
+const b64e=(u8)=>btoa(String.fromCharCode(...u8));
+const b64d=(s)=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+async function init(){
+A=await genIdentity();B=await genIdentity();
+$('wFpA').textContent=(await fingerprint(A.comp)).join('،');
+$('wFpB').textContent=(await fingerprint(B.comp)).join('،');
+}
+$('wGenA').onclick=async()=>{A=await genIdentity();$('wFpA').textContent=(await fingerprint(A.comp)).join('،');CAP=null;};
+$('wGenB').onclick=async()=>{B=await genIdentity();$('wFpB').textContent=(await fingerprint(B.comp)).join('،');CAP=null;};
+$('wSeal').onclick=async()=>{
+CAP=await seal(A.priv,A.comp,B.raw,TE.encode($('wMsg').value));
+let snd='كبيرة للصوت — استخدم المرئي/الملف';
+try{snd=fskMod(CAP).seconds+'s';}catch(e){}
+$('wCapInfo').textContent=`الكبسولة ${CAP.length}B = ${encodeFrames(CAP).length} إطار | صوت: ${snd}`;
+SOUND=null;
+};
+function drawGrid(grid){
+const c=$('wVCanvas'),x=c.getContext('2d'),S=c.width/GRID;
+x.fillStyle='#0b1220';x.fillRect(0,0,c.width,c.height);
+x.fillStyle='#fff';
+for(let gy=0;gy<GRID;gy++)for(let gx=0;gx<GRID;gx++)
+if(grid[gy*GRID+gx])x.fillRect(gx*S,gy*S,S,S);
+const F=(fx,fy)=>{x.fillStyle='#fff';x.fillRect(fx*S,fy*S,7*S,7*S);
+x.fillStyle='#0b1220';x.fillRect((fx+1)*S,(fy+1)*S,5*S,5*S);
+x.fillStyle='#fff';x.fillRect((fx+2)*S,(fy+2)*S,3*S,3*S);};
+F(0,0);F(GRID-7,0);F(0,GRID-7);
+}
+function sampleGrid(){
+const c=$('wVCanvas'),x=c.getContext('2d'),S=c.width/GRID;
+const d=x.getImageData(0,0,c.width,c.height).data;
+const g=new Uint8Array(GRID*GRID);
+for(let gy=0;gy<GRID;gy++)for(let gx=0;gx<GRID;gx++){
+const px=Math.floor(gx*S+S/2),py=Math.floor(gy*S+S/2);
+g[gy*GRID+gx]=d[(py*c.width+px)*4]>128?1:0;}
+return g;
+}
+let vTimer=null;
+$('wVPlay').onclick=()=>{
+if(!CAP){$('wVOut').textContent='اشفّر رسالة أولًا';return;}
+const fr=encodeFrames(CAP),seq=[...fr,...fr,...fr];
+let i=0;clearInterval(vTimer);
+vTimer=setInterval(()=>{drawGrid(seq[i%seq.length]);i++;if(i>=seq.length*2)clearInterval(vTimer);},350);
+$('wVOut').textContent=`يعرض ${seq.length} إطارًا…`;
+};
+$('wVCap').onclick=async()=>{
+try{
+if(!CAP){$('wVOut').textContent='اشفّر أولًا';return;}
+const fr=encodeFrames(CAP),got=[];
+for(const f of fr){drawGrid(f);got.push(sampleGrid());}
+const back=decodeFrames(got);
+if(back.join()!==CAP.join())throw new Error('bits differ');
+const pt=await capOpen(B.priv,back,A.comp);
+$('wVOut').textContent='✓ وصلت عبر الضوء: '+TD.decode(pt);
+}catch(e){$('wVOut').textContent='✗ '+e.message;}
+};
+function drawSpectrum(samp){
+const c=$('wSCanvas'),x=c.getContext('2d');
+x.fillStyle='#0b1220';x.fillRect(0,0,c.width,c.height);
+const N=8192,sr=48000,mags=[];
+for(let f=17000;f<=20000;f+=100){
+let re=0,im=0;
+for(let i=0;i<N;i++){const p=2*Math.PI*f*i/sr;re+=samp[i]*Math.cos(p);im+=samp[i]*Math.sin(p);}
+mags.push(Math.hypot(re,im));}
+const mx=Math.max(...mags);
+x.fillStyle='#4ade80';
+mags.forEach((m,i)=>{const hgt=m/mx*(c.height-20);x.fillRect(i*(c.width/mags.length),c.height-hgt,c.width/mags.length-1,hgt);});
+x.fillStyle='#fff';x.font='11px Tahoma';x.fillText('17kHz ← الطيف → 20kHz (قمتان = 0/1)',8,14);
+}
+$('wSPlay').onclick=async()=>{
+if(!CAP){$('wSOut').textContent='اشفّر أولًا';return;}
+try{
+const r=fskMod(CAP);
+SOUND=r.samples;drawSpectrum(r.samples);
+const AC=window.AudioContext||window.webkitAudioContext;
+const ac=new AC({sampleRate:48000});
+const buf=ac.createBuffer(1,r.samples.length,48000);
+buf.getChannelData(0).set(r.samples);
+const src=ac.createBufferSource();src.buffer=buf;src.connect(ac.destination);src.start();
+$('wSOut').textContent=`يُهمس الآن (${r.seconds}s فوق صوتي — قد لا تسمع شيئًا!)`;
+}catch(e){$('wSOut').textContent='✗ '+e.message;}
+};
+$('wNoise').oninput=()=>{$('wNoiseV').textContent=$('wNoise').value+'dB';};
+$('wSCap').onclick=async()=>{
+try{
+if(!SOUND){$('wSOut').textContent='شغّل الهمس أولًا';return;}
+const nz=addNoise(SOUND,+$('wNoise').value);
+const pt=await capOpen(B.priv,fskDemod(nz),A.comp);
+$('wSOut').textContent=`✓ وصلت عبر الصوت (+${$('wNoise').value}dB): `+TD.decode(pt);
+}catch(e){$('wSOut').textContent='✗ '+e.message+' — جرّب ضجيجًا أقل أو المرئي';}
+};
+$('wExport').onclick=()=>{
+if(!CAP){$('wFOut').textContent='اشفّر أولًا';return;}
+$('wFileBox').value=b64e(CAP);
+$('wFOut').textContent=`صُدّرت ${CAP.length}B كنص — انسخها لأي وسيلة`;
+};
+$('wImport').onclick=async()=>{
+try{
+const pt=await capOpen(B.priv,b64d($('wFileBox').value.trim()),A.comp);
+$('wFOut').textContent='✓ وصلت عبر الملف: '+TD.decode(pt);
+}catch(e){$('wFOut').textContent='✗ '+e.message;}
+};
+$('wTamper').onclick=async()=>{
+if(!CAP){$('wTamperOut').textContent='اشفّر أولًا';return;}
+try{
+const bad=CAP.slice();bad[bad.length-1]^=1;
+await capOpen(B.priv,bad,A.comp);
+$('wTamperOut').textContent='✗ كارثة: قُبِلت المزورة!';
+}catch(e){$('wTamperOut').textContent='✓ العبث مرفوض: '+e.message;}
+};
+$('wSelf').onclick=async()=>{
+const T=await selfTest();
+$('wSelfOut').innerHTML=T.map(t=>`<div>${t.pass?'✅':'❌'} ${t.name} — ${t.detail}</div>`).join('');
+};
+init();
+</script>
+<script type="module">
+import { genIdentity, fingerprint, seal, open as capOpen } from './whisper_core.js';
+const TE=new TextEncoder(),TD=new TextDecoder();
+let FA=null,FB=null,JAM=false,DEL=0,LOST=0,TX=0,RNG=12345;
+const rnd=()=>((RNG=(RNG*1103515245+12345)&0x7fffffff)/0x7fffffff);
+const ND=[[30,180],[120,140],[120,230],[210,100],[210,180],[210,260],[300,140],[300,230],[380,180],[430,180],[160,180],[260,180]];
+const DST=9,LK=[];
+for(let i=0;i<ND.length;i++)for(let j=i+1;j<ND.length;j++){
+const dx=ND[i][0]-ND[j][0],dy=ND[i][1]-ND[j][1];
+if(Math.hypot(dx,dy)<110){LK.push([i,j]);}}
+function draw(seen,front,dead){
+const c=$('fMesh'),x=c.getContext('2d');
+x.fillStyle='#0b1220';x.fillRect(0,0,c.width,c.height);
+x.strokeStyle='#334155';
+for(const [i,j] of LK){x.beginPath();x.moveTo(ND[i][0],ND[i][1]);x.lineTo(ND[j][0],ND[j][1]);x.stroke();}
+if(JAM){x.strokeStyle='#7f1d1d';x.lineWidth=2;x.beginPath();x.arc(210,180,120,0,7);x.stroke();
+x.fillStyle='#f87171';x.font='11px Tahoma';x.fillText('وابل 50% على 4/8 قنوات',130,30);x.lineWidth=1;}
+ND.forEach(([px,py],i)=>{
+x.fillStyle=i===0?'#f87171':(i===DST?'#38bdf8':(front.has(i)?'#4ade80':(seen.has(i)?'#166534':(dead.has(i)?'#450a0a':'#475569'))));
+x.beginPath();x.arc(px,py,9,0,7);x.fill();
+x.fillStyle='#fff';x.font='9px Tahoma';x.fillText(i===0?'A':(i===DST?'B':i),px-3,py+3);});
+}
+async function initFar(){
+FA=await genIdentity();FB=await genIdentity();
+$('fFpA').textContent=(await fingerprint(FA.comp)).slice(0,4).join('،');
+$('fFpB').textContent=(await fingerprint(FB.comp)).slice(0,4).join('،');
+draw(new Set([0]),new Set(),new Set());
+}
+$('fJam').onclick=()=>{JAM=!JAM;$('fJamSt').textContent=JAM?'مفتوح':'مغلق';};
+$('fReset').onclick=()=>{DEL=LOST=TX=0;RNG=12345;
+$('fDel').textContent='0';$('fLost').textContent='0';$('fTx').textContent='0';
+$('fOut').textContent='الشبكة: —';draw(new Set([0]),new Set(),new Set());};
+$('fBLE').onclick=async()=>{
+try{
+if(!navigator.bluetooth)throw new Error('لا Web Bluetooth هنا');
+await navigator.bluetooth.requestDevice({acceptAllDevices:true});
+$('fBLEOut').textContent='البلوتوث: ✓ متصل بالعقدة';
+}catch(e){$('fBLEOut').textContent='البلوتوث: وضع المحاكاة ('+e.message+') — يعمل على هاتفك';}
+};
+$('fSend').onclick=async()=>{
+const CAP=await seal(FA.priv,FA.comp,FB.raw,TE.encode($('fMsg').value));
+$('fOut').textContent=`شفّرت ${CAP.length}B ← تفيض الآن…`;
+const seen=new Set([0]),dead=new Set();
+let front=new Set([0]),round=0;
+draw(seen,front,dead);
+const step=async()=>{
+if(round++>8||!front.size){
+if(seen.has(DST)){
+const pt=await capOpen(FB.priv,CAP,FA.comp);
+DEL++;$('fDel').textContent=DEL;
+$('fOut').textContent='✓ وصلت وفُكّت: '+TD.decode(pt);
+}else{LOST++;$('fLost').textContent=LOST;$('fOut').textContent='✗ ضاعت تحت الوابل — أعد الإرسال';}
+return;}
+const nxt=new Set();
+for(const u of front){
+let clear=false;
+for(let t=0;t<3;t++){TX++;if(!JAM||rnd()>=0.5){clear=true;break;}}
+$('fTx').textContent=TX;
+if(!clear){dead.add(u);continue;}
+for(const [i,j] of LK){
+const w=(i===u)?j:((j===u)?i:-1);
+if(w>=0&&!seen.has(w)){seen.add(w);nxt.add(w);}}
+}
+front=nxt;draw(seen,front,dead);
+setTimeout(step,600);};
+setTimeout(step,600);
+};
+function farMeshAnim(){}
+initFar();
+</script>
+<script type="module">
+import { genIdentity, fingerprint, seal, open as capOpen } from './whisper_core.js';
+const TE=new TextEncoder(),TD=new TextDecoder();
+const GOLD={"capsule_hex": "01080f161d242b323940474e555c636a71787f868d949ba2a9b0b7bec5ccd3dae1e8eff6fd040b121920272e353c434a51585f666d747b828990979ea5acb3bac1c8cfd6dde4ebf2f900070e151c232a31383f464d545b626970777e858c939aa1a8afb6bdc4cbd2d9e0e7eef5fc030a11181f262d343b424950575e656c737a81888f969da4abb2b9c0c7ced5dce3eaf1f8ff060d141b222930373e454c535a61686f767d848b9299a0a7", "msgid": 9, "segments_hex": ["02090200e101080f161d242b323940474e555c636a71787f868d949ba2a9b0b7bec5ccd3dae1e8eff6fd040b121920272e353c434a51585f666d747b828990979ea5acb3bac1c8cfd6dde4ebf2f900070e151c232a31383f464d545b626970777e858c939aa1a8afb6bdc4cbd2d9e0e7eef5fc030a11181f262d343b424950575e656c737a81888f969da4ab", "02090201e1b2b9c0c7ced5dce3eaf1f8ff060d141b222930373e454c535a61686f767d848b9299a0a7"], "port": 8091};
+let SA=null,SB=null,SCAP=null,SSEGS=null,MID=20,COST=0;
+function crc8(u8){let c=0;for(const b of u8){c^=b;for(let k=0;k<8;k++)c=(c&0x80)?((c<<1)^7)&255:(c<<1)&255;}return c;}
+function smsEncode(cap,mid){
+const n=Math.ceil(cap.length/135),c=crc8(cap),o=[];
+for(let i=0;i<n;i++){const body=cap.slice(i*135,(i+1)*135);
+const s=new Uint8Array(5+body.length);
+s[0]=2;s[1]=mid;s[2]=n;s[3]=i;s[4]=c;s.set(body,5);o.push(s);}return o;}
+function smsDecode(segs){
+if(!segs.length)throw new Error('فارغ');
+const [v,mid,n,,c]=segs[0];
+const parts=new Map();
+for(const s of segs){
+if(s.length<5||s[0]!==v||s[1]!==mid||s[2]!==n||s[4]!==c||s[3]>=n)throw new Error('مقطع فاسد/مختلط');
+if(!parts.has(s[3]))parts.set(s[3],s.slice(5));}
+if(parts.size!==n)throw new Error('ناقص');
+const out=new Uint8Array([...parts.entries()].sort((a,b)=>a[0]-b[0]).reduce((t,[,p])=>t+p.length,0));
+let o=0;for(const [,p] of [...parts.entries()].sort((a,b)=>a[0]-b[0])){out.set(p,o);o+=p.length;}
+if(crc8(out)!==c)throw new Error('CRC8');
+return out;}
+const hex=(u8)=>[...u8].map(b=>b.toString(16).padStart(2,'0')).join('');
+async function initSim(){
+SA=await genIdentity();SB=await genIdentity();
+$('sFpA').textContent=(await fingerprint(SA.comp)).slice(0,4).join('،');
+$('sFpB').textContent=(await fingerprint(SB.comp)).slice(0,4).join('،');
+try{
+const cap=Uint8Array.from(GOLD.capsule_hex.match(/../g).map(x=>parseInt(x,16)));
+const mine=smsEncode(cap,GOLD.msgid).map(hex);
+const ok=mine.length===GOLD.segments_hex.length&&mine.every((s,i)=>s===GOLD.segments_hex[i]);
+$('sCodec').textContent=ok?'✓ يطابق بايثون':'✗ اختلاف!';
+}catch(e){$('sCodec').textContent='✗ '+e.message;}
+}
+$('sSeal').onclick=async()=>{
+SCAP=await seal(SA.priv,SA.comp,SB.raw,TE.encode($('sMsg').value));
+SSEGS=smsEncode(SCAP,MID=(MID+1)%256);
+COST+=SSEGS.length;$('sCost').textContent=COST;
+$('sSegs').textContent='المقاطع ('+SSEGS.length+'): '+SSEGS.map((s,i)=>`#${i}:[${hex(s.slice(0,5))}..${hex(s.slice(-3))}]`).join(' ');
+$('sOut').textContent='أُرسلت عبر التغطية (محاكاة) — المشغّل يرى شفرة فقط';
+};
+$('sRecv').onclick=async()=>{
+try{
+if(!SSEGS){$('sOut').textContent='شفّر أولًا';return;}
+const back=smsDecode([...SSEGS].reverse());
+const pt=await capOpen(SB.priv,back,SA.comp);
+$('sOut').textContent='✓ وصلت وفُكّت (ترتيب معكوس!): '+TD.decode(pt);
+}catch(e){$('sOut').textContent='✗ '+e.message;}
+};
+$('sCorrupt').onclick=async()=>{
+try{
+if(!SSEGS){$('sOut').textContent='شفّر أولًا';return;}
+const bad=SSEGS.map(s=>s.slice());bad[0][10]^=1;
+smsDecode(bad);
+$('sOut').textContent='✗ كارثة: قُبِل الفاسد!';
+}catch(e){$('sOut').textContent='✓ الفاسد مرفوض: '+e.message;}
+};
+$('sPlain').oninput=()=>{
+const L=$('sPlain').value.length;
+$('sPlainCost').textContent=L<=70?1:Math.ceil(L/67);
+};
+const RING={1:'تمام ✓',2:'اتصل بي ضروري',3:'تعال/خطر'};
+async function playRings(n){
+$('rTime').textContent='الخط: ';
+for(let i=0;i<n;i++){
+await new Promise(r=>setTimeout(r,700));
+$('rTime').textContent+='🔔 ';}
+$('rOut').textContent=`الفك: ${n} رنّات ← ${RING[n]} — مجانًا ✓ (الناقل 1-بت)`;
+}
+$('r1').onclick=()=>playRings(1);
+$('r2').onclick=()=>playRings(2);
+$('r3').onclick=()=>playRings(3);
+initSim();
+</script>
+<script>
+let ETM=false;
+const $e=(id)=>$(id);
+function eDay(){
+const s=+$e('eScr').value,c=+$e('eCall').value,d=+$e('eData').value;
+$e('eScrV').textContent=s+'h';$e('eCallV').textContent=c+'h';$e('eDataV').textContent=d+'h';
+$e('eSunV').textContent=$e('eSun').value+'h';
+if(!ETM){const idle=Math.max(0,24-s-c-d);
+return s*0.7+c*0.8+d*1.0+idle*0.05+0.5;}
+return Math.min(s,2)*0.5+c*0.8+d*0.25*1.0+10*0.02+8*0.003+0.2;}
+function etbDraw(){
+const use=eDay(),days=18.5/use,sunWh=5*(+$e('eSun').value)*0.7+1,net=sunWh-use;
+$e('eDays').textContent=days.toFixed(1);
+$e('eSus').textContent=net>=0?('مستدام ∞ (+'+net.toFixed(1)+'Wh/يوم)'):('ينفد خلال '+(40/(-net)).toFixed(0)+' يوم');
+$e('eUse').textContent=`الاستهلاك: ${use.toFixed(2)}Wh/يوم (البطارية 18.5Wh)`;
+$e('eModeSt').textContent=ETM?'الخلود 🌙':'عادي';
+const c=$e('eCurve'),x=c.getContext('2d'),W=c.width,H=c.height;
+x.fillStyle='#0b1220';x.fillRect(0,0,W,H);
+x.strokeStyle='#334155';
+[0,50,100].forEach(v=>{const y=H-15-v/100*(H-30);
+x.beginPath();x.moveTo(35,y);x.lineTo(W-5,y);x.stroke();
+x.fillStyle='#94a3b8';x.font='10px Tahoma';x.fillText(v+'%',5,y+3);});
+const X=d=>35+d/7*(W-40),Y=v=>H-15-Math.max(0,v)/100*(H-30);
+const nU=(()=>{const s=+$e('eScr').value,cc=+$e('eCall').value,d=+$e('eData').value;
+return s*0.7+cc*0.8+d*1.0+Math.max(0,24-s-cc-d)*0.05+0.5;})();
+const eU=(()=>{const s=+$e('eScr').value,cc=+$e('eCall').value,d=+$e('eData').value;
+return Math.min(s,2)*0.5+cc*0.8+d*0.25+0.2+0.024+0.2;})();
+[['#f87171',nU,0],['#4ade80',eU,0],['#38bdf8',eU,sunWh]].forEach(([col,du,sw])=>{
+x.strokeStyle=col;x.lineWidth=2;x.beginPath();
+let b=100;x.moveTo(X(0),Y(100));
+for(let d=1;d<=7;d++){b-=du/18.5*100;if(sw)b=Math.min(100,b+sw/18.5*100);b=Math.max(0,b);
+x.lineTo(X(d),Y(b));}
+x.stroke();x.lineWidth=1;});
+x.fillStyle='#f87171';x.fillText('عادي',40,14);
+x.fillStyle='#4ade80';x.fillText('خلود',90,14);
+x.fillStyle='#38bdf8';x.fillText('خلود+محطة',140,14);
+}
+function etbBars(){
+const items=[['☀ محطة شمسية',5000,'#4ade80'],['📱 هاتف ذروة',2000,'#f87171'],
+['🧪 خرطوشة ماء مالح',860,'#38bdf8'],['📱 هاتف معدل',250,'#fb923c'],
+['☢ RTG/غرام (ممنوع)',32,'#7f1d1d'],['⚛ Ni-63 (حقيقي)',0.1,'#a78bfa'],['⚛ تريتيوم',0.001,'#64748b']];
+const c=$('eBars'),x=c.getContext('2d'),W=c.width,H=c.height;
+x.fillStyle='#0b1220';x.fillRect(0,0,W,H);
+x.fillStyle='#fff';x.font='11px Tahoma';x.fillText('مقياس لوغاريتمي mW — كل خطوة = ×10 (النووي يعجز 2500×)',120,14);
+items.forEach(([lb,v,col],i)=>{
+const y=24+i*((H-30)/items.length);
+const w=(Math.log10(v)+3)/6.7*(W-250);
+x.fillStyle='#94a3b8';x.fillText(lb,5,y+10);
+x.fillStyle=col;x.fillRect(130,y,Math.max(2,w),(H-30)/items.length-4);
+x.fillStyle='#e2e8f0';x.fillText(v>=1?v+'mW':(v*1000)+'µW',135+Math.max(2,w),y+10);});
+}
+['eScr','eCall','eData','eSun'].forEach(id=>$(id).oninput=etbDraw);
+$('eMode').onclick=()=>{ETM=!ETM;etbDraw();};
+$('ePour').onclick=()=>{
+const c=$('eAlCurve'),x=c.getContext('2d'),W=c.width,H=c.height;
+let hh=0,wh=0;
+x.fillStyle='#0b1220';x.fillRect(0,0,W,H);
+const t=setInterval(()=>{
+const p=0.864*(1-0.03*hh);
+wh+=p;x.fillStyle='#0b1220';x.fillRect(0,0,W,H);
+x.strokeStyle='#38bdf8';x.lineWidth=2;x.beginPath();
+for(let i=0;i<=hh;i++){const px=20+i/10*(W-40),py=H-10-0.864*(1-0.03*i)/1.0*(H-20);
+i?x.lineTo(px,py):x.moveTo(px,py);}
+x.stroke();x.lineWidth=1;
+x.fillStyle='#fff';x.font='11px Tahoma';
+x.fillText(`ساعة ${hh}: ${p.toFixed(2)}W ← +${(100*wh/18.5).toFixed(0)}% (${wh.toFixed(1)}Wh)`,20,14);
+$('eAlOut').textContent=`الخرطوشة تعمل… +${(100*wh/18.5).toFixed(0)}% هاتف`;
+if(++hh>10){clearInterval(t);
+$('eAlOut').textContent=`✓ اكتملت: 8.6Wh ← +47% هاتف من الماء المالح!`;}},400);
+};
+etbDraw();etbBars();
+</script>
+</body>
+</html>

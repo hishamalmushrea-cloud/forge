@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="660" height="380" font-family="sans-serif">
+<rect width="660" height="380" fill="white"/>
+<text x="330" y="18" text-anchor="middle" font-size="13" font-weight="bold">TEG system: SP1848 x2 series — power &amp; heat vs dT (CALCULATED)</text>
+<line x1="60" y1="334.0" x2="600" y2="334.0" stroke="#e5e7eb"/>
+<text x="54" y="338.0" text-anchor="end" font-size="10">0W</text>
+<line x1="60" y1="258.0" x2="600" y2="258.0" stroke="#e5e7eb"/>
+<text x="54" y="262.0" text-anchor="end" font-size="10">0.5W</text>
+<line x1="60" y1="182.0" x2="600" y2="182.0" stroke="#e5e7eb"/>
+<text x="54" y="186.0" text-anchor="end" font-size="10">1.0W</text>
+<line x1="60" y1="106.0" x2="600" y2="106.0" stroke="#e5e7eb"/>
+<text x="54" y="110.0" text-anchor="end" font-size="10">1.5W</text>
+<line x1="60" y1="30.0" x2="600" y2="30.0" stroke="#e5e7eb"/>
+<text x="54" y="34.0" text-anchor="end" font-size="10">2.0W</text>
+<text x="604" y="338.0" font-size="10" fill="#b45309">0W</text>
+<text x="604" y="236.66666666666669" font-size="10" fill="#b45309">20W</text>
+<text x="604" y="135.33333333333334" font-size="10" fill="#b45309">40W</text>
+<text x="604" y="34.0" font-size="10" fill="#b45309">60W</text>
+<text x="60.0" y="350" text-anchor="middle" font-size="10">10</text>
+<text x="116.84210526315789" y="350" text-anchor="middle" font-size="10">20</text>
+<text x="173.68421052631578" y="350" text-anchor="middle" font-size="10">30</text>
+<text x="230.52631578947367" y="350" text-anchor="middle" font-size="10">40</text>
+<text x="287.36842105263156" y="350" text-anchor="middle" font-size="10">50</text>
+<text x="344.2105263157895" y="350" text-anchor="middle" font-size="10">60</text>
+<text x="401.05263157894734" y="350" text-anchor="middle" font-size="10">70</text>
+<text x="457.89473684210526" y="350" text-anchor="middle" font-size="10">80</text>
+<text x="514.7368421052631" y="350" text-anchor="middle" font-size="10">90</text>
+<text x="571.578947368421" y="350" text-anchor="middle" font-size="10">100</text>
+<text x="330" y="374" text-anchor="middle" font-size="11">dT (K)</text>
+<line x1="60" y1="182.0" x2="600" y2="182.0" stroke="#dc2626" stroke-dasharray="5,4"/>
+<text x="596" y="177.0" text-anchor="end" font-size="10" fill="#dc2626">R1 = 1W</text>
+<polyline points="60.0,331.9 88.4,329.4 116.8,325.7 145.3,322.4 173.7,318.4 202.1,313.8 230.5,308.8 258.9,304.9 287.4,300.6 315.8,296.1 344.2,291.2 372.6,283.6 401.1,275.4 429.5,266.8 457.9,257.6 486.3,247.2 514.7,236.1 543.2,224.4 571.6,212.0" fill="none" stroke="#93c5fd" stroke-width="2"/>
+<polyline points="60.0,329.9 88.4,324.7 116.8,317.4 145.3,310.8 173.7,302.8 202.1,293.7 230.5,283.6 258.9,275.7 287.4,267.2 315.8,258.1 344.2,248.4 372.6,233.2 401.1,216.9 429.5,199.6 457.9,181.3 486.3,160.4 514.7,138.1 543.2,114.8 571.6,90.0" fill="none" stroke="#2563eb" stroke-width="2"/>
+<polyline points="60.0,329.9 88.4,324.9 116.8,317.3 145.3,310.7 173.7,302.6 202.1,294.0 230.5,283.8 258.9,275.7 287.4,267.1 315.8,258.0 344.2,248.4 372.6,233.2 401.1,217.0 429.5,199.7 457.9,181.5 486.3,160.2 514.7,137.9 543.2,114.6 571.6,89.8" fill="none" stroke="#b45309" stroke-width="2" stroke-dasharray="3,3"/>
+<rect x="80" y="360" width="26" height="10" fill="#93c5fd"/><text x="110" y="369" font-size="11">Pmax 1 module</text>
+<rect x="230" y="360" width="26" height="10" fill="#2563eb"/><text x="260" y="369" font-size="11">Pmax 2 series</text>
+<rect x="380" y="360" width="26" height="10" fill="#b45309"/><text x="410" y="369" font-size="11">heater Q (right axis)</text>
+</svg>

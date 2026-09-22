@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="700" height="440" font-family="sans-serif">
+<rect width="700" height="440" fill="#1e4f9c"/>
+<text x="350" y="26" text-anchor="middle" font-size="15" font-weight="bold" fill="white">Desal system — electrical + control wiring (STATUS: DRAWN)</text>
+<rect x="20" y="60" width="120" height="60" fill="none" stroke="white" stroke-width="2"/>
+<text x="80" y="85" text-anchor="middle" font-size="11" fill="white">5V PSU 5A</text>
+<text x="80" y="103" text-anchor="middle" font-size="10" fill="white">[3A fuse]</text>
+<rect x="170" y="60" width="120" height="60" fill="none" stroke="white" stroke-width="2"/>
+<text x="230" y="85" text-anchor="middle" font-size="11" fill="white">buck CC</text>
+<text x="230" y="103" text-anchor="middle" font-size="10" fill="#7dd3fc">1.9A charge</text>
+<rect x="320" y="60" width="110" height="60" fill="none" stroke="#fbbf24" stroke-width="2"/>
+<text x="375" y="85" text-anchor="middle" font-size="11" fill="#fbbf24">relay K1</text>
+<text x="375" y="103" text-anchor="middle" font-size="10" fill="white">CHARGE path</text>
+<rect x="460" y="60" width="120" height="60" fill="none" stroke="#7dd3fc" stroke-width="3"/>
+<text x="520" y="85" text-anchor="middle" font-size="11" fill="white">CELL</text>
+<text x="520" y="103" text-anchor="middle" font-size="10" fill="#7dd3fc">PB(−) Ag(+)</text>
+<line x1="140" y1="90" x2="170" y2="90" stroke="white" stroke-width="3"/>
+<line x1="290" y1="90" x2="320" y2="90" stroke="white" stroke-width="3"/>
+<line x1="430" y1="90" x2="460" y2="90" stroke="white" stroke-width="3"/>
+<rect x="320" y="170" width="110" height="60" fill="none" stroke="#fbbf24" stroke-width="2"/>
+<text x="375" y="195" text-anchor="middle" font-size="11" fill="#fbbf24">relay K2</text>
+<text x="375" y="213" text-anchor="middle" font-size="10" fill="white">DISCH path</text>
+<rect x="170" y="170" width="120" height="60" fill="none" stroke="white" stroke-width="2"/>
+<text x="230" y="195" text-anchor="middle" font-size="11" fill="white">LTC3108</text>
+<text x="230" y="213" text-anchor="middle" font-size="10" fill="#7dd3fc">boost 0.4V↑</text>
+<rect x="20" y="170" width="120" height="60" fill="none" stroke="white" stroke-width="2"/>
+<text x="80" y="195" text-anchor="middle" font-size="11" fill="white">supercap</text>
+<text x="80" y="213" text-anchor="middle" font-size="10" fill="#7dd3fc">recovered E</text>
+<line x1="520" y1="120" x2="520" y2="200" stroke="white" stroke-width="3"/>
+<line x1="520" y1="200" x2="430" y2="200" stroke="white" stroke-width="3"/>
+<line x1="320" y1="200" x2="290" y2="200" stroke="white" stroke-width="3"/>
+<line x1="170" y1="200" x2="140" y2="200" stroke="white" stroke-width="3"/>
+<rect x="460" y="280" width="220" height="130" fill="none" stroke="white" stroke-width="2"/>
+<text x="570" y="305" text-anchor="middle" font-size="12" fill="white">Arduino control</text>
+<text x="480" y="330" font-size="10" fill="white">D2→K1, D3→K2 (interlocked: never both!)</text>
+<text x="480" y="350" font-size="10" fill="white">I2C←INA219 (charge line, 1.9A ok)</text>
+<text x="480" y="370" font-size="10" fill="white">A0←TDS probe (OUT line)</text>
+<text x="480" y="390" font-size="10" fill="#7dd3fc">USB→CSV log→acceptance_t3t4.py</text>
+<line x1="375" y1="120" x2="375" y2="170" stroke="#fbbf24" stroke-width="1" stroke-dasharray="4,3"/>
+<text x="20" y="290" font-size="11" fill="#fbbf24">INTERLOCK: K1/K2 coils wired through each other's NC contact + firmware enforces</text>
+<text x="20" y="312" font-size="11" fill="white">Trip: V&gt;1.0V charge / timeout 12h → FAULT + buzzer (see firmware/)</text>
+<text x="20" y="334" font-size="11" fill="#7dd3fc">GND common star-point at PSU • cell leads twisted, short</text>
+</svg>

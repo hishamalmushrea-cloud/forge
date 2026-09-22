@@ -1,0 +1,89 @@
+{
+ "F": 96485.0,
+ "Vm_L_per_mol": 24.45,
+ "E_op_assumed_V": 2.0,
+ "selected_point": {
+  "I_A": 4,
+  "H2_L_per_h": 1.82,
+  "O2_L_per_h": 0.91,
+  "P_W": 8.0,
+  "Wh_per_L_H2": 4.38,
+  "LHV_eff": 0.636,
+  "meets_R1": true
+ },
+ "voltage_eff_1.23/2.0": 0.615,
+ "curve": [
+  {
+   "I_A": 1,
+   "H2_L_per_h": 0.46,
+   "O2_L_per_h": 0.23,
+   "P_W": 2.0,
+   "Wh_per_L_H2": 4.38,
+   "LHV_eff": 0.636,
+   "meets_R1": false
+  },
+  {
+   "I_A": 2,
+   "H2_L_per_h": 0.91,
+   "O2_L_per_h": 0.46,
+   "P_W": 4.0,
+   "Wh_per_L_H2": 4.38,
+   "LHV_eff": 0.636,
+   "meets_R1": false
+  },
+  {
+   "I_A": 3,
+   "H2_L_per_h": 1.37,
+   "O2_L_per_h": 0.68,
+   "P_W": 6.0,
+   "Wh_per_L_H2": 4.38,
+   "LHV_eff": 0.636,
+   "meets_R1": false
+  },
+  {
+   "I_A": 4,
+   "H2_L_per_h": 1.82,
+   "O2_L_per_h": 0.91,
+   "P_W": 8.0,
+   "Wh_per_L_H2": 4.38,
+   "LHV_eff": 0.636,
+   "meets_R1": true
+  },
+  {
+   "I_A": 5,
+   "H2_L_per_h": 2.28,
+   "O2_L_per_h": 1.14,
+   "P_W": 10.0,
+   "Wh_per_L_H2": 4.38,
+   "LHV_eff": 0.636,
+   "meets_R1": true
+  },
+  {
+   "I_A": 6,
+   "H2_L_per_h": 2.74,
+   "O2_L_per_h": 1.37,
+   "P_W": 12.0,
+   "Wh_per_L_H2": 4.38,
+   "LHV_eff": 0.636,
+   "meets_R1": true
+  },
+  {
+   "I_A": 8,
+   "H2_L_per_h": 3.65,
+   "O2_L_per_h": 1.82,
+   "P_W": 16.0,
+   "Wh_per_L_H2": 4.38,
+   "LHV_eff": 0.636,
+   "meets_R1": true
+  },
+  {
+   "I_A": 10,
+   "H2_L_per_h": 4.56,
+   "O2_L_per_h": 2.28,
+   "P_W": 20.0,
+   "Wh_per_L_H2": 4.38,
+   "LHV_eff": 0.636,
+   "meets_R1": true
+  }
+ ]
+}

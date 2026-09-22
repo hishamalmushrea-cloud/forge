@@ -1,0 +1,81 @@
+{
+ "params": {
+  "V_chg": 0.5,
+  "DNET_V_calibrated": 0.07,
+  "eta_F": 0.95,
+  "cap_Ag_Ah_g": 0.248,
+  "cap_PB_Ah_g": 0.1
+ },
+ "calibration_anchor": {
+  "removal": 0.25,
+  "measured_Wh_per_L": 0.29,
+  "model_Wh_per_L": 0.296
+ },
+ "sweep": [
+  {
+   "removal": 0.25,
+   "ppm_out": 26250,
+   "kWh_per_m3": 0.296,
+   "Q_Ah": 4.224,
+   "E_chg_Wh": 2.11,
+   "E_rec_Wh": 1.82,
+   "E_net_Wh": 0.296
+  },
+  {
+   "removal": 0.5,
+   "ppm_out": 17500,
+   "kWh_per_m3": 0.591,
+   "Q_Ah": 8.448,
+   "E_chg_Wh": 4.22,
+   "E_rec_Wh": 3.63,
+   "E_net_Wh": 0.591
+  },
+  {
+   "removal": 0.7,
+   "ppm_out": 10500,
+   "kWh_per_m3": 0.828,
+   "Q_Ah": 11.827,
+   "E_chg_Wh": 5.91,
+   "E_rec_Wh": 5.09,
+   "E_net_Wh": 0.828
+  },
+  {
+   "removal": 0.8,
+   "ppm_out": 7000,
+   "kWh_per_m3": 0.946,
+   "Q_Ah": 13.517,
+   "E_chg_Wh": 6.76,
+   "E_rec_Wh": 5.81,
+   "E_net_Wh": 0.946
+  },
+  {
+   "removal": 0.9,
+   "ppm_out": 3500,
+   "kWh_per_m3": 1.064,
+   "Q_Ah": 15.207,
+   "E_chg_Wh": 7.6,
+   "E_rec_Wh": 6.54,
+   "E_net_Wh": 1.064
+  },
+  {
+   "removal": 0.95,
+   "ppm_out": 1750,
+   "kWh_per_m3": 1.124,
+   "Q_Ah": 16.051,
+   "E_chg_Wh": 8.03,
+   "E_rec_Wh": 6.9,
+   "E_net_Wh": 1.124
+  }
+ ],
+ "cascade_90pct": {
+  "passes": 2,
+  "ppm_final": 350.0,
+  "E_net_Wh_per_L": 2.13,
+  "kWh_per_m3": 2.13
+ },
+ "electrode_g_per_L_cycle": {
+  "Ag": 61.3,
+  "PB": 152.1
+ },
+ "current_A_8h": 1.9
+}

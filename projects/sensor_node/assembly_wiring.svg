@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="680" height="400" font-family="sans-serif">
+<rect width="680" height="400" fill="#1e4f9c"/>
+<text x="340" y="26" text-anchor="middle" font-size="15" font-weight="bold" fill="white">Sensor node — wiring diagram v1 (STATUS: DRAWN)</text>
+<rect x="20" y="120" width="130" height="90" fill="none" stroke="#fbbf24" stroke-width="2"/>
+<text x="85" y="145" text-anchor="middle" font-size="11" fill="#fbbf24">β-source</text>
+<text x="85" y="162" text-anchor="middle" font-size="10" fill="white">Ni-63 100µW</text>
+<text x="85" y="178" text-anchor="middle" font-size="10" fill="white">or surrogate:</text>
+<text x="85" y="194" text-anchor="middle" font-size="10" fill="white">TL431+39k ≈30µA</text>
+<rect x="185" y="120" width="120" height="90" fill="none" stroke="white" stroke-width="2"/>
+<text x="245" y="150" text-anchor="middle" font-size="11" fill="white">LTC3108</text>
+<text x="245" y="168" text-anchor="middle" font-size="10" fill="white">harvester</text>
+<text x="245" y="186" text-anchor="middle" font-size="10" fill="#7dd3fc">→ 3.3V</text>
+<rect x="340" y="120" width="110" height="90" fill="none" stroke="white" stroke-width="2"/>
+<text x="395" y="150" text-anchor="middle" font-size="11" fill="white">0.1F/5.5V</text>
+<text x="395" y="168" text-anchor="middle" font-size="10" fill="white">supercap</text>
+<text x="395" y="186" text-anchor="middle" font-size="10" fill="#7dd3fc">leak ≤2µA!</text>
+<rect x="485" y="70" width="175" height="190" fill="none" stroke="white" stroke-width="2"/>
+<text x="572" y="95" text-anchor="middle" font-size="11" fill="white">MCU + load switch</text>
+<text x="572" y="115" text-anchor="middle" font-size="10" fill="#7dd3fc">sleep ≤1µA</text>
+<line x1="485" y1="130" x2="660" y2="130" stroke="white"/>
+<text x="520" y="155" font-size="10" fill="white">• temp sensor (I2C)</text>
+<text x="520" y="175" font-size="10" fill="white">• LoRa radio (~50mJ/TX)</text>
+<text x="520" y="195" font-size="10" fill="white">• TX/30min, gate 2.3V</text>
+<text x="520" y="225" font-size="10" fill="#fbbf24">• OFF in sleep (FET)</text>
+<line x1="150" y1="165" x2="185" y2="165" stroke="#fbbf24" stroke-width="3"/>
+<line x1="305" y1="165" x2="340" y2="165" stroke="white" stroke-width="3"/>
+<line x1="450" y1="165" x2="485" y2="165" stroke="white" stroke-width="3"/>
+<line x1="395" y1="210" x2="395" y2="300" stroke="#7dd3fc" stroke-width="2" stroke-dasharray="5,4"/>
+<line x1="395" y1="300" x2="572" y2="300" stroke="#7dd3fc" stroke-width="2" stroke-dasharray="5,4"/>
+<line x1="572" y1="300" x2="572" y2="260" stroke="#7dd3fc" stroke-width="2" stroke-dasharray="5,4"/>
+<text x="330" y="290" font-size="10" fill="#7dd3fc">Vcap sense (ADC+divider)</text>
+<rect x="20" y="290" width="640" height="90" fill="none" stroke="white" stroke-width="1.5"/>
+<text x="30" y="315" font-size="11" fill="#fbbf24">Bring-up: 1) surrogate→cap→3.3V 2) flash firmware 3) T3 measure E_burst 4) 7-day run→acceptance_t4.py</text>
+<text x="30" y="338" font-size="11" fill="white">First boot: no TX until 3.0V • skip TX if Vcap&lt;2.2V • sleep doubles on sag (see firmware/)</text>
+<text x="30" y="361" font-size="10" fill="#7dd3fc">Nuclear source: LICENSED FACILITY ONLY — surrogate used for all electrical tests</text>
+</svg>

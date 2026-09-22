@@ -1,0 +1,220 @@
+{
+ "modules_series": 2,
+ "eta_te_assumed": 0.04,
+ "Rth_selected": 0.5,
+ "Tamb_assumed": 35.0,
+ "first_feasible_point": {
+  "dT": 80,
+  "Voc_sys_V": 7.2,
+  "R_sys_ohm": 12.9,
+  "Pmax_W": 1.004,
+  "Q_heater_W": 30.1,
+  "Tcold_C": 50.1,
+  "Thot_C": 130.1,
+  "meets_R1_safe": true
+ },
+ "selected_point_dT80": {
+  "dT": 80,
+  "Voc_sys_V": 7.2,
+  "R_sys_ohm": 12.9,
+  "Pmax_W": 1.004,
+  "Q_heater_W": 30.1,
+  "Tcold_C": 50.1,
+  "Thot_C": 130.1,
+  "meets_R1_safe": true
+ },
+ "heater_recommended_W": 45.0,
+ "matched_load_ohm": 12.9,
+ "curve": [
+  {
+   "dT": 10,
+   "Voc_sys_V": 0.97,
+   "R_sys_ohm": 8.62,
+   "Pmax_W": 0.027,
+   "Q_heater_W": 0.8,
+   "Tcold_C": 35.4,
+   "Thot_C": 45.4,
+   "meets_R1_safe": false
+  },
+  {
+   "dT": 15,
+   "Voc_sys_V": 1.45,
+   "R_sys_ohm": 8.62,
+   "Pmax_W": 0.061,
+   "Q_heater_W": 1.8,
+   "Tcold_C": 35.9,
+   "Thot_C": 50.9,
+   "meets_R1_safe": false
+  },
+  {
+   "dT": 20,
+   "Voc_sys_V": 1.94,
+   "R_sys_ohm": 8.62,
+   "Pmax_W": 0.109,
+   "Q_heater_W": 3.3,
+   "Tcold_C": 36.6,
+   "Thot_C": 56.6,
+   "meets_R1_safe": false
+  },
+  {
+   "dT": 25,
+   "Voc_sys_V": 2.35,
+   "R_sys_ohm": 9.03,
+   "Pmax_W": 0.154,
+   "Q_heater_W": 4.6,
+   "Tcold_C": 37.3,
+   "Thot_C": 62.3,
+   "meets_R1_safe": false
+  },
+  {
+   "dT": 30,
+   "Voc_sys_V": 2.77,
+   "R_sys_ohm": 9.34,
+   "Pmax_W": 0.205,
+   "Q_heater_W": 6.2,
+   "Tcold_C": 38.1,
+   "Thot_C": 68.1,
+   "meets_R1_safe": false
+  },
+  {
+   "dT": 35,
+   "Voc_sys_V": 3.19,
+   "R_sys_ohm": 9.59,
+   "Pmax_W": 0.265,
+   "Q_heater_W": 7.9,
+   "Tcold_C": 39.0,
+   "Thot_C": 74.0,
+   "meets_R1_safe": false
+  },
+  {
+   "dT": 40,
+   "Voc_sys_V": 3.6,
+   "R_sys_ohm": 9.78,
+   "Pmax_W": 0.331,
+   "Q_heater_W": 9.9,
+   "Tcold_C": 40.0,
+   "Thot_C": 80.0,
+   "meets_R1_safe": false
+  },
+  {
+   "dT": 45,
+   "Voc_sys_V": 3.9,
+   "R_sys_ohm": 9.92,
+   "Pmax_W": 0.383,
+   "Q_heater_W": 11.5,
+   "Tcold_C": 40.8,
+   "Thot_C": 85.8,
+   "meets_R1_safe": false
+  },
+  {
+   "dT": 50,
+   "Voc_sys_V": 4.2,
+   "R_sys_ohm": 10.04,
+   "Pmax_W": 0.439,
+   "Q_heater_W": 13.2,
+   "Tcold_C": 41.6,
+   "Thot_C": 91.6,
+   "meets_R1_safe": false
+  },
+  {
+   "dT": 55,
+   "Voc_sys_V": 4.5,
+   "R_sys_ohm": 10.14,
+   "Pmax_W": 0.499,
+   "Q_heater_W": 15.0,
+   "Tcold_C": 42.5,
+   "Thot_C": 97.5,
+   "meets_R1_safe": false
+  },
+  {
+   "dT": 60,
+   "Voc_sys_V": 4.8,
+   "R_sys_ohm": 10.23,
+   "Pmax_W": 0.563,
+   "Q_heater_W": 16.9,
+   "Tcold_C": 43.4,
+   "Thot_C": 103.4,
+   "meets_R1_safe": false
+  },
+  {
+   "dT": 65,
+   "Voc_sys_V": 5.4,
+   "R_sys_ohm": 10.99,
+   "Pmax_W": 0.663,
+   "Q_heater_W": 19.9,
+   "Tcold_C": 44.9,
+   "Thot_C": 109.9,
+   "meets_R1_safe": false
+  },
+  {
+   "dT": 70,
+   "Voc_sys_V": 6.0,
+   "R_sys_ohm": 11.68,
+   "Pmax_W": 0.77,
+   "Q_heater_W": 23.1,
+   "Tcold_C": 46.6,
+   "Thot_C": 116.6,
+   "meets_R1_safe": false
+  },
+  {
+   "dT": 75,
+   "Voc_sys_V": 6.6,
+   "R_sys_ohm": 12.32,
+   "Pmax_W": 0.884,
+   "Q_heater_W": 26.5,
+   "Tcold_C": 48.3,
+   "Thot_C": 123.3,
+   "meets_R1_safe": false
+  },
+  {
+   "dT": 80,
+   "Voc_sys_V": 7.2,
+   "R_sys_ohm": 12.9,
+   "Pmax_W": 1.004,
+   "Q_heater_W": 30.1,
+   "Tcold_C": 50.1,
+   "Thot_C": 130.1,
+   "meets_R1_safe": true
+  },
+  {
+   "dT": 85,
+   "Voc_sys_V": 7.8,
+   "R_sys_ohm": 13.32,
+   "Pmax_W": 1.142,
+   "Q_heater_W": 34.3,
+   "Tcold_C": 52.1,
+   "Thot_C": 137.1,
+   "meets_R1_safe": true
+  },
+  {
+   "dT": 90,
+   "Voc_sys_V": 8.4,
+   "R_sys_ohm": 13.69,
+   "Pmax_W": 1.288,
+   "Q_heater_W": 38.7,
+   "Tcold_C": 54.3,
+   "Thot_C": 144.3,
+   "meets_R1_safe": false
+  },
+  {
+   "dT": 95,
+   "Voc_sys_V": 9.0,
+   "R_sys_ohm": 14.04,
+   "Pmax_W": 1.443,
+   "Q_heater_W": 43.3,
+   "Tcold_C": 56.6,
+   "Thot_C": 151.6,
+   "meets_R1_safe": false
+  },
+  {
+   "dT": 100,
+   "Voc_sys_V": 9.6,
+   "R_sys_ohm": 14.35,
+   "Pmax_W": 1.606,
+   "Q_heater_W": 48.2,
+   "Tcold_C": 59.1,
+   "Thot_C": 159.1,
+   "meets_R1_safe": false
+  }
+ ]
+}

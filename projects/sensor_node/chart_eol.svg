@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="660" height="340" font-family="sans-serif">
+<rect width="660" height="340" fill="white"/>
+<text x="330" y="18" text-anchor="middle" font-size="13" font-weight="bold">Node lifetime vs TX interval (CALCULATED, leak=2uA)</text>
+<line x1="60" y1="294.0" x2="644" y2="294.0" stroke="#e5e7eb"/>
+<text x="54" y="298.0" text-anchor="end" font-size="10">0y</text>
+<line x1="60" y1="250.0" x2="644" y2="250.0" stroke="#e5e7eb"/>
+<text x="54" y="254.0" text-anchor="end" font-size="10">25y</text>
+<line x1="60" y1="206.0" x2="644" y2="206.0" stroke="#e5e7eb"/>
+<text x="54" y="210.0" text-anchor="end" font-size="10">50y</text>
+<line x1="60" y1="162.0" x2="644" y2="162.0" stroke="#e5e7eb"/>
+<text x="54" y="166.0" text-anchor="end" font-size="10">75y</text>
+<line x1="60" y1="118.0" x2="644" y2="118.0" stroke="#e5e7eb"/>
+<text x="54" y="122.0" text-anchor="end" font-size="10">100y</text>
+<line x1="60" y1="74.0" x2="644" y2="74.0" stroke="#e5e7eb"/>
+<text x="54" y="78.0" text-anchor="end" font-size="10">125y</text>
+<line x1="60" y1="30.0" x2="644" y2="30.0" stroke="#e5e7eb"/>
+<text x="54" y="34.0" text-anchor="end" font-size="10">150y</text>
+<text x="60.0" y="310" text-anchor="middle" font-size="10">15</text>
+<text x="87.80952380952381" y="310" text-anchor="middle" font-size="10">20</text>
+<text x="115.61904761904762" y="310" text-anchor="middle" font-size="10">25</text>
+<text x="143.42857142857144" y="310" text-anchor="middle" font-size="10">30</text>
+<text x="226.85714285714286" y="310" text-anchor="middle" font-size="10">45</text>
+<text x="310.2857142857143" y="310" text-anchor="middle" font-size="10">60</text>
+<text x="644.0" y="310" text-anchor="middle" font-size="10">120</text>
+<line x1="60" y1="258.8" x2="644" y2="258.8" stroke="#dc2626" stroke-dasharray="5,4"/>
+<text x="640" y="253.8" text-anchor="end" font-size="10" fill="#dc2626">R1 = 20y</text>
+<polyline points="60.0,294.0 87.80952380952381,292.24 115.61904761904762,265.84 143.42857142857144,243.84 226.85714285714286,199.83999999999997 310.2857142857143,171.68 644.0,115.36000000000001" fill="none" stroke="#2563eb" stroke-width="2.5"/>
+<circle cx="60.0" cy="294.0" r="4" fill="#2563eb"/>
+<text x="60.0" y="286.0" text-anchor="middle" font-size="9">0.0</text>
+<circle cx="87.80952380952381" cy="292.24" r="4" fill="#2563eb"/>
+<text x="87.80952380952381" y="284.24" text-anchor="middle" font-size="9">1.0</text>
+<circle cx="115.61904761904762" cy="265.84" r="4" fill="#2563eb"/>
+<text x="115.61904761904762" y="257.84" text-anchor="middle" font-size="9">16.0</text>
+<circle cx="143.42857142857144" cy="243.84" r="4" fill="#2563eb"/>
+<text x="143.42857142857144" y="235.84" text-anchor="middle" font-size="9">28.5</text>
+<circle cx="226.85714285714286" cy="199.83999999999997" r="4" fill="#2563eb"/>
+<text x="226.85714285714286" y="191.83999999999997" text-anchor="middle" font-size="9">53.5</text>
+<circle cx="310.2857142857143" cy="171.68" r="4" fill="#2563eb"/>
+<text x="310.2857142857143" y="163.68" text-anchor="middle" font-size="9">69.5</text>
+<circle cx="644.0" cy="115.36000000000001" r="4" fill="#2563eb"/>
+<text x="644.0" y="107.36000000000001" text-anchor="middle" font-size="9">101.5</text>
+</svg>
